@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>THPAL Year End Party 2024 Registration</title>
+	<script
+		src="https://code.jquery.com/jquery-3.4.1.js"
+		integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
+		crossorigin="anonymous"></script>
+	<script>
+		function SubForm (){
+			$.ajax({
+				url:"https://api.apispreadsheets.com/data/OKW8zOaB2OCyarcz/",
+				type:"post",
+				data:$("#myForm").serializeArray(),
+				success: function(){
+					alert("Form Data Submitted :)")
+					alert("Please see below your listed name")
+				},
+				error: function(){
+					alert("There was an error :(")
+				}
+			});
+		}
+	</script>
+
+<style>
+#THPALdiv2{display:flex;}
+#THPALdiv{background:black;color:white;padding:2%;margin-left:22%;margin-top:2%;font-family:calibri;
+		width:30%;}
+#iframe-id .toolbar-class {
+    display: none;}
+#THPALYear{background:red;margin-top:2%;margin-right:22%;padding: 1%;font-family:calibri;}
+input{border:none;width:100%;padding:3%;border-radius:5px;background:lightgray;}
+button{border:none;background:red;padding:2%;color:white;}
+</style>
+
+
+</head>
+<body>
+<div id="THPALdiv2">
+<div id="THPALdiv">
+	<form id="myForm">
+		<h2>REGISTER HERE!</h2>
+		<label>Employee Code</label></br>
+		<input name="Employee Code" Placeholder="Enter Your Employee Code Here!"type="number"/>
+		<br/></br>
+		<label>Full Name</label></br>
+		<input name="Full Name" Placeholder="Enter Your Full Name Here!" />
+		<br/></br>
+		<label>Department</label></br>
+		<input name="Department" Placeholder="Enter Your Department"/>
+		<br/></br>
+	</form>
+	<button onclick='SubForm()'>Submit</button></br></div>
+<div id="THPALYear"><h1 style="color:#fff;font-size:3hd;margin-right:20%;margin-left:2%;margin-top:2%;font-family:calibri;">
+THPAL YEAR END PARTY 2024 REGISTRATION</h1>
+<p>Register First to the left side to make your name listed below and win a Minor and Major Prices for the Event, Merry Christmas and Happy New Year</p>
+</div>
+</div>
+
+<center><iframe id="iframe-id" width="55%"height="500px" src="https://docs.google.com/spreadsheets/d/1Msn-jMpBpnc8dZSP6-9qdFWnDKIVcKX4Yfe605liSrw/edit?rm=minimal"></iframe></center>
+
+
+</body>
+</html>
