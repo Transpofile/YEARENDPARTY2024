@@ -31,17 +31,17 @@
 	color:whitesmoke;}
 #THPALdiv2{Display:flex; flex-direction:column;}
 #THPALdiv{background:#0ce;color:#000;padding:0%;margin-left:0%;margin-right:0%;margin-top:0%;font-family:calibri;
-		width:100%;font-size:2vw;background-image: url("https://img.freepik.com/free-vector/worldwide-connection-gray-background-illustration-vector_53876-61769.jpg");
+		width:100%;font-size:2vw;background-image: url("https://img.freepik.com/free-vector/worldwide-connection-gray-background-illustration-vector_53876-61769.jpg")	;
 						}
 
 #iframe{ width:100%;margin-left:0%;margin-right:0%; height:600px; font-size:2vw;border:none;}
 #iframe-1{ width:100%;margin-left:-3%;opacity:80%;margin-right:-3%; height:600px; font-size:2vw;border:none;}
 #THPALYear{background:#0ee;margin-top:0%;margin-right:0%;padding:0%;font-family:calibri;font-size:1.2vw;display:flex;}
-input{border:none;max-width:700px;width:95%;padding:1%;border-radius:5px;background:lightgray;font-size:2vw}
+input{border:none;max-width:700px;width:95%;padding:1%;border-radius:5px;background:lightgray;font-size:2vw;}
 input:hover{color:blue;}
 button{border:none;background:red;padding:1%;color:white;font-size:2vw;border-radius:5px;}
 button:hover{color:red;background:white;}
-#roleta{background:red;}
+#roleta{background:#57abff;}
 
 #myForm{margin-left:5%;}
 
@@ -49,18 +49,18 @@ button:hover{color:red;background:white;}
 .dropdown {
   border-radius:6px;padding:1%;background:lightgray;
   display: inline-block;border:none;font-family:calibri;font-size:2vw;
-  max-width:725px;width:97%;color:gray;overflow:hidden;}
-.dropdown > option{background:whitesmoke;border:none;color:gray;}
+  max-width:725px;width:97%;color:white;overflow:hidden;}
+.dropdown > option{background:whitesmoke;border:none;color:;}
 
 
 #minor{color:gray;margin-right:20%;margin-left:2%;margin-top:2%;font-family:calibri;cursor:pointer;}
-#minor:hover{color:blue;}
+#minor:hover{color:whitesmoke;}
 
 #major{color:gray;margin-right:20%;margin-left:2%;margin-top:2%;font-family:calibri;cursor:pointer;}
-#major:hover{color:blue;}
+#major:hover{color:whitesmoke;}
 
 #database{color:gray;margin-right:20%;margin-left:2%;margin-top:2%;font-family:calibri;cursor:pointer;}
-#database:hover{color:blue;}
+#database:hover{color:whitesmoke;}
 
 </style>
 
@@ -76,10 +76,10 @@ button:hover{color:red;background:white;}
 	<form id="myForm">
 		<h2 style="color:red;"><b><i>REGISTER HERE!</i></b></h2>
 		<label align="left">Employee Code</label></br>
-		<input name="Employee Code" Placeholder="Enter Your Employee Code Here!"type="number"/>
+		<input name="Employee Code" Placeholder="Enter Your Employee Code Here!"type="number" required/>
 		<br/></br>
 		<label align="left">Full Name</label></br>
-		<input name="Full Name"type="input" Placeholder="Enter Your Full Name Here!" />
+		<input name="Full Name"type="input" Placeholder="Enter Your Full Name Here!" required/>
 		<br/></br>
 		<label align="left">Department</label></br>
 		<select class="dropdown" name="Department" value="Department" Placeholder="Select Your Department"/>
