@@ -2,6 +2,8 @@
 <html>
 <head>
 	<title>THPAL Year End Party 2024 Registration</title>
+	
+
 	<script
 		src="https://code.jquery.com/jquery-3.4.1.js"
 		integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
@@ -13,8 +15,8 @@
 				type:"post",
 				data:$("#myForm").serializeArray(),
 				success: function(){
-					alert("Form Data Submitted :)")
-					alert("CONGRATULATIONS")
+					alert("Your Entry was Submitted Successfully")
+					alert("Thank You")
 				},
 				error: function(){
 					alert("There was an error :(")
@@ -27,24 +29,38 @@
 #Gilbert{background-image: url("https://wallpapers.com/images/featured/background-design-background-6tgpche84avnjqvz.jpg");
 	background-repeat:no-repeat;background-size:100%;padding:1%;font-family:calibri;font-size:3vw;margin-left:-.6%;margin-right:-.6%;margin-top:-.6%;
 	color:whitesmoke;}
-#THPALdiv2{display:flex;}
-#THPALdiv{background:#0ce;color:#000;padding:1.5%;margin-left:-2%;margin-right:0%;margin-top:0%;font-family:calibri;
-		width:100%;font-size:1.5vw;}
-#iframe{ width:100%;margin-left:-3%;margin-right:-3%; height:600px; font-size:2vw;border:none;}
+#THPALdiv2{Display:flex; flex-direction:column;}
+#THPALdiv{background:#0ce;color:#000;padding:0%;margin-left:0%;margin-right:0%;margin-top:0%;font-family:calibri;
+		width:100%;font-size:2vw;background-image: url("https://img.freepik.com/free-vector/worldwide-connection-gray-background-illustration-vector_53876-61769.jpg");
+						}
+
+#iframe{ width:100%;margin-left:0%;margin-right:0%; height:600px; font-size:2vw;border:none;}
 #iframe-1{ width:100%;margin-left:-3%;opacity:80%;margin-right:-3%; height:600px; font-size:2vw;border:none;}
-#THPALYear{background:#0ee;margin-top:0%;margin-right:-2%;padding: 1.5%;font-family:calibri;font-size:1.2vw;}
-input{border:none;width:90%;padding:3%;border-radius:5px;background:whitesmoke;font-size:1.5vw}
-button{border:none;background:red;padding:2%;color:white;font-size:1vw}
+#THPALYear{background:#0ee;margin-top:0%;margin-right:0%;padding:0%;font-family:calibri;font-size:1.2vw;display:flex;}
+input{border:none;max-width:700px;width:95%;padding:1%;border-radius:5px;background:lightgray;font-size:2vw}
+input:hover{color:blue;}
+button{border:none;background:red;padding:1%;color:white;font-size:2vw;border-radius:5px;}
+button:hover{color:red;background:white;}
 #roleta{background:red;}
+
+#myForm{margin-left:5%;}
 
 
 .dropdown {
-  border-radius:6px;padding:2%;background:whitesmoke;
-  display: inline-block;border:none;font-family:calibri;font-size:1.5vw;
-  width:96%;color:gray;overflow:hidden;}
+  border-radius:6px;padding:1%;background:lightgray;
+  display: inline-block;border:none;font-family:calibri;font-size:2vw;
+  max-width:725px;width:97%;color:gray;overflow:hidden;}
 .dropdown > option{background:whitesmoke;border:none;color:gray;}
 
 
+#minor{color:gray;margin-right:20%;margin-left:2%;margin-top:2%;font-family:calibri;cursor:pointer;}
+#minor:hover{color:blue;}
+
+#major{color:gray;margin-right:20%;margin-left:2%;margin-top:2%;font-family:calibri;cursor:pointer;}
+#major:hover{color:blue;}
+
+#database{color:gray;margin-right:20%;margin-left:2%;margin-top:2%;font-family:calibri;cursor:pointer;}
+#database:hover{color:blue;}
 
 </style>
 
@@ -53,19 +69,19 @@ button{border:none;background:red;padding:2%;color:white;font-size:1vw}
 <body>
 
 <div id="Gilbert">
-<h1 align="center">THPAL YEAR END PARTY 2024</h1>
+<h1 align="center" style="cursor:none;">THPAL YEAR END PARTY 2024</h1>
 
 <div id="THPALdiv2">
 <div id="THPALdiv">
 	<form id="myForm">
-		<h2>REGISTER HERE!</h2>
-		<label>Employee Code</label></br>
+		<h2 style="color:red;"><b><i>REGISTER HERE!</i></b></h2>
+		<label align="left">Employee Code</label></br>
 		<input name="Employee Code" Placeholder="Enter Your Employee Code Here!"type="number"/>
 		<br/></br>
-		<label>Full Name</label></br>
+		<label align="left">Full Name</label></br>
 		<input name="Full Name"type="input" Placeholder="Enter Your Full Name Here!" />
 		<br/></br>
-		<label>Department</label></br>
+		<label align="left">Department</label></br>
 		<select class="dropdown" name="Department" value="Department" Placeholder="Select Your Department"/>
 		<option>Select your Department</option>
 		<option>Administration / Accounting</option>
@@ -93,13 +109,18 @@ button{border:none;background:red;padding:2%;color:white;font-size:1vw}
 		</select>
 		<br/></br>
 	</form>
-	<button style="cursor:pointer;" onclick='SubForm()'>Submit</button></br></div>
+	<center><button style="cursor:pointer;" onclick='SubForm()'>Submit</button></center></br></div>
+</div>
+
 <div id="THPALYear">
-<h1 style="color:#fff;font-size:3hd;margin-right:20%;margin-left:2%;margin-top:2%;font-family:calibri;">
-MINOR ROLETA</h1><hr></hr>
-<!--<h5 align="center" style="cursor:pointer;"><span style="font-family:calibri;background:#00c;color:#fff;border-radius:50%; padding:1.5%;">Spin Wheel</span></h5>-->
+<h3 id="minor">
+MINOR ROLETA</h3><hr></hr>
+<h3 id="major">
+MAJOR ROLETA</h3><hr></hr>
+<h3 id="database">
+DATABASE</h3>
 </div>
-</div>
+
 
 <div id="roleta">
 <div>
@@ -107,8 +128,13 @@ MINOR ROLETA</h1><hr></hr>
 </div>
 <div></div>
 </div>
-<!--<center><iframe id="iframe" src="https://docs.google.com/spreadsheets/d/1Msn-jMpBpnc8dZSP6-9qdFWnDKIVcKX4Yfe605liSrw/edit?rm=minimal"></iframe></center>-->
+<center><iframe id="iframe" src="https://docs.google.com/spreadsheets/d/1Msn-jMpBpnc8dZSP6-9qdFWnDKIVcKX4Yfe605liSrw/edit?rm=minimal"></iframe></center>
+
 
 </div>
+
+
+
+
 </body>
 </html>
