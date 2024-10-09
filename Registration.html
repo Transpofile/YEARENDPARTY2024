@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -41,7 +42,9 @@ input{border:none;max-width:700px;width:95%;padding:1%;border-radius:5px;backgro
 input:hover{color:blue;}
 button{border:none;background:red;padding:1%;color:white;font-size:2vw;border-radius:5px;}
 button:hover{color:red;background:white;}
-#roleta{background:#57abff;}
+#roleta{background:#57abff;display:flex;}
+#roleta1{width:90%;}
+#photo{margin:1%;font-size:1.5vw;max-width:200px;width:10%;font-family:calibri;}
 
 #myForm{margin-left:5%;}
 
@@ -49,11 +52,11 @@ button:hover{color:red;background:white;}
 .dropdown {
   border-radius:6px;padding:1%;background:lightgray;
   display: inline-block;border:none;font-family:calibri;font-size:2vw;
-  max-width:725px;width:97%;color:white;overflow:hidden;}
-.dropdown > option{background:whitesmoke;border:none;color:;}
+  max-width:725px;width:97%;color:gray;overflow:hidden;}
+.dropdown > option{background:whitesmoke;border:none;}
 
 
-#minor{color:gray;margin-right:20%;margin-left:2%;margin-top:2%;font-family:calibri;cursor:pointer;}
+#minor{color:gray;margin-left:2%;margin-top:2%;font-family:calibri;cursor:pointer;}
 #minor:hover{color:whitesmoke;}
 
 #major{color:gray;margin-right:20%;margin-left:2%;margin-top:2%;font-family:calibri;cursor:pointer;}
@@ -77,6 +80,7 @@ button:hover{color:red;background:white;}
 		<h2 style="color:red;"><b><i>REGISTER HERE!</i></b></h2>
 		<label align="left">Employee Code</label></br>
 		<input name="Employee Code" Placeholder="Enter Your Employee Code Here!"type="number" required/>
+
 		<br/></br>
 		<label align="left">Full Name</label></br>
 		<input name="Full Name"type="input" Placeholder="Enter Your Full Name Here!" required/>
@@ -123,14 +127,14 @@ DATABASE</h3>
 
 
 <div id="roleta">
+<div id="roleta1">
+<center><iframe id="iframe-1" src="https://wheelofnames.com/"></iframe></center>
+</div>
+<div id="photo"><h3>List of Prices</h3></div>
+</div>
+
 <div>
-<center><iframe id="iframe-1" src="https://wheelofnames.com/axd-x5t"></iframe></center>
-</div>
-<div></div>
-</div>
 <center><iframe id="iframe" src="https://docs.google.com/spreadsheets/d/1Msn-jMpBpnc8dZSP6-9qdFWnDKIVcKX4Yfe605liSrw/edit?rm=minimal"></iframe></center>
-
-
 </div>
 
 
