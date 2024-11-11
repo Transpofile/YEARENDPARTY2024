@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>THPAL Year End Party 2024 Registration</title>
+	
+
+	<script
+		src="https://code.jquery.com/jquery-3.4.1.js"
+		integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
+		crossorigin="anonymous"></script>
+	<script>
+		function SubForm (){
+			$.ajax({
+				url:"https://api.apispreadsheets.com/data/OKW8zOaB2OCyarcz/",
+				type:"post",
+				data:$("#myForm").serializeArray(),
+				success: function(){
+					alert("Your Entry was Submitted Successfully")
+					alert("Please Spin The Roleta at the front of the information desk, Thank You")
+				},
+				error: function(){
+					alert("There was an error :(")
+				}
+			});
+		}
+	</script>
+
+<style>
+
+.wp-block-embedpress-google-sheets-block.ose-google-docs-spreadsheets {
+margin: 0 auto !important;
+width: 700px !important;
+}
+
+.wp-block-embedpress-google-sheets-block.ose-google-docs-spreadsheets iframe {
+max-width: auto !important;
+}
+
+#Gilbert{background-image: url("img/Head.jpg");
+	background-repeat:no-repeat;background-size:100%;padding:1%;font-family:calibri;font-size:3vw;margin-left:-.6%;margin-right:-.6%;margin-top:-.6%;
+	color:whitesmoke;}
+#THPALdiv2{Display:flex; flex-direction:column;}
+#THPALdiv{background:#0ce;color:#000;padding:0%;margin-left:0%;margin-right:0%;margin-top:0%;font-family:calibri;
+		width:100%;font-size:2vw;background-image: url("img/Head3.jpg");background-repeat:no-repeat;background-position:center;background-size:100%;background-height:100%;}
+
+#THPALdiv3{background:#0ce;color:#000;padding:0%;margin-left:0%;margin-right:0%;margin-top:0%;font-family:calibri;
+		width:100%;font-size:2vw;background-image: url("img/Head3.jpg");background-repeat:no-repeat;background-position:center;background-size:100%;background-height:100%;}
+
+
+#iframe{ width:100%;margin-left:0%;margin-right:0%; height:600px; font-size:2vw;border:none;}
+
+#iframe-1{ width:100%;margin-left:-3%;opacity:80%;margin-right:-3%; height:600px; font-size:2vw;border:none;
+}
+
+
+#THPALYear{background:#ddd;margin-top:0%;margin-right:0%;padding:0%;font-family:calibri;font-size:1.2vw;display:flex;}
+input{border:none;max-width:48%;width:95%;padding:1%;border-radius:5px;background:Whitesmoke;font-size:1.7vw;}
+input:hover{color:blue;}
+button{border:none;background:red;padding:1%;color:white;font-size:2vw;border-radius:5px;}
+button:hover{color:red;background:white;}
+#roleta{background:#57abff;display:flex;}
+#roleta1{width:90%;}
+#photo{margin:1%;font-size:1.5vw;max-width:200px;width:10%;font-family:calibri;}
+
+#myForm{margin-left:5%;}
+
+
+.dropdown {
+  border-radius:6px;padding:1%;background:Whitesmoke;
+  display: inline-block;border:none;font-family:calibri;font-size:2vw;
+  max-width:50%;width:97%;color:gray;overflow:hidden;}
+.dropdown > option{background:whitesmoke;border:none;}
+
+
+#minor{color:gray;margin-left:2%;margin-top:2%;font-family:calibri;cursor:pointer;}
+#minor:hover{color:red;}
+
+#major{color:gray;margin-right:20%;margin-left:2%;margin-top:2%;font-family:calibri;cursor:pointer;}
+#major:hover{color:red;}
+
+#database{color:gray;margin-right:20%;margin-left:2%;margin-top:2%;font-family:calibri;cursor:pointer;}
+#database:hover{color:red;}
+
+</style>
+
+
+</head>
+<body>
+
+<div id="Gilbert">
+<h1 align="center" style="cursor:none;">THPAL YEAR END PARTY 2024</h1>
+
+
+
+<div id="THPALdiv3">
+
+</br></br>
+</br></br>
+</br></br>
+</br></br>
+</br></br>
+</br></br>
+</br></br>
+</br></br>
+</br></br>
+
+
+
+</div>
+
+
+
+<!---
+<div id="THPALdiv2">
+<div id="THPALdiv">
+	<form id="myForm">
+		<h2 style="cursor:pointer;"><b><i> <span style="color:white; background:red;padding:1%;"><u>REGISTER</u> <span style="color:red; background:White;padding:1%;">HERE!</span></span></i></b></h2>
+		<label align="left">Employee Code</label></br>
+		<input name="Employee Code" Placeholder="Enter Your Employee Code Here!"type="number" required/>
+
+		<br/></br>
+		<label align="left">Full Name</label></br>
+		<input name="Full Name"type="input" Placeholder="Enter Your Full Name Here!" required/>
+		<br/></br>
+		<label align="left">Department</label></br>
+		<select class="dropdown" name="Department" value="Department" Placeholder="Select Your Department"/>
+		<option>Select your Department</option>
+		<option>Administration / Accounting</option>
+		<option>Administration / General Affairs</option>
+		<option>Administration / Human Resources</option>
+		<option>Community Relations</option>
+		<option>Engineering / Civil</option>
+		<option>Engineering /  Electrical</option>
+		<option>Maintenance / E & I</option>
+		<option>Maintenance / I.T</option>
+		<option>Maintenance / Mechanical</option>
+		<option>OSH / Health</option>
+		<option>OSH / Safety</option>
+		<option>PLD / Logistics</option>
+		<option>PLD / Procurement</option>
+		<option>Production / HPAL</option>
+		<option>Production / MS</option>
+		<option>Production / Process Improvement</option>
+		<option>Power Station Utilities</option>
+		<option>Rare Metal / Chromite</option>
+		<option>Rare Metal / Scandium</option>
+		<option>Security</option>
+		<option>Technical / Laboratory</option>
+		<option>Technical / MEPEO</option>
+		</select>
+		<br/></br>
+	</form>
+	<center><button style="cursor:pointer;" onclick='SubForm()'>Submit</button></center></br></div>
+</div>
+
+<div id="THPALYear">
+<h3 id="minor">
+MINOR ROLETA</h3><hr></hr>
+<h3 id="major">
+MAJOR ROLETA</h3><hr></hr>
+<h3 id="database">
+DATABASE</h3>
+</div> --->
+
+
+<div id="roleta">
+<div id="roleta1">
+
+<!---
+<center><iframe id="iframe-1" src="https://wheelofnames.com/"></iframe></center>--->
+</div>
+</div> 
+
+<div>
+<center><iframe id="iframe" src="https://docs.google.com/spreadsheets/d/1Msn-jMpBpnc8dZSP6-9qdFWnDKIVcKX4Yfe605liSrw/edit?rm=minimal"></iframe></center> 
+</div>
+
+
+
+
+</body>
+</html>
