@@ -16,7 +16,7 @@
 				data:$("#myForm").serializeArray(),
 				success: function(){
 					alert("Your Entry was Submitted Successfully")
-					alert("Thank You")
+					alert("Please Spin The Roleta at the front of the information desk, Thank You")
 				},
 				error: function(){
 					alert("There was an error :(")
@@ -26,6 +26,16 @@
 	</script>
 
 <style>
+
+.wp-block-embedpress-google-sheets-block.ose-google-docs-spreadsheets {
+margin: 0 auto !important;
+width: 700px !important;
+}
+
+.wp-block-embedpress-google-sheets-block.ose-google-docs-spreadsheets iframe {
+max-width: auto !important;
+}
+
 #Gilbert{background-image: url("img/Head.jpg");
 	background-repeat:no-repeat;background-size:100%;padding:1%;font-family:calibri;font-size:3vw;margin-left:-.6%;margin-right:-.6%;margin-top:-.6%;
 	color:whitesmoke;}
@@ -33,7 +43,11 @@
 #THPALdiv{background:#0ce;color:#000;padding:0%;margin-left:0%;margin-right:0%;margin-top:0%;font-family:calibri;
 		width:100%;font-size:2vw;background-image: url("img/Head2.jpg");background-repeat:no-repeat;background-position:center;background-size:100%;background-height:100%;}
 #iframe{ width:100%;margin-left:0%;margin-right:0%; height:600px; font-size:2vw;border:none;}
-#iframe-1{ width:100%;margin-left:-3%;opacity:80%;margin-right:-3%; height:600px; font-size:2vw;border:none;}
+
+#iframe-1{ width:100%;margin-left:-3%;opacity:80%;margin-right:-3%; height:600px; font-size:2vw;border:none;
+}
+
+
 #THPALYear{background:#ddd;margin-top:0%;margin-right:0%;padding:0%;font-family:calibri;font-size:1.2vw;display:flex;}
 input{border:none;max-width:48%;width:95%;padding:1%;border-radius:5px;background:Whitesmoke;font-size:1.7vw;}
 input:hover{color:blue;}
@@ -112,7 +126,7 @@ button:hover{color:red;background:white;}
 	</form>
 	<center><button style="cursor:pointer;" onclick='SubForm()'>Submit</button></center></br></div>
 </div>
-
+<!---
 <div id="THPALYear">
 <h3 id="minor">
 MINOR ROLETA</h3><hr></hr>
@@ -125,13 +139,15 @@ DATABASE</h3>
 
 <div id="roleta">
 <div id="roleta1">
-<center><iframe id="iframe-1" src="https://wheelofnames.com/"></iframe></center>
+
+<!---
+<center><iframe id="iframe-1" src="https://wheelofnames.com/"></iframe></center>--->
 </div>
-<div id="photo"><h3>List of Prices</h3></div>
-</div>
+</div> 
 
 <div>
-<center><iframe id="iframe" src="https://docs.google.com/spreadsheets/d/1Msn-jMpBpnc8dZSP6-9qdFWnDKIVcKX4Yfe605liSrw/edit?rm=minimal"></iframe></center>
+<!---
+<center><iframe id="iframe" src="https://docs.google.com/spreadsheets/d/1Msn-jMpBpnc8dZSP6-9qdFWnDKIVcKX4Yfe605liSrw/edit?rm=minimal"></iframe></center> ----> 
 </div>
 
 
