@@ -23,9 +23,11 @@
     <link href='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.13/main.min.css' rel='stylesheet' />
     <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.13/index.global.min.js'></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.30.1/moment.min.js"></script>
-    <style>
-        /* Base Variables and Scrollbar */
-        :root {
+    <link rel="stylesheet" type="text/css" href="source/Yearendscript.css"/>
+
+
+<style>
+       :root {
             --bg-body: #f0fdf4;
             --bg-container: #ffffff;
             --text-primary: #1f2937;
@@ -63,15 +65,14 @@
             scrollbar-width: none;
         }
 
-        /* DARK MODE STYLES */
         body.dark-mode {
-            --bg-body: #111827; /* Dark background */
-            --bg-container: #1f2937; /* Slightly lighter dark for containers */
-            --text-primary: #f3f4f6; /* Light text */
+            --bg-body: #111827;
+            --bg-container: #1f2937;
+            --text-primary: #f3f4f6;
             --shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.6), 0 4px 6px -2px rgba(0, 0, 0, 0.4);
             --header-bg: #1f2937;
-            --main-border-top: #ef4444; 
-            --main-border-bottom: #10B981; 
+            --main-border-top: #ef4444;
+            --main-border-bottom: #10B981;
             --input-bg: #374151;
             --table-header-bg: #374151;
             color: var(--text-primary);
@@ -80,52 +81,80 @@
 
         body {
             font-family: 'Inter', sans-serif;
-            background-color: var(--bg-body); 
+            background-color: var(--bg-body);
             background-image: url('https://www.transparenttextures.com/patterns/christmas-x.png');
-            transition: background-color 0.5s ease, color 0.5s ease; /* Fade effect */
-        }
-        
-        .main-christmas-container {
-             border-top: 5px solid var(--main-border-top); 
-             border-bottom: 5px solid var(--main-border-bottom); 
-             padding-top: 1rem;
-             padding-bottom: 1rem;
+            transition: background-color 0.5s ease, color 0.5s ease;
         }
 
-        /* Dark Mode for main elements */
-        .bg-white, header, .modal-content {
+        .main-christmas-container {
+            border-top: 5px solid var(--main-border-top);
+            border-bottom: 5px solid var(--main-border-bottom);
+            padding-top: 1rem;
+            padding-bottom: 1rem;
+        }
+
+        .bg-white,
+        header,
+        .modal-content {
             background-color: var(--bg-container) !important;
             transition: background-color 0.5s ease;
         }
-        .text-gray-700, .text-gray-800, .text-gray-500 {
+
+        .text-gray-700,
+        .text-gray-800,
+        .text-gray-500 {
             color: var(--text-primary) !important;
             transition: color 0.5s ease;
         }
-        .border-gray-200, .border-gray-300, .divide-gray-200 {
-            border-color: rgba(75, 85, 99, 0.5) !important; /* Neutral dark border */
+
+        .border-gray-200,
+        .border-gray-300,
+        .divide-gray-200 {
+            border-color: rgba(75, 85, 99, 0.5) !important;
             transition: border-color 0.5s ease;
         }
-        .shadow-md, .shadow-lg, .shadow {
-             box-shadow: var(--shadow);
-             transition: box-shadow 0.5s ease;
+
+        .shadow-md,
+        .shadow-lg,
+        .shadow {
+            box-shadow: var(--shadow);
+            transition: box-shadow 0.5s ease;
         }
-        .bg-gray-50, .fc-theme-standard td, .fc-theme-standard th {
-             background-color: var(--table-header-bg) !important;
-             transition: background-color 0.5s ease;
+
+        .bg-gray-50,
+        .fc-theme-standard td,
+        .fc-theme-standard th {
+            background-color: var(--table-header-bg) !important;
+            transition: background-color 0.5s ease;
         }
+
         .table-container {
+            /* Existing styles */
             overflow-x: auto;
             width: 100%;
+
         }
+        
+        /* ADDED: Scrollbar to the winner log table */
+        #winner-log-table-wrapper {
+            max-height: 450px; /* Set a max height for vertical scrolling */
+            overflow-y: auto; /* Enable vertical scroll */
+            border: 1px solid var(--border-color); /* Optional: Visual border */
+            border-radius: 0.5rem;
+	    
+        }
+        /* END ADDED */
+
 
         th,
         td {
             white-space: nowrap;
-            font-size: .7rem;
+            font-size: .8rem;
         }
-        
-        /* Dark mode input/select specific styles */
-        input:not([type="hidden"]):not([type="file"]), textarea, select {
+
+        input:not([type="hidden"]):not([type="file"]),
+        textarea,
+        select {
             background-color: var(--input-bg) !important;
             color: var(--text-primary) !important;
         }
@@ -145,9 +174,9 @@
             color: #4b5563;
             font-size: 10px;
         }
-        
+
         body.dark-mode .select-container::after {
-            color: #d1d5db; /* Lighter arrow in dark mode */
+            color: #d1d5db;
         }
 
 
@@ -155,14 +184,13 @@
             background-color: rgba(0, 0, 0, 0.6);
             z-index: 50;
         }
-        
-        /* ADJUSTED FOR REQUEST: Live Roleta Spin Modal Full Screen Height */
+
         #liveSpinAccessModal .modal-content {
-            height: 95vh; 
-            max-width: 95vw; 
+            height: 100vh;
+            max-width: 100vw;
             display: flex;
         }
-        
+
         .slick-prev:before,
         .slick-next:before {
             color: #1e3a8a !important;
@@ -170,26 +198,26 @@
             opacity: 1 !important;
         }
 
-        /* FullCalendar styling adjustments */
         #calendar .fc-event {
             font-size: 0.75rem;
             padding: 1px 3px;
+	    height:10px;
         }
-        
-        /* NEW STYLES: Reduce Calendar Header Text Size */
+
         .fc-toolbar-title {
-            font-size: 1rem !important; /* Smaller title (e.g., October 2025) */
+            font-size: 1rem !important;
         }
+
         .fc-toolbar-chunk .fc-button {
-            font-size: 0.8rem !important; /* Smaller buttons (e.g., today, month, week) */
+            font-size: 0.8rem !important;
             padding: 4px 8px !important;
         }
+
         .fc-toolbar-chunk .fc-prev-button,
         .fc-toolbar-chunk .fc-next-button {
-            padding: 4px 6px !important; /* Smaller arrows */
+            padding: 4px 6px !important;
         }
-        
-        /* Dark Mode Calendar specific overrides (FullCalendar default is light) */
+
         body.dark-mode .fc-col-header-cell,
         body.dark-mode .fc-daygrid-body,
         body.dark-mode .fc-view-harness,
@@ -197,17 +225,43 @@
             background-color: var(--bg-container);
             color: var(--text-primary);
         }
+
         body.dark-mode .fc-button-primary {
-             background-color: #3b82f6 !important;
-             border-color: #3b82f6 !important;
-             color: white !important;
+            background-color: #3b82f6 !important;
+            border-color: #3b82f6 !important;
+            color: white !important;
         }
+
         body.dark-mode .fc-button-primary:hover {
-             background-color: #2563eb !important;
+            background-color: #2563eb !important;
         }
-        /* END NEW STYLES */
         
-    </style>
+        /* Adjusted styles for Department Counts thumbnail display */
+        /* MODIFIED: Changed the structure to use flexbox for a single row with horizontal scrolling */
+        #department-counts {
+            display: flex;
+            overflow-x: auto; /* Enable horizontal scroll */
+            padding-bottom: 10px; /* Space for scrollbar */
+            gap: 1rem;
+        }
+        #department-counts > div {
+            min-width: 300px; /* Ensure each thumbnail has a reasonable width */
+            max-width: 350px; 
+            width: 100%;
+        }
+        /* END MODIFIED */
+
+        /* ADDED: Styles for Calendar Modal */
+        .modal-tab-button.active {
+            background-color: #3b82f6;
+            color: white;
+            border-color: #3b82f6;
+        }
+        /* END ADDED */
+
+
+</style>
+
 
     <script type="module">
         const DB_NAME = 'RoletaWinnerDB';
@@ -219,21 +273,33 @@
         let sortDirection = 'desc';
 
         const liveSpinPassword = 'THPAL2025';
+        const securityPassword = 'THPAL2025';
         const liveWheelIframeUrl = 'https://wheelofnames.com/';
+        let securedAction = null;
+
+        let pendingWinnerData = null;
 
         const majorPrizes = [
-            { name: 'House and Lot with Swimming Pool and Jacuzzi Pool', image: 'https://via.placeholder.com/300x200/F59E0B/FFFFFF?text=Major+Prize+1' },
-            { name: 'Tour anywhere in the world with allowance of 1.5 Billion', image: 'https://via.placeholder.com/300x200/10B981/FFFFFF?text=Major+Prize+2' },
-            { name: 'Free Shopping worth of 1 Billion', image: 'https://via.placeholder.com/300x200/EF4444/FFFFFF?text=Major+Prize+3' }
+            {
+                name: 'House and Lot with Swimming Pool and Jacuzzi Pool',
+                image: 'https://via.placeholder.com/300x200/F59E0B/FFFFFF?text=Major+Prize+1'
+            },
+            {
+                name: 'Tour anywhere in the world with allowance of 1.5 Billion',
+                image: 'https://via.placeholder.com/300x200/10B981/FFFFFF?text=Major+Prize+2'
+            },
+            {
+                name: 'Free Shopping worth of 1 Billion',
+                image: 'https://via.placeholder.com/300x200/EF4444/FFFFFF?text=Major+Prize+3'
+            }
         ];
-        
-        // NEW: Standardized Department List
+
         const departments = [
-            "HRD (Human Resources)", "Finance", "Operations", "Mining", "Processing Plant", 
+            "HRD (Human Resources)", "Finance", "Operations", "Mining", "Processing Plant",
             "Logistics", "Safety", "Environment", "Community Relations", "Engineering",
             "IT (Information Technology)", "Management", "General Services", "Security"
         ];
-        
+
         window.calendar = null;
 
         function showMessage(message, type = 'success') {
@@ -417,7 +483,7 @@
                         request.onsuccess = async () => {
                             await refreshResults();
                             showMessage("Database cleared successfully!", 'info');
-                            sessionStorage.removeItem('sessionLogCount'); 
+                            sessionStorage.removeItem('sessionLogCount');
                             hideConfirmationModal();
                         };
                         request.onerror = (event) => {
@@ -453,130 +519,263 @@
                 request.onerror = (event) => reject(event.target.error);
             });
         }
-        
+
         function getCalendarEvents(winners) {
-            return winners.map(winner => {
-                const date = moment(winner.timestamp).format('YYYY-MM-DD'); 
-                const time = moment(winner.timestamp).format('HH:mm');
+            // Group winners by date
+            const groupedByDate = winners.reduce((acc, winner) => {
+                // Get date string (YYYY-MM-DD)
+                const dateStr = moment(winner.timestamp).format('YYYY-MM-DD');
+                if (!acc[dateStr]) {
+                    acc[dateStr] = [];
+                }
+                acc[dateStr].push(winner);
+                return acc;
+            }, {});
+
+            // Create FullCalendar events for each date
+            return Object.keys(groupedByDate).map(dateStr => {
+                const count = groupedByDate[dateStr].length;
+                const claimedCount = groupedByDate[dateStr].filter(w => w.claimed).length;
 
                 return {
-                    id: winner.timestamp.getTime(), 
-                    title: `${winner.name} (${winner.prize})`,
-                    start: date, 
+                    title: `${count} Winners (${claimedCount} claimed)`,
+                    start: dateStr,
+                    allDay: true,
                     extendedProps: {
-                        name: winner.name,
-                        prize: winner.prize,
-                        department: winner.department,
-                        time: time,
-                        timestamp: winner.timestamp.getTime()
+                        winners: groupedByDate[dateStr],
+                        date: dateStr
                     },
-                    // ENHANCEMENT: Use Green for Claimed, Orange for Unclaimed
-                    color: winner.claimed ? '#10B981' : '#F59E0B' 
+                    color: count > 0 ? '#10B981' : '#F59E0B', // Default color for the day
+                    display: 'block'
                 };
             });
         }
-        
-        // UPDATED: Calendar Configuration for reduced size and responsiveness
+
         function renderCalendar(events) {
             const calendarEl = document.getElementById('calendar');
             if (!calendarEl) return;
 
             const calendar = new FullCalendar.Calendar(calendarEl, {
-                initialView: 'dayGridMonth',
-                height: 'auto',
-                // NEW: Use responsive header for smaller text/buttons
+                initialView: 'dayGridMonth', // MODIFIED: Changed to dayGridMonth for count display
+                height: '400px', 
                 headerToolbar: {
                     left: 'prev,next today',
                     center: 'title',
                     right: 'dayGridMonth,timeGridWeek,timeGridDay'
                 },
-                // NEW: Responsive options
                 views: {
-                    dayGridMonth: { 
-                        buttonText: 'Month' 
+                    dayGridMonth: {
+                        buttonText: 'Month'
                     },
-                    timeGridWeek: { 
-                        buttonText: 'Week' 
+                    timeGridWeek: {
+                        buttonText: 'Week'
                     },
-                    timeGridDay: { 
-                        buttonText: 'Day' 
+                    timeGridDay: {
+                        buttonText: 'Day'
                     }
                 },
                 events: events,
-                eventDidMount: function(info) {
-                    $(info.el).tooltip({
-                        title: `Winner: ${info.event.extendedProps.name}\nPrize: ${info.event.extendedProps.prize}\nTime: ${info.event.extendedProps.time}`,
-                        placement: 'top',
-                        trigger: 'hover',
-                        container: 'body'
-                    });
+                eventContent: function(arg) {
+                    // MODIFIED: Custom content for dayGridMonth view
+                    if (arg.view.type === 'dayGridMonth') {
+                        const count = arg.event.extendedProps.winners.length;
+                        return {
+                            html: `<div class="p-1 rounded-md text-center bg-blue-100 text-blue-800 dark:bg-blue-800 dark:text-blue-100 font-bold text-xs">${count} Winners</div>`
+                        };
+                    } else {
+                        // Default rendering for other views (if needed, though not the primary focus now)
+                         return {
+                             html: `<div class="fc-event-main-frame">
+                                <div class="fc-event-time">${arg.timeText}</div>
+                                <div class="fc-event-title-container">
+                                    <div class="fc-event-title fc-sticky">${arg.event.title}</div>
+                                </div>
+                             </div>`
+                         };
+                    }
+                },
+                dateClick: function(info) {
+                    // MODIFIED: Handle click on a date cell to show modal
+                    const dateStr = info.dateStr;
+                    const dateEvents = events.find(e => e.start === dateStr);
+                    
+                    if (dateEvents) {
+                         window.showCalendarDetailsModal(dateEvents.extendedProps.date, dateEvents.extendedProps.winners);
+                    } else {
+                        // No winners on this date, show empty modal or simply do nothing
+                        window.showCalendarDetailsModal(dateStr, []);
+                    }
                 },
                 eventClick: function(info) {
-                    window.viewDetails(info.event.extendedProps.timestamp);
-                },
-                eventContent: function(arg) {
-                    const timeText = arg.timeText ? `<span class="fc-event-time">${arg.timeText}</span>` : '';
-                    return { html: `${timeText} <span class="fc-event-title">${arg.event.extendedProps.prize}</span>` };
+                    // MODIFIED: Handle click on the event (winner count)
+                    if (info.event.extendedProps.date) {
+                         window.showCalendarDetailsModal(info.event.extendedProps.date, info.event.extendedProps.winners);
+                    }
                 }
             });
 
             calendar.render();
-            window.calendar = calendar; 
+            window.calendar = calendar;
         }
+
+        // ADDED: Function to show the calendar details modal
+        window.showCalendarDetailsModal = function(dateStr, winners) {
+            const dateDisplay = moment(dateStr).format('dddd, MMMM Do YYYY');
+            document.getElementById('calendar-modal-title').textContent = `Winner Log for ${dateDisplay}`;
+            
+            const totalWinnersTabContent = document.getElementById('total-winners-tab');
+            const claimedWinnersTabContent = document.getElementById('claimed-winners-tab');
+            const unclaimedWinnersTabContent = document.getElementById('unclaimed-winners-tab');
+
+            const renderWinnerList = (list) => {
+                if (list.length === 0) {
+                    return '<p class="text-gray-500 italic p-4">No winners found for this category on this date.</p>';
+                }
+                
+                const isDarkMode = document.body.classList.contains('dark-mode');
+                const textBaseClass = isDarkMode ? 'text-gray-300' : 'text-gray-700';
+
+                return `<ul class="divide-y divide-gray-200 dark:divide-gray-700 max-h-96 overflow-y-auto">
+                    ${list.map(winner => {
+                        const claimedText = winner.claimed ? 'Claimed' : 'Unclaimed';
+                        const claimedColor = winner.claimed ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400';
+                        const time = moment(winner.timestamp).format('HH:mm A');
+                        
+                        return `<li class="p-3 hover:bg-gray-50 dark:hover:bg-gray-700 cursor-pointer flex justify-between items-center transition duration-150" onclick="window.viewDetails(${winner.timestamp.getTime()})">
+                                <div class="flex-1 min-w-0">
+                                    <p class="text-sm font-semibold truncate ${textBaseClass}">${winner.name}</p>
+                                    <p class="text-xs text-blue-600 dark:text-blue-400 font-medium">${winner.prize}</p>
+                                    <p class="text-xs text-gray-500 dark:text-gray-400">${winner.department}</p>
+                                </div>
+                                <div class="text-right">
+                                    <span class="text-xs font-bold ${claimedColor}">${claimedText}</span>
+                                    <p class="text-xs text-gray-500 dark:text-gray-400">${time}</p>
+                                </div>
+                            </li>`;
+                    }).join('')}
+                </ul>`;
+            };
+
+            const claimedWinners = winners.filter(w => w.claimed);
+            const unclaimedWinners = winners.filter(w => !w.claimed);
+
+            totalWinnersTabContent.innerHTML = renderWinnerList(winners);
+            claimedWinnersTabContent.innerHTML = renderWinnerList(claimedWinners);
+            unclaimedWinnersTabContent.innerHTML = renderWinnerList(unclaimedWinners);
+
+            // Update tab counts
+            document.getElementById('total-tab-count').textContent = winners.length;
+            document.getElementById('claimed-tab-count').textContent = claimedWinners.length;
+            document.getElementById('unclaimed-tab-count').textContent = unclaimedWinners.length;
+            
+            // Set default tab to "All" and show the modal
+            window.switchCalendarTab('total-winners-tab');
+            $('#calendarDetailsModal').removeClass('hidden');
+        };
         
+        // ADDED: Function to switch tabs in the calendar details modal
+        window.switchCalendarTab = function(tabId) {
+            // Hide all tab contents
+            document.querySelectorAll('.calendar-tab-content').forEach(el => el.classList.add('hidden'));
+            
+            // Remove active class from all buttons
+            document.querySelectorAll('.modal-tab-button').forEach(el => el.classList.remove('active'));
+            
+            // Show the selected tab content
+            document.getElementById(tabId).classList.remove('hidden');
+            
+            // Add active class to the clicked button
+            document.querySelector(`[onclick="switchCalendarTab('${tabId}')"]`).classList.add('active');
+        };
+
+        window.closeCalendarDetailsModal = function() {
+            $('#calendarDetailsModal').addClass('hidden');
+        };
+        // END ADDED
+
         function renderDepartmentCounts() {
+            const majorPrizeNames = majorPrizes.map(p => p.name.toLowerCase());
+
             const counts = results.reduce((acc, winner) => {
                 const dept = winner.department.trim() || 'Unspecified';
-                acc[dept] = (acc[dept] || 0) + 1;
+                if (!acc[dept]) {
+                    acc[dept] = {
+                        minor: 0,
+                        major: 0
+                    };
+                }
+
+                const prizeLower = winner.prize.trim().toLowerCase();
+
+                if (majorPrizeNames.includes(prizeLower)) {
+                    acc[dept].major += 1;
+                } else {
+                    acc[dept].minor += 1;
+                }
                 return acc;
             }, {});
 
             const container = document.getElementById('department-counts');
-            
-            if (!container) return; 
+
+            if (!container) return;
 
             if (Object.keys(counts).length === 0) {
-                 container.innerHTML = '<p class="text-gray-500 italic">No winners to count yet.</p>';
-                 return;
+                container.innerHTML = '<p class="text-gray-500 italic">No winners to count yet.</p>';
+                return;
             }
 
             const isDarkMode = document.body.classList.contains('dark-mode');
-            const bgClass = isDarkMode ? 'bg-purple-900/50 border-purple-800' : 'bg-purple-50 border-purple-200';
-            const textClass = isDarkMode ? 'text-purple-300' : 'text-purple-600';
-            const textExtraboldClass = isDarkMode ? 'text-purple-200' : 'text-purple-800';
+
+            const minorBgClass = isDarkMode ? 'bg-indigo-900/50 border-indigo-800' : 'bg-indigo-50 border-indigo-200';
+            const minorTextClass = isDarkMode ? 'text-indigo-300' : 'text-indigo-600';
+            const minorExtraboldClass = isDarkMode ? 'text-indigo-200' : 'text-indigo-800';
+
+            const majorBgClass = isDarkMode ? 'bg-yellow-900/50 border-yellow-800' : 'bg-yellow-50 border-yellow-200';
+            const majorTextClass = isDarkMode ? 'text-yellow-300' : 'text-yellow-600';
+            const majorExtraboldClass = isDarkMode ? 'text-yellow-200' : 'text-yellow-800';
 
 
             const html = Object.keys(counts).sort().map(dept => {
-                const count = counts[dept];
+                const {
+                    minor,
+                    major
+                } = counts[dept];
                 return `
-                    <div class="p-3 ${bgClass} rounded-lg border text-center shadow-sm transition duration-500">
-                        <p class="text-xs font-medium ${textClass} truncate">${dept}</p>
-                        <p class="text-xl font-extrabold ${textExtraboldClass}">${count}</p> </div>
+                    <div class="p-3 bg-gray-50 dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 shadow-md transition duration-500 flex-shrink-0">
+                        <p class="text-sm font-bold text-gray-700 dark:text-gray-300 mb-2 truncate">${dept}</p>
+
+                        <div class="flex space-x-2">
+                            <div class="flex-1 p-2 ${minorBgClass} rounded-md border text-center shadow-sm">
+                                <p class="text-xs font-medium ${minorTextClass}">Minor Prize Winner</p>
+                                <p class="text-xl font-extrabold ${minorExtraboldClass}">${minor}</p>
+                            </div>
+                            <div class="flex-1 p-2 ${majorBgClass} rounded-md border text-center shadow-sm">
+                                <p class="text-xs font-medium ${majorTextClass}">Major Prize Winner</p>
+                                <p class="text-xl font-extrabold ${majorExtraboldClass}">${major}</p>
+                            </div>
+                        </div>
+                    </div>
                 `;
             }).join('');
 
             container.innerHTML = html;
         }
 
-        // UPDATED: refreshResults to include Calendar and Department Count updates
         async function refreshResults() {
             try {
                 const fetchedResults = await getAllWinners();
                 results = fetchedResults;
                 filterTable();
-                
-                // Update Calendar
+
                 const events = getCalendarEvents(fetchedResults);
-                if(window.calendar) {
-                    window.calendar.removeAllEvents();
-                    window.calendar.addEventSource(events);
-                } else {
-                    renderCalendar(events);
+                if (window.calendar) {
+                    // Destroy and re-render calendar to fully apply view changes and events
+                    window.calendar.destroy();
                 }
-                
-                // Update Department Counts
-                renderDepartmentCounts(); 
-                
+                renderCalendar(events);
+
+                renderDepartmentCounts();
+
             } catch (error) {
                 console.error("Error fetching documents:", error);
                 showMessage("Error fetching results from the local database.", 'error');
@@ -588,7 +787,7 @@
             const searchTerm = searchInput ? searchInput.value.toLowerCase().trim() : '';
 
             const filteredResults = results.filter(result => {
-                if (!searchTerm) return true; 
+                if (!searchTerm) return true;
 
                 const nameMatch = result.name.toLowerCase().includes(searchTerm);
                 const prizeMatch = result.prize.toLowerCase().includes(searchTerm);
@@ -606,7 +805,7 @@
                 if (!winner) return showMessage("Record not found.", 'error');
 
                 const claimedText = winner.claimed ? 'Claimed' : 'Unclaimed';
-                const claimedColor = winner.claimed ? 'text-green-600' : 'text-red-600';
+                const claimedColor = winner.claimed ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400';
 
                 document.getElementById('view-name').textContent = winner.name;
                 document.getElementById('view-department').textContent = winner.department;
@@ -616,6 +815,8 @@
                 document.getElementById('view-claimed').className = `font-bold ${claimedColor}`;
                 document.getElementById('view-timestamp').textContent = winner.timestamp.toLocaleString();
 
+                // Ensure the Calendar Details Modal is closed if it's open before showing View Modal
+                window.closeCalendarDetailsModal(); 
                 $('#viewModal').removeClass('hidden');
 
             } catch (error) {
@@ -633,15 +834,16 @@
                 const originalWinner = await getWinner(timestamp);
                 if (!originalWinner) return showMessage("Record not found.", 'error');
 
-                document.getElementById('edit-record-id').value = timestamp; 
+                document.getElementById('edit-record-id').value = timestamp;
                 document.getElementById('edit-full-name').value = originalWinner.name;
                 document.getElementById('edit-prize-item').value = originalWinner.prize;
                 document.getElementById('edit-remarks').value = originalWinner.remarks || '';
                 document.getElementById('edit-claim-status').value = originalWinner.claimed.toString();
-                
-                // Populate edit department dropdown
+
                 populateDepartmentDropdown('edit-department', originalWinner.department);
 
+                // Ensure the Calendar Details Modal is closed if it's open before showing Edit Modal
+                window.closeCalendarDetailsModal(); 
                 $('#editModal').removeClass('hidden');
 
             } catch (error) {
@@ -669,7 +871,7 @@
 
                 await updateWinner(updatedWinner);
                 await refreshResults();
-                window.closeEditModal(); 
+                window.closeEditModal();
                 showMessage(`Record for ${updatedWinner.name} updated successfully!`, 'success');
 
             } catch (error) {
@@ -706,6 +908,128 @@
             $('#dataManagementModal').addClass('hidden');
         }
 
+        window.openSecurityAccessModal = function(actionType) {
+            securedAction = actionType === 'submit' ? window.securedSubmitAction : window.securedExportAction;
+
+            document.getElementById('security-modal-title').textContent = actionType === 'submit' ? 'Secure Winner Log Submission' : 'Secure Data Export';
+            document.getElementById('security-modal-message').textContent = actionType === 'submit'
+                ? 'Enter the security password to log a new winner record.'
+                : 'Enter the security password to download the winner log data.';
+            document.getElementById('security-access-password').value = '';
+            $('#security-error').addClass('hidden').text('');
+
+            $('#securityAccessModal').removeClass('hidden');
+            document.getElementById('security-access-password').focus();
+        };
+
+        window.checkSecurityPassword = function() {
+            const password = document.getElementById('security-access-password').value.trim();
+            const errorElement = $('#security-error');
+
+            if (password === securityPassword) {
+                errorElement.addClass('hidden');
+                window.closeSecurityAccessModal();
+                if (securedAction) {
+                    securedAction();
+                }
+            } else {
+                errorElement.removeClass('hidden').text('❌ Incorrect security password.');
+            }
+        };
+
+        window.closeSecurityAccessModal = function() {
+            $('#securityAccessModal').addClass('hidden');
+        };
+
+        window.securedSubmitAction = async function() {
+            if (!pendingWinnerData) {
+                showMessage("Error: No winner data was prepared for submission.", 'error');
+                return;
+            }
+
+            const winnerData = pendingWinnerData;
+
+            pendingWinnerData = null;
+
+            try {
+                await addWinner(winnerData);
+
+                const sessionCount = incrementSessionLogCount();
+
+                document.getElementById('roleta-form').reset();
+                populateDepartmentDropdown('department-select');
+
+                await refreshResults();
+
+                showMessage(`Winner logged successfully! (Your Session Log Count: ${sessionCount})`, 'success');
+
+            } catch (error) {
+                console.error("Error writing document:", error);
+                showMessage("Failed to save winner data to local database.", 'error');
+            }
+        };
+
+        window.submitResult = async function(event) {
+            event.preventDefault();
+
+            const fullName = document.getElementById('full-name').value.trim();
+            const department = document.getElementById('department-select').value.trim();
+            const prizeItem = document.getElementById('prize-item').value.trim();
+            const remarks = document.getElementById('remarks').value.trim();
+            const claimedStatus = document.getElementById('claim-status').value === 'Claimed';
+
+            if (!fullName || !department || !prizeItem) {
+                showMessage("Please fill in all required fields (Name, Dept, Prize).", 'error');
+                return;
+            }
+
+            pendingWinnerData = {
+                name: fullName,
+                department: department,
+                prize: prizeItem,
+                remarks: remarks,
+                claimed: claimedStatus,
+            };
+
+            window.openSecurityAccessModal('submit');
+        }
+
+        window.securedExportAction = async function() {
+            try {
+                const data = await getAllWinners();
+
+                const exportableData = data.map(item => ({
+                    ...item,
+                    timestamp: item.timestamp.getTime()
+                }));
+
+                const json = JSON.stringify(exportableData, null, 2);
+                const blob = new Blob([json], {
+                    type: 'application/json'
+                });
+                const url = URL.createObjectURL(blob);
+
+                const a = document.createElement('a');
+                a.href = url;
+                a.download =
+                    `roleta_winners_${new Date().toISOString().slice(0, 10).replace(/-/g, '')}.json`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+
+                showMessage("Data exported successfully!", 'success');
+            } catch (error) {
+                console.error("Export failed:", error);
+                showMessage("Failed to export data.", 'error');
+            }
+        }
+
+        window.exportData = async function() {
+            window.openSecurityAccessModal('export');
+        }
+
+
         function renderTable(dataToRender) {
             const tbody = document.getElementById('results-tbody');
             const list = dataToRender || results;
@@ -716,7 +1040,7 @@
                     return b.timestamp.getTime() - a.timestamp.getTime();
                 }
             });
-            
+
             const isDarkMode = document.body.classList.contains('dark-mode');
             const hoverClass = isDarkMode ? 'hover:bg-gray-700' : 'hover:bg-gray-50';
             const textBaseClass = isDarkMode ? 'text-gray-300' : 'text-gray-700';
@@ -733,13 +1057,12 @@
                     `<tr><td colspan="8" class="py-4 text-center ${textMutedClass}">${message}</td></tr>`;
                 return;
             }
-            
-             // Update table header background dynamically
+
             document.querySelector('.table-container thead').classList.remove('bg-gray-50', 'bg-gray-800');
             document.querySelector('.table-container thead').classList.add(bgHeaderClass);
             document.querySelectorAll('.table-container thead th').forEach(th => {
-                 th.classList.remove('text-gray-500', 'text-gray-400');
-                 th.classList.add(textHeaderClass);
+                th.classList.remove('text-gray-500', 'text-gray-400');
+                th.classList.add(textHeaderClass);
             });
 
 
@@ -750,13 +1073,11 @@
 
                 const isClaimed = result.claimed;
                 const claimText = isClaimed ? 'Claimed' : 'Unclaimed';
-                // Adjusted claim classes for dark mode visibility
                 const claimClasses = isClaimed ? 'bg-green-100 text-green-700 border-green-500 dark:bg-green-800 dark:text-green-100 dark:border-green-600' :
                     'bg-red-100 text-red-700 border-red-500 dark:bg-red-800 dark:text-red-100 dark:border-red-600';
-                
-                // Adjust colors for dark mode. bg-green-50/70 needs dark mode equivalent.
+
                 const prizeCellClass = isDarkMode ? 'font-bold text-teal-300 bg-teal-900/50 border-l-4 border-teal-600' : 'font-bold text-green-700 bg-green-50/70 border-l-4 border-green-500';
-                
+
                 const originalIndex = results.findIndex(r => r.timestamp.getTime() === recordId);
                 const displayIndex = originalIndex !== -1 ? originalIndex + 1 : 1;
 
@@ -794,53 +1115,6 @@
         window.toggleSort = function() {
             sortDirection = sortDirection === 'desc' ? 'asc' : 'desc';
             filterTable();
-        }
-
-
-        window.submitResult = async function(event) {
-            event.preventDefault();
-
-            const fullName = document.getElementById('full-name').value.trim();
-            // UPDATED: Get value from select instead of input
-            const department = document.getElementById('department-select').value.trim(); 
-            const prizeItem = document.getElementById('prize-item').value.trim();
-            const remarks = document.getElementById('remarks').value.trim();
-            const claimedStatus = document.getElementById('claim-status').value === 'Claimed';
-            const submitButton = document.getElementById('submit-btn');
-
-            if (!fullName || !department || !prizeItem) {
-                showMessage("Please fill in all required fields (Name, Dept, Prize).", 'error');
-                return;
-            }
-
-            submitButton.disabled = true;
-            submitButton.innerHTML = '<i class="fas fa-sync fa-spin mr-2"></i> Logging...';
-
-            try {
-                const winnerData = {
-                    name: fullName,
-                    department: department,
-                    prize: prizeItem,
-                    remarks: remarks,
-                    claimed: claimedStatus,
-                };
-
-                await addWinner(winnerData);
-
-                const sessionCount = incrementSessionLogCount();
-
-                showMessage(`Winner logged successfully! (Your Session Log Count: ${sessionCount})`, 'success');
-
-                document.getElementById('roleta-form').reset();
-                await refreshResults(); 
-
-            } catch (error) {
-                console.error("Error writing document:", error);
-                showMessage("Failed to save winner data to local database.", 'error');
-            } finally {
-                submitButton.disabled = false;
-                submitButton.innerHTML = '<i class="fas fa-arrow-circle-right mr-2"></i> Submit';
-            }
         }
 
 
@@ -882,44 +1156,13 @@
 
         window.resetLiveSpinModal = function() {
 
-            document.getElementById('live-spin-wheel-content').innerHTML = ''; 
+            document.getElementById('live-spin-wheel-content').innerHTML = '';
             $('#live-spin-wheel-section').removeClass('flex-1 overflow-auto').addClass('hidden');
             $('#live-spin-password-section').removeClass('hidden');
             document.getElementById('live-spin-access-password').value = '';
             $('#live-spin-error').addClass('hidden').text('');
         };
 
-
-        window.exportData = async function() {
-            try {
-                const data = await getAllWinners();
-
-                const exportableData = data.map(item => ({
-                    ...item,
-                    timestamp: item.timestamp.getTime()
-                }));
-
-                const json = JSON.stringify(exportableData, null, 2);
-                const blob = new Blob([json], {
-                    type: 'application/json'
-                });
-                const url = URL.createObjectURL(blob);
-
-                const a = document.createElement('a');
-                a.href = url;
-                a.download =
-                    `roleta_winners_${new Date().toISOString().slice(0, 10).replace(/-/g, '')}.json`; 
-                document.body.appendChild(a);
-                a.click();
-                document.body.removeChild(a);
-                URL.revokeObjectURL(url);
-
-                showMessage("Data exported successfully!", 'success');
-            } catch (error) {
-                console.error("Export failed:", error);
-                showMessage("Failed to export data.", 'error');
-            }
-        }
 
         window.triggerImport = function() {
             document.getElementById('import-file-input').click();
@@ -985,15 +1228,12 @@
             reader.readAsText(file);
         }
 
-        // NEW: Function to populate the department dropdown
         function populateDepartmentDropdown(elementId, selectedValue = '') {
             const selectElement = document.getElementById(elementId);
             if (!selectElement) return;
 
-            // Clear existing options
             selectElement.innerHTML = '';
-            
-            // Add a default prompt option
+
             const defaultOption = document.createElement('option');
             defaultOption.value = "";
             defaultOption.textContent = "Select Department";
@@ -1012,47 +1252,42 @@
                 selectElement.appendChild(option);
             });
         }
-        
-        // NEW: Dark Mode Toggle Function
+
         window.toggleDarkMode = function() {
             const isDarkMode = document.body.classList.toggle('dark-mode');
             localStorage.setItem('darkMode', isDarkMode ? 'enabled' : 'disabled');
-            
-            // Update the icon
+
             const icon = document.getElementById('dark-mode-icon');
             icon.className = isDarkMode ? 'fas fa-sun' : 'fas fa-moon';
-            
-            // Re-render elements that depend on dark mode for visual style (e.g., department counts)
+
             renderDepartmentCounts();
-            filterTable(); // Re-render table for color updates
-            
-             // Re-render calendar to ensure theme updates, if necessary
+            filterTable();
+
             if (window.calendar) {
-                 const events = getCalendarEvents(results);
-                 window.calendar.destroy();
-                 renderCalendar(events);
+                const events = getCalendarEvents(results);
+                // Need to destroy and re-render the calendar to fully apply dark mode styles to FC elements
+                window.calendar.destroy(); 
+                renderCalendar(events);
             }
         };
 
         $(document).ready(async function() {
-            // Apply dark mode preference on load
             if (localStorage.getItem('darkMode') === 'enabled' || (!localStorage.getItem('darkMode') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
                 document.body.classList.add('dark-mode');
                 document.getElementById('dark-mode-icon').className = 'fas fa-sun';
             }
 
-            // Populate the dropdowns on load
             populateDepartmentDropdown('department-select');
-            
+            populateDepartmentDropdown('edit-department'); // ADDED: Populate for edit modal too
+
             try {
                 await openDatabase();
-                await refreshResults(); 
+                await refreshResults();
             } catch (error) {
                 console.error("Initialization Failed:", error);
                 showMessage("Application failed to initialize database.", 'error');
             }
 
-            // Initialize Slick Carousel for Major Prizes
             const prizeSlider = document.querySelector('.major-prize-slider');
             if (prizeSlider && majorPrizes.length > 0) {
                 prizeSlider.innerHTML = majorPrizes.map(prize => `
@@ -1095,7 +1330,7 @@
                     class="flex items-center bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-800 dark:text-white font-semibold py-2 px-4 rounded-lg shadow transition duration-500">
                     <i id="dark-mode-icon" class="fas fa-moon"></i>
                 </button>
-                
+
                 <button onclick="openDataManagementModal()"
                     class="flex items-center bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2 px-4 rounded-lg shadow transition duration-200">
                     <i class="fas fa-database mr-2"></i> Data Management
@@ -1114,7 +1349,7 @@
 
         <div class="lg:col-span-1">
             <div class="bg-white p-6 rounded-xl shadow-lg border border-gray-200 h-full transition duration-500">
-                <h2 class="text-lg font-bold text-gray-700 dark:text-gray-200 mb-4 border-b pb-2 flex items-center transition duration-500"> 
+                <h2 class="text-lg font-bold text-gray-700 dark:text-gray-200 mb-4 border-b pb-2 flex items-center transition duration-500">
                     <i class="fas fa-plus-circle mr-2 text-blue-600"></i> Log New Winner
                 </h2>
 
@@ -1130,9 +1365,9 @@
                         <label for="department-select" class="block text-sm font-medium text-gray-700 dark:text-gray-300 transition duration-500">Department <span
                                 class="text-red-500">*</span></label>
                         <div class="select-container">
-                             <select id="department-select" required
+                            <select id="department-select" required
                                 class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-3 appearance-none focus:ring-blue-500 focus:border-blue-500 transition duration-500">
-                                </select>
+                            </select>
                         </div>
                     </div>
                     <div>
@@ -1166,14 +1401,15 @@
                         <i class="fas fa-arrow-circle-right mr-2"></i> Submit
                     </button>
                 </form>
-                
+
                 <hr class="my-6 border-gray-200">
 
                 <h2 class="text-xl font-bold text-gray-700 dark:text-gray-200 mb-4 border-b pb-2 flex items-center transition duration-500">
                     <i class="fas fa-calendar-alt mr-2 text-red-600"></i> Winner Log Calendar
                 </h2>
-                <div id='calendar' class="p-2 border border-gray-300 rounded-lg shadow-inner bg-gray-50 dark:bg-gray-700 transition duration-500"></div>
-                </div>
+                <div id='calendar'
+                    class="p-2 border border-gray-300 rounded-lg shadow-inner bg-gray-50 dark:bg-gray-700 transition duration-500"></div>
+            </div>
         </div>
 
         <div class="lg:col-span-2 space-y-6">
@@ -1187,14 +1423,15 @@
             </div>
 
             <div class="bg-white p-6 rounded-xl shadow-lg border border-gray-200 transition duration-500">
-                <h2 class="text-lg font-bold text-gray-700 dark:text-gray-200 mb-4 border-b pb-2 flex items-center transition duration-500"> 
-                    <i class="fas fa-chart-bar mr-2 text-purple-600"></i> Department Winner Count
+                <h2 class="text-xl font-bold text-gray-700 dark:text-gray-200 mb-4 border-b pb-2 flex items-center transition duration-500">
+                    <i class="fas fa-chart-bar mr-2 text-indigo-600"></i> Department Prize Winner
                 </h2>
-                <div id="department-counts" class="grid grid-cols-2 md:grid-cols-3 gap-4">
+                <div id="department-counts">
                     <p class="text-gray-500 italic dark:text-gray-400">Loading statistics...</p>
                 </div>
             </div>
-            <div class="bg-white p-6 rounded-xl shadow-lg border border-gray-200 h-auto min-h-[500px] flex flex-col transition duration-500">
+            <div
+                class="bg-white p-6 rounded-xl shadow-lg border border-gray-200 h-auto min-h-[500px] flex flex-col transition duration-500">
                 <h2 class="text-xl font-bold text-gray-700 dark:text-gray-200 mb-4 border-b pb-2 flex items-center transition duration-500">
                     <i class="fas fa-list-alt mr-2 text-green-600"></i> Winner Logs
                 </h2>
@@ -1212,7 +1449,7 @@
                     </button>
                 </div>
 
-                <div class="flex-1 table-container overflow-y-auto">
+                <div id="winner-log-table-wrapper" class="flex-1 table-container">
                     <table class="min-w-full divide-y divide-gray-200">
                         <thead class="bg-gray-50 sticky top-0 transition duration-500">
                             <tr>
@@ -1244,7 +1481,8 @@
                         </thead>
                         <tbody id="results-tbody" class="bg-white divide-y divide-gray-200">
                             <tr>
-                                <td colspan="8" class="py-4 text-center text-gray-500 dark:text-gray-400">Loading winners...</td>
+                                <td colspan="8" class="py-4 text-center text-gray-500 dark:text-gray-400">Loading
+                                    winners...</td>
                             </tr>
                         </tbody>
                     </table>
@@ -1254,6 +1492,40 @@
 
     </main>
 
+    <div id="calendarDetailsModal"
+        class="hidden fixed inset-0 modal-backdrop flex justify-center items-center transition-opacity duration-300 z-50">
+        <div class="modal-content bg-white rounded-xl shadow-2xl w-full max-w-2xl mx-4 transition duration-500">
+            <div class="p-6">
+                <h3 id="calendar-modal-title" class="text-2xl font-bold text-gray-800 dark:text-gray-200 border-b pb-3 mb-4 transition duration-500">Winner Log for [Date]</h3>
+                
+                <div class="flex border-b border-gray-200 dark:border-gray-700 mb-4">
+                    <button class="modal-tab-button px-4 py-2 text-sm font-medium border-t border-x rounded-t-lg transition duration-150" 
+                            onclick="switchCalendarTab('total-winners-tab')">
+                        All Winners (<span id="total-tab-count">0</span>)
+                    </button>
+                    <button class="modal-tab-button px-4 py-2 text-sm font-medium border-t border-x rounded-t-lg transition duration-150" 
+                            onclick="switchCalendarTab('claimed-winners-tab')">
+                        Claimed (<span id="claimed-tab-count">0</span>)
+                    </button>
+                    <button class="modal-tab-button px-4 py-2 text-sm font-medium border-t border-x rounded-t-lg transition duration-150" 
+                            onclick="switchCalendarTab('unclaimed-winners-tab')">
+                        Unclaimed (<span id="unclaimed-tab-count">0</span>)
+                    </button>
+                </div>
+
+                <div id="total-winners-tab" class="calendar-tab-content"></div>
+                <div id="claimed-winners-tab" class="calendar-tab-content hidden"></div>
+                <div id="unclaimed-winners-tab" class="calendar-tab-content hidden"></div>
+
+                <div class="mt-6 text-right">
+                    <button onclick="closeCalendarDetailsModal()"
+                        class="bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-800 dark:text-gray-200 font-semibold py-2 px-4 rounded-lg transition duration-150">
+                        Close
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
     <div id="viewModal"
         class="hidden fixed inset-0 modal-backdrop flex justify-center items-center transition-opacity duration-300">
         <div class="modal-content bg-white rounded-xl shadow-2xl w-full max-w-lg mx-4 transition duration-500">
@@ -1266,7 +1538,8 @@
                             class="text-gray-600 dark:text-gray-400"></span></p>
                     <p class="text-sm"><strong>Prize:</strong> <span id="view-prize"
                             class="font-bold text-green-700 dark:text-green-400"></span></p>
-                    <p class="text-sm"><strong>Remarks:</strong> <span id="view-remarks" class="text-gray-600 dark:text-gray-400"></span>
+                    <p class="text-sm"><strong>Remarks:</strong> <span id="view-remarks"
+                            class="text-gray-600 dark:text-gray-400"></span>
                     </p>
                     <p class="text-sm"><strong>Status:</strong> <span id="view-claimed" class="font-bold"></span></p>
                     <p class="text-sm"><strong>Log Timestamp:</strong> <span id="view-timestamp"
@@ -1343,7 +1616,8 @@
     <div id="liveSpinAccessModal"
         class="hidden fixed inset-0 modal-backdrop flex justify-center items-center transition-opacity duration-300">
         <div class="modal-content bg-white w-full max-w-full flex-col transition duration-500">
-            <div class="p-4 bg-gray-100 dark:bg-gray-800 border-b flex justify-between items-center shadow-sm transition duration-500">
+            <div
+                class="p-4 bg-gray-100 dark:bg-gray-800 border-b flex justify-between items-center shadow-sm transition duration-500">
                 <h3 class="text-xl font-bold text-gray-800 dark:text-gray-200 flex items-center transition duration-500">
                     <i class="fas fa-bahai mr-2 text-red-600"></i> Live Roleta Spin Access
                 </h3>
@@ -1373,6 +1647,32 @@
         </div>
     </div>
 
+    <div id="securityAccessModal"
+        class="hidden fixed inset-0 modal-backdrop flex justify-center items-center transition-opacity duration-300 z-50">
+        <div
+            class="modal-content bg-white rounded-xl shadow-2xl w-full max-w-sm mx-4 transform transition-all duration-300">
+            <div class="p-6 text-center">
+                <i class="fas fa-user-lock text-4xl text-blue-500 mb-4"></i>
+                <h3 id="security-modal-title" class="text-xl font-bold text-gray-800 dark:text-gray-200 mb-2 transition duration-500">Secure Action</h3>
+                <p id="security-modal-message" class="text-sm text-gray-600 dark:text-gray-400 mb-6 transition duration-500">Enter the security password to proceed.</p>
+
+                <input type="password" id="security-access-password"
+                    onkeypress="if(event.key === 'Enter') checkSecurityPassword()"
+                    class="w-full border border-gray-300 rounded-lg p-3 text-center text-lg focus:ring-blue-500 focus:border-blue-500 mb-4 transition duration-500"
+                    placeholder="****">
+
+                <button onclick="checkSecurityPassword()"
+                    class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-8 rounded-lg shadow-lg transition duration-200 w-full mb-4">
+                    Authenticate
+                </button>
+                <p id="security-error" class="text-red-500 mt-2 hidden"></p>
+                <button type="button" onclick="closeSecurityAccessModal()"
+                    class="w-full bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-800 dark:text-gray-200 font-semibold py-2 px-4 rounded-lg transition duration-150">
+                    Cancel
+                </button>
+            </div>
+        </div>
+    </div>
     <div id="confirmationModal"
         class="hidden fixed inset-0 modal-backdrop flex justify-center items-center transition-opacity duration-300 z-50">
         <div
