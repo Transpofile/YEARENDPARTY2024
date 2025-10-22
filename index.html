@@ -129,22 +129,18 @@
         }
 
         .table-container {
-            /* Existing styles */
             overflow-x: auto;
             width: 100%;
 
         }
         
-        /* ADDED: Scrollbar to the winner log table */
         #winner-log-table-wrapper {
-            max-height: 450px; /* Set a max height for vertical scrolling */
-            overflow-y: auto; /* Enable vertical scroll */
-            border: 1px solid var(--border-color); /* Optional: Visual border */
+            max-height: 450px;
+            overflow-y: auto;
+            border: 1px solid var(--border-color);
             border-radius: 0.5rem;
 	    
         }
-        /* END ADDED */
-
 
         th,
         td {
@@ -236,28 +232,23 @@
             background-color: #2563eb !important;
         }
         
-        /* Adjusted styles for Department Counts thumbnail display */
-        /* MODIFIED: Changed the structure to use flexbox for a single row with horizontal scrolling */
         #department-counts {
             display: flex;
-            overflow-x: auto; /* Enable horizontal scroll */
-            padding-bottom: 10px; /* Space for scrollbar */
+            overflow-x: auto;
+            padding-bottom: 10px;
             gap: 1rem;
         }
         #department-counts > div {
-            min-width: 300px; /* Ensure each thumbnail has a reasonable width */
+            min-width: 300px;
             max-width: 350px; 
             width: 100%;
         }
-        /* END MODIFIED */
 
-        /* ADDED: Styles for Calendar Modal */
         .modal-tab-button.active {
             background-color: #3b82f6;
             color: white;
             border-color: #3b82f6;
         }
-        /* END ADDED */
 
 
 </style>
@@ -521,9 +512,7 @@
         }
 
         function getCalendarEvents(winners) {
-            // Group winners by date
             const groupedByDate = winners.reduce((acc, winner) => {
-                // Get date string (YYYY-MM-DD)
                 const dateStr = moment(winner.timestamp).format('YYYY-MM-DD');
                 if (!acc[dateStr]) {
                     acc[dateStr] = [];
@@ -532,7 +521,6 @@
                 return acc;
             }, {});
 
-            // Create FullCalendar events for each date
             return Object.keys(groupedByDate).map(dateStr => {
                 const count = groupedByDate[dateStr].length;
                 const claimedCount = groupedByDate[dateStr].filter(w => w.claimed).length;
@@ -545,7 +533,7 @@
                         winners: groupedByDate[dateStr],
                         date: dateStr
                     },
-                    color: count > 0 ? '#10B981' : '#F59E0B', // Default color for the day
+                    color: count > 0 ? '#10B981' : '#F59E0B',
                     display: 'block'
                 };
             });
@@ -556,7 +544,7 @@
             if (!calendarEl) return;
 
             const calendar = new FullCalendar.Calendar(calendarEl, {
-                initialView: 'dayGridMonth', // MODIFIED: Changed to dayGridMonth for count display
+                initialView: 'dayGridMonth',
                 height: '400px', 
                 headerToolbar: {
                     left: 'prev,next today',
@@ -576,14 +564,12 @@
                 },
                 events: events,
                 eventContent: function(arg) {
-                    // MODIFIED: Custom content for dayGridMonth view
                     if (arg.view.type === 'dayGridMonth') {
                         const count = arg.event.extendedProps.winners.length;
                         return {
                             html: `<div class="p-1 rounded-md text-center bg-blue-100 text-blue-800 dark:bg-blue-800 dark:text-blue-100 font-bold text-xs">${count} Winners</div>`
                         };
                     } else {
-                        // Default rendering for other views (if needed, though not the primary focus now)
                          return {
                              html: `<div class="fc-event-main-frame">
                                 <div class="fc-event-time">${arg.timeText}</div>
@@ -595,19 +581,16 @@
                     }
                 },
                 dateClick: function(info) {
-                    // MODIFIED: Handle click on a date cell to show modal
                     const dateStr = info.dateStr;
                     const dateEvents = events.find(e => e.start === dateStr);
                     
                     if (dateEvents) {
                          window.showCalendarDetailsModal(dateEvents.extendedProps.date, dateEvents.extendedProps.winners);
                     } else {
-                        // No winners on this date, show empty modal or simply do nothing
                         window.showCalendarDetailsModal(dateStr, []);
                     }
                 },
                 eventClick: function(info) {
-                    // MODIFIED: Handle click on the event (winner count)
                     if (info.event.extendedProps.date) {
                          window.showCalendarDetailsModal(info.event.extendedProps.date, info.event.extendedProps.winners);
                     }
@@ -618,7 +601,6 @@
             window.calendar = calendar;
         }
 
-        // ADDED: Function to show the calendar details modal
         window.showCalendarDetailsModal = function(dateStr, winners) {
             const dateDisplay = moment(dateStr).format('dddd, MMMM Do YYYY');
             document.getElementById('calendar-modal-title').textContent = `Winner Log for ${dateDisplay}`;
@@ -663,35 +645,27 @@
             claimedWinnersTabContent.innerHTML = renderWinnerList(claimedWinners);
             unclaimedWinnersTabContent.innerHTML = renderWinnerList(unclaimedWinners);
 
-            // Update tab counts
             document.getElementById('total-tab-count').textContent = winners.length;
             document.getElementById('claimed-tab-count').textContent = claimedWinners.length;
             document.getElementById('unclaimed-tab-count').textContent = unclaimedWinners.length;
             
-            // Set default tab to "All" and show the modal
             window.switchCalendarTab('total-winners-tab');
             $('#calendarDetailsModal').removeClass('hidden');
         };
         
-        // ADDED: Function to switch tabs in the calendar details modal
         window.switchCalendarTab = function(tabId) {
-            // Hide all tab contents
             document.querySelectorAll('.calendar-tab-content').forEach(el => el.classList.add('hidden'));
             
-            // Remove active class from all buttons
             document.querySelectorAll('.modal-tab-button').forEach(el => el.classList.remove('active'));
             
-            // Show the selected tab content
             document.getElementById(tabId).classList.remove('hidden');
             
-            // Add active class to the clicked button
             document.querySelector(`[onclick="switchCalendarTab('${tabId}')"]`).classList.add('active');
         };
 
         window.closeCalendarDetailsModal = function() {
             $('#calendarDetailsModal').addClass('hidden');
         };
-        // END ADDED
 
         function renderDepartmentCounts() {
             const majorPrizeNames = majorPrizes.map(p => p.name.toLowerCase());
@@ -769,7 +743,6 @@
 
                 const events = getCalendarEvents(fetchedResults);
                 if (window.calendar) {
-                    // Destroy and re-render calendar to fully apply view changes and events
                     window.calendar.destroy();
                 }
                 renderCalendar(events);
@@ -815,7 +788,6 @@
                 document.getElementById('view-claimed').className = `font-bold ${claimedColor}`;
                 document.getElementById('view-timestamp').textContent = winner.timestamp.toLocaleString();
 
-                // Ensure the Calendar Details Modal is closed if it's open before showing View Modal
                 window.closeCalendarDetailsModal(); 
                 $('#viewModal').removeClass('hidden');
 
@@ -842,7 +814,6 @@
 
                 populateDepartmentDropdown('edit-department', originalWinner.department);
 
-                // Ensure the Calendar Details Modal is closed if it's open before showing Edit Modal
                 window.closeCalendarDetailsModal(); 
                 $('#editModal').removeClass('hidden');
 
@@ -1265,7 +1236,6 @@
 
             if (window.calendar) {
                 const events = getCalendarEvents(results);
-                // Need to destroy and re-render the calendar to fully apply dark mode styles to FC elements
                 window.calendar.destroy(); 
                 renderCalendar(events);
             }
@@ -1278,7 +1248,7 @@
             }
 
             populateDepartmentDropdown('department-select');
-            populateDepartmentDropdown('edit-department'); // ADDED: Populate for edit modal too
+            populateDepartmentDropdown('edit-department');
 
             try {
                 await openDatabase();
@@ -1315,6 +1285,46 @@
             }
         });
     </script>
+
+    <script>
+        function protectSourceCode() {
+            document.addEventListener('contextmenu', function(e) {
+                e.preventDefault();
+            });
+
+            document.addEventListener('keydown', function(e) {
+                if (e.keyCode === 123 || 
+                    (e.ctrlKey && e.shiftKey && e.keyCode === 73) || 
+                    (e.ctrlKey && e.keyCode === 85) || 
+                    (e.ctrlKey && e.shiftKey && e.keyCode === 67) || 
+                    (e.ctrlKey && e.keyCode === 83) ||
+                    (e.ctrlKey && e.shiftKey && e.keyCode === 73) ||
+                    (e.ctrlKey && e.shiftKey && e.keyCode === 74)) {
+                    e.preventDefault();
+                    return false;
+                }
+            });
+
+            document.addEventListener('selectstart', function(e) {
+                e.preventDefault();
+            });
+
+            document.addEventListener('dragstart', function(e) {
+                e.preventDefault();
+            });
+
+            document.onselectstart = function() {
+                return false;
+            };
+
+            document.oncontextmenu = function() {
+                return false;
+            };
+        }
+
+        window.addEventListener('load', protectSourceCode);
+    </script>
+
 </head>
 
 <body class="bg-gray-50 min-h-screen">
