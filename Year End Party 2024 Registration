@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>THPAL YEAR END CHRISTMAS RAFFLE 2025 - PRIZE PICKER</title>
+    <title>THPAL YEAR END CHRISTMAS RAFFLE 2025 - MAJOR PRIZE RAFFLE</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <style>
@@ -82,7 +82,7 @@
         #fullscreen-roleta .pointer {
             top: -25px; /* Adjust for larger fullscreen border */
         }
-
+        
         /* Custom scrollbar for lists */
         .custom-scroll::-webkit-scrollbar {
             width: 6px;
@@ -91,12 +91,25 @@
             background: #9ca3af;
             border-radius: 3px;
         }
+        
+        /* Styles for the new countdown display */
+        #pre-spin-countdown-display {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 15;
+            color: var(--color-primary-red);
+            font-size: 72px; /* Large font size */
+            font-weight: 800;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+        }
 
     </style>
 </head>
 <body class="p-4 md:p-8 min-h-screen">
     <div class="max-w-6xl mx-auto">
-        <h1 class="text-3xl font-extrabold text-center text-red-600 mb-6 tracking-tight">THPAL MINOR PRIZE RAFFLE</h1>
+        <h1 class="text-3xl font-extrabold text-center text-red-600 mb-6 tracking-tight"><a href="../index.html" style="color:Blue;"title="Minor Prize">⯇</a>THPAL MAJOR PRIZE RAFFLE</h1>
         
         <div class="flex justify-center mb-6">
             <button id="tab-wheel" onclick="showTab('wheel')" class="px-6 py-2 rounded-l-lg font-semibold text-white bg-red-600 hover:bg-red-700 transition duration-150">Roleta</button>
@@ -112,47 +125,48 @@
             <div id="wheel-container" class="relative">
                 <div class="pointer"></div>
                 <canvas id="roleta-canvas" class="roleta-canvas" width="400" height="400"></canvas>
+                <p id="pre-spin-countdown-display" class="hidden"></p>
             </div>
             
             <div class="text-center space-y-4">
-                <p id="message-box" class="text-lg font-bold text-gray-700 h-6">Click the wheel to spin and pick a prize!</p>
+                <p id="message-box" class="text-lg font-bold text-gray-700 h-6">Click the wheel to select a winner!</p>
                 <div class="flex flex-wrap justify-center items-center space-x-4">
                     <button onclick="toggleFullscreen(true)" class="bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-6 rounded-lg shadow-lg transition duration-150">
                         Full Screen
                     </button>
-                    <p id="countdown-timer" class="text-lg font-bold text-blue-600 hidden"></p>
+                    <p id="countdown-timer" class="text-lg font-bold text-blue-600 hidden"></p> 
                     <button id="remove-winner-btn" class="bg-yellow-500 hover:bg-yellow-600 text-white font-semibold py-2 px-6 rounded-lg shadow-lg transition duration-150 hidden">
-                        Remove Prize Now
+                        Remove Participant Now
                     </button>
                 </div>
             </div>
         </div>
 
         <div id="tab-content-results" class="tab-content hidden space-y-4 bg-white p-6 rounded-xl shadow-lg">
-            <h2 class="text-2xl font-bold text-gray-800 border-b pb-2 mb-4">Winner History (Prizes Claimed)</h2>
+            <h2 class="text-2xl font-bold text-gray-800 border-b pb-2 mb-4">Winner History (Participants Selected)</h2>
 
             <div class="flex justify-around bg-gray-100 p-3 rounded-lg border border-gray-200 mb-4">
                 <div class="text-center">
-                    <p class="text-xs font-medium text-gray-500">Available Prizes</p>
+                    <p class="text-xs font-medium text-gray-500">Available Participants</p>
                     <p id="active-participants-count" class="text-2xl font-extrabold text-blue-600">0</p>
                 </div>
                 <div class="text-center">
-                    <p class="text-xs font-medium text-gray-500">Total Spins</p>
+                    <p class="text-xs font-medium text-gray-500">Total Winners Picked</p>
                     <p id="total-spins-count" class="text-2xl font-extrabold text-purple-600">0</p>
                 </div>
                 <div class="text-center">
-                    <p class="text-xs font-medium text-gray-500">Claimed</p>
+                    <p class="text-xs font-medium text-gray-500">Prize Claimed</p>
                     <p id="claimed-prizes-count" class="text-2xl font-extrabold text-green-600">0</p>
                 </div>
                 <div class="text-center">
-                    <p class="text-xs font-medium text-gray-500">Unclaimed</p>
+                     <p class="text-xs font-medium text-gray-500">Prize Unclaimed</p>
                     <p id="unclaimed-prizes-count" class="text-2xl font-extrabold text-red-600">0</p>
                 </div>
             </div>
             
             <div class="mb-4 relative">
                 <input type="text" id="history-search-input" onkeyup="filterResults()" 
-                       placeholder="Search by Winner, Prize, or Department..."
+                       placeholder="Search by Winner or Department..."
                        class="w-full border-gray-300 rounded-lg shadow-sm focus:border-red-500 focus:ring focus:ring-red-200 focus:ring-opacity-50 p-3 pl-10 text-lg">
                 <svg class="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
             </div>
@@ -174,7 +188,7 @@
                     <thead class="bg-gray-50 sticky top-0">
                         <tr>
                             <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">#</th>
-                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Winner (Spun By)</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Winner Name</th>
                             <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Prize Won</th>
                             <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Department</th>
                             <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
@@ -204,27 +218,38 @@
         </div>
 
         <div>
-            <label for="names-input" class="block text-sm font-medium text-gray-700 mb-2">Prize Items (One per line)</label>
-            <textarea id="names-input" rows="12" class="w-full border-gray-300 rounded-lg shadow-sm focus:border-red-500 focus:ring focus:ring-red-200 focus:ring-opacity-50 p-3" placeholder="55-inch Smart TV&#10;10k Cash Prize&#10;iPhone 15 Pro Max"></textarea>
+            <label for="names-input" class="block text-sm font-medium text-gray-700 mb-2">Participant Names (One per line)</label>
+            <textarea id="names-input" rows="12" class="w-full border-gray-300 rounded-lg shadow-sm focus:border-red-500 focus:ring focus:ring-red-200 focus:ring-opacity-50 p-3" placeholder="Juan Dela Cruz - IT&#10;Maria Santos - Admin&#10;Pedro Reyes - Production"></textarea>
             <div class="flex flex-wrap justify-start gap-2 mt-3">
                 <button onclick="updatePrizes()" class="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg transition duration-150 text-sm">
-                    Update Roleta Prizes
+                    Update Participants
                 </button>
-                <button onclick="shufflePrizes()" class="bg-purple-500 hover:bg-purple-600 text-white font-semibold py-2 px-4 rounded-lg transition duration-150 text-sm">
-                    Shuffle Prizes
+                 <button onclick="shufflePrizes()" class="bg-purple-500 hover:bg-purple-600 text-white font-semibold py-2 px-4 rounded-lg transition duration-150 text-sm">
+                    Shuffle Participants
                 </button>
-                <button onclick="clearNames()" class="bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-4 rounded-lg transition duration-150 text-sm">
-                    Clear All Prizes
+                 <button onclick="clearNames()" class="bg-red-500 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded-lg transition duration-150 text-sm">
+                    Clear All Participants
                 </button>
-                <button onclick="exportPrizes()" class="bg-green-500 hover:bg-green-600 text-white font-semibold py-2 px-4 rounded-lg transition duration-150 text-sm">
-                    Export Prize Items
+                 <button onclick="exportPrizes()" class="bg-green-500 hover:bg-green-600 text-white font-semibold py-2 px-4 rounded-lg transition duration-150 text-sm">
+                    Export Participant List
                 </button>
-                <button onclick="document.getElementById('import-prizes-file').click()" class="bg-orange-500 hover:bg-orange-600 text-white font-semibold py-2 px-4 rounded-lg transition duration-150 text-sm">
-                    Import Prize Items
+                 <button onclick="document.getElementById('import-prizes-file').click()" class="bg-orange-500 hover:bg-orange-600 text-white font-semibold py-2 px-4 rounded-lg transition duration-150 text-sm">
+                    Import Participant List
                 </button>
                 <input type="file" id="import-prizes-file" accept=".json" class="hidden" onchange="importPrizesFromSidebar(event)">
+            </div>
+            <div class="mt-6 border-t pt-4">
+                <label for="major-prizes-input" class="block text-sm font-medium text-gray-700 mb-2">Current Major Prize (One per line)</label>
+                <textarea id="major-prizes-input" rows="6" class="w-full border-gray-300 rounded-lg shadow-sm focus:border-red-500 focus:ring focus:ring-red-200 focus:ring-opacity-50 p-3" placeholder="Major Cash Prize 25k&#10;Second Prize - 10k&#10;Third Prize - 5k"></textarea>
+                <div class="flex flex-wrap justify-start gap-2 mt-3">
+                    <button onclick="updateMajorPrizes()" class="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg transition duration-150 text-sm">
+                        Update Major Prizes
+                    </button>
                 </div>
-        </div>
+                <p class="text-xs text-gray-500 mt-2">Enter the major prizes that will be recorded in history when a winner is picked. The **first** prize in the list will be used for the next spin.</p>
+                <p class="text-xs font-bold text-gray-700 mt-2">Next Prize to be Awarded: <span id="next-major-prize-display" class="text-red-600 font-extrabold">N/A</span></p>
+            </div>
+            </div>
 
         <div class="pt-4 border-t">
             <label for="spin-duration-input" class="block text-sm font-medium text-gray-700 mb-2">Spin Duration (Seconds)</label>
@@ -238,37 +263,13 @@
         <div class="relative">
              <div class="pointer"></div>
             <canvas id="fullscreen-canvas" class="roleta-canvas" width="800" height="800"></canvas>
+            <p id="fullscreen-pre-spin-countdown-display" class="hidden" style="font-size: 144px; font-weight: 800; color: #ef4444; text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5); position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 15;"></p>
         </div>
         <button onclick="toggleFullscreen(false)" class="mt-8 bg-white text-gray-800 font-bold py-3 px-10 rounded-full shadow-xl hover:bg-gray-200 transition duration-150">
             Exit Full Screen
         </button>
     </div>
 
-    <div id="participant-modal" class="fixed inset-0 bg-gray-900 bg-opacity-75 z-[65] flex items-center justify-center transition-opacity duration-300 hidden" aria-modal="true" role="dialog">
-        <div class="bg-white rounded-2xl shadow-2xl p-8 max-w-sm w-full text-center transform transition-all duration-300 scale-100">
-            <button onclick="closeParticipantModal()" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
-            </button>
-            
-            <h3 class="mt-4 text-2xl font-extrabold text-gray-900">ENTER DETAILS TO SPIN</h3>
-            <p class="mt-2 text-md text-gray-600">This will be recorded in the history.</p>
-
-            <div class="mt-6 space-y-4 text-left">
-                <div>
-                    <label for="modal-fullname" class="block text-sm font-medium text-gray-700">Full Name</label>
-                    <input type="text" id="modal-fullname" class="mt-1 block w-full border-gray-300 rounded-lg shadow-sm p-3 focus:border-red-500 focus:ring focus:ring-red-200 focus:ring-opacity-50" placeholder="Juan Dela Cruz">
-                </div>
-                <div>
-                    <label for="modal-department" class="block text-sm font-medium text-gray-700">Department</label>
-                    <input type="text" id="modal-department" class="mt-1 block w-full border-gray-300 rounded-lg shadow-sm p-3 focus:border-red-500 focus:ring focus:ring-red-200 focus:ring-opacity-50" placeholder="IT/Admin/Production">
-                </div>
-            </div>
-
-            <button onclick="startSpinFromModal()" class="mt-6 w-full inline-flex justify-center rounded-lg border border-transparent shadow-sm px-6 py-3 bg-red-600 text-lg font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition duration-150">
-                Spin the Wheel!
-            </button>
-        </div>
-    </div>
     <div id="winner-modal" class="hidden fixed inset-0 bg-gray-900 bg-opacity-75 z-[60] flex items-center justify-center transition-opacity duration-300" aria-modal="true" role="dialog">
         <div class="bg-white rounded-2xl shadow-2xl p-8 max-w-lg w-full text-center transform transition-all duration-300 scale-100">
             <svg class="mx-auto h-16 w-16 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -277,7 +278,7 @@
             <h3 class="mt-4 text-3xl font-extrabold text-gray-900">CONGRATULATIONS!</h3>
             <p class="mt-2 text-3xl font-black text-red-600" id="modal-winner-name">WINNER NAME</p>
             <p class="mt-2 text-xl font-semibold text-gray-700">Has won the amazing prize:</p>
-            <p class="text-4xl font-extrabold text-blue-600 mt-2" id="modal-prize-name">PRIZE NAME</p>
+            <p class="text-4xl font-extrabold text-blue-600 mt-2" id="modal-prize-name">CURRENT PRIZE NAME</p>
             <p class="text-xl font-bold text-gray-500 mt-2" id="modal-winner-dept">DEPARTMENT</p>
             
             <p id="modal-countdown-display" class="mt-6 text-lg font-bold text-gray-600 hidden">
@@ -294,7 +295,7 @@
             
             <div class="space-y-4">
                 <div>
-                    <label class="block text-sm font-medium text-gray-700">Winner (Spun By)</label>
+                    <label class="block text-sm font-medium text-gray-700">Winner Name</label>
                     <input type="text" id="history-name-input" class="mt-1 block w-full border-gray-300 rounded-lg p-2" disabled>
                 </div>
                 <div>
@@ -336,34 +337,37 @@
         const mainCtx = mainCanvas.getContext('2d');
         const fullscreenCanvas = document.getElementById('fullscreen-canvas');
         const fullscreenCtx = fullscreenCanvas.getContext('2d');
+        const preSpinCountdownDisplay = document.getElementById('pre-spin-countdown-display'); // NEW
+        const fullscreenPreSpinCountdownDisplay = document.getElementById('fullscreen-pre-spin-countdown-display'); // NEW
         
-        // NEW: Sidebar element reference
         const settingsSidebar = document.getElementById('settings-sidebar');
         const backdrop = document.getElementById('backdrop');
 
 
         // CONSTANT: Delay for automatic prize removal
         const REMOVAL_DELAY_SECONDS = 5;
+        const PRE_SPIN_DELAY_SECONDS = 5; // NEW: 5 seconds countdown before spin
 
         let isSpinning = false;
         let rotation = 0; 
         let isFullscreen = false;
         let countdownInterval = null;
-        let lastWinner = { prize: null, index: -1 };
+        let preSpinInterval = null; // NEW
+        let lastWinner = { prize: null, index: -1, fullname: null, department: null }; // UPDATED structure
         let timer = 0; // Countdown timer value
         
         // --- State Management ---
         let state = {
-            prizes: [],
+            prizes: [], // Now contains participant names, but kept the name 'prizes' for storage consistency
             resultsHistory: [], 
             spinDuration: 3, 
+            majorPrizes: ["Major Cash Prize 25k", "Second Prize - 10k", "Third Prize - 5k"], // NEW: Prize list
         };
 
         let currentResultId = null; // Used for editing/viewing history
-        let currentSpinner = { fullname: null, department: null }; // For storing who spun
 
-        // --- IndexedDB Setup (No change) ---
-        const DB_NAME = 'RaffleDB';
+        // --- IndexedDB Setup (Modified DB Name) ---
+        const DB_NAME = 'MajorRaffleDB'; // **<-- MODIFIED HERE**
         const DB_VERSION = 1;
         const STORE_NAME = 'RaffleStore';
 
@@ -398,6 +402,7 @@
                 store.put(state.prizes, 'prizes');
                 store.put(state.resultsHistory, 'history');
                 store.put({ spinDuration: state.spinDuration }, 'config');
+                store.put(state.majorPrizes, 'majorPrizes'); // NEW: Save major prizes
 
                 await new Promise(resolve => { transaction.oncomplete = resolve; });
                 
@@ -416,10 +421,11 @@
                 const prizesRequest = store.get('prizes');
                 const historyRequest = store.get('history');
                 const configRequest = store.get('config');
+                const majorPrizesRequest = store.get('majorPrizes'); // NEW: Load major prizes
 
                 return new Promise((resolve) => {
                     transaction.oncomplete = () => {
-                        // FIX: Ensure prizes is always an array of strings
+                        // FIX: Ensure prizes (now participants) is always an array of strings
                         if (prizesRequest.result && Array.isArray(prizesRequest.result)) {
                             state.prizes = prizesRequest.result.map(p => p.toString().trim()).filter(p => p.length > 0);
                         } else {
@@ -431,12 +437,20 @@
                             state.resultsHistory.forEach(r => {
                                 // Default older entries to 'claimed: true' 
                                 if (typeof r.claimed === 'undefined') r.claimed = true; 
-                                if (typeof r.removed === 'undefined') r.removed = r.claimed; // Ensure 'removed' field exists
+                                if (typeof r.removed === 'undefined') r.removed = r.claimed; 
                             });
                         }
                         if (configRequest.result) {
                             state.spinDuration = parseInt(configRequest.result.spinDuration) || 3; 
                         }
+                        
+                        // NEW: Load major prizes
+                        if (majorPrizesRequest.result && Array.isArray(majorPrizesRequest.result)) {
+                            state.majorPrizes = majorPrizesRequest.result.map(p => p.toString().trim()).filter(p => p.length > 0);
+                        } else if (!state.majorPrizes) {
+                            state.majorPrizes = []; // Fallback to empty if initial default was somehow lost
+                        }
+
                         resolve();
                     };
                     transaction.onerror = (e) => {
@@ -453,7 +467,6 @@
 
         // --- UI and Settings Functions ---
 
-        // NEW: Sidebar toggle functions
         window.toggleSettingsSidebar = () => {
             if (settingsSidebar.classList.contains('translate-x-full')) {
                 openSettingsSidebar();
@@ -463,7 +476,7 @@
         };
 
         window.openSettingsSidebar = () => {
-            updateSettingsUI(); // Ensure UI elements reflect current state when opening
+            updateSettingsUI(); 
             settingsSidebar.classList.remove('translate-x-full');
             backdrop.classList.remove('hidden');
             showMessage("Raffle Setup is ready.");
@@ -472,23 +485,22 @@
         window.closeSettingsSidebar = () => {
             settingsSidebar.classList.add('translate-x-full');
             backdrop.classList.add('hidden');
-            showMessage("Click the wheel to spin and pick a prize!");
+            // UPDATED MESSAGE
+            showMessage("Click the wheel to select a winner!"); 
         };
 
 
-        // UPDATED LOGIC: Calculate claimed and unclaimed counts
         const updateStatsDisplay = () => {
             const claimedCount = state.resultsHistory.filter(r => r.claimed).length;
             const unclaimedCount = state.resultsHistory.filter(r => !r.claimed).length;
 
-            // Updated to reflect the available prizes *still on the wheel*
+            // UPDATED: Active participants count
             document.getElementById('active-participants-count').textContent = state.prizes.length;
             document.getElementById('total-spins-count').textContent = state.resultsHistory.length;
             document.getElementById('claimed-prizes-count').textContent = claimedCount;
             document.getElementById('unclaimed-prizes-count').textContent = unclaimedCount;
         };
 
-        // UPDATED: ShowTab now handles only 'wheel' and 'results'
         window.showTab = (tabName) => {
             const tabs = ['wheel', 'results'];
             const buttonMap = {
@@ -496,43 +508,36 @@
                 'results': 'History'
             };
             
-            // 1. Synchronously HIDE ALL TABS AND UPDATE BUTTON STYLES
             tabs.forEach(tab => {
-                // HIDE all content immediately
                 document.getElementById(`tab-content-${tab}`).classList.add('hidden');
-                
-                // Update button styles for all buttons immediately
                 const tabButton = document.getElementById(`tab-${tab}`);
                 tabButton.classList.remove('bg-red-600', 'text-white');
                 tabButton.classList.add('bg-gray-200', 'text-gray-700');
             });
 
-            // Always close the sidebar when switching to ensure a clean view
             closeSettingsSidebar();
 
-            // 2. Synchronously SHOW THE SELECTED TAB AND UPDATE ITS BUTTON STYLE
             document.getElementById(`tab-content-${tabName}`).classList.remove('hidden');
             const selectedButton = document.getElementById(`tab-${tabName}`);
             selectedButton.classList.add('bg-red-600', 'text-white');
             selectedButton.classList.remove('bg-gray-200', 'text-gray-700');
 
-            // Show initial switching message immediately
             showMessage(`Switching to ${buttonMap[tabName]}...`); 
             
-            // 3. Use a delay only for the final, status-checking message
             setTimeout(() => { 
                 if (tabName === 'results') {
-                    updateStatsDisplay(); // Update stats when showing history
-                    renderResults(); // Re-render when showing history
+                    updateStatsDisplay(); 
+                    renderResults(); 
                     showMessage("Viewing Winner History.");
-                } else { // 'wheel' tab
-                    showMessage("Click the wheel to spin and pick a prize!");
+                } else { 
+                    // UPDATED MESSAGE
+                    showMessage("Click the wheel to select a winner!"); 
                 }
-            }, 300); // 300ms delay for the visual update
+            }, 300); 
         };
 
         const updatePrizeListUI = () => {
-             // FIX: Ensure UI input reflects the one-per-line format
+             // UPDATED: The text area now reflects PARTICIPANT names
              document.getElementById('names-input').value = state.prizes.join('\n');
              
              // --- RESET ROTATION VISUALS ON PRIZE UPDATE ---
@@ -552,42 +557,41 @@
 
         window.updatePrizes = async () => {
             const namesInput = document.getElementById('names-input').value;
+            // The logic here remains the same: split by line, trim, filter empty. 
+            // The names now contain Name - Dept (e.g., "Juan Dela Cruz - IT")
             state.prizes = namesInput.split('\n').map(n => n.trim()).filter(n => n.length > 0);
             
-            lastWinner = { prize: null, index: -1 }; 
+            lastWinner = { prize: null, index: -1, fullname: null, department: null }; 
 
             await saveState();
-            updatePrizeListUI(); // This now handles the rotation reset
-            // --- UPDATED MESSAGE FOR EXPLICIT CONFIRMATION ---
-            showMessage(`Prizes updated successfully! ${state.prizes.length} available.`);
-            // ---------------------------------------------------
+            updatePrizeListUI(); 
+            // UPDATED MESSAGE
+            showMessage(`Participant list updated successfully! ${state.prizes.length} available.`);
         };
         
-        // NEW FUNCTION: Shuffle Prizes
         window.shufflePrizes = async () => {
             if (state.prizes.length === 0) {
-                 showMessage("No prizes to shuffle.");
+                 showMessage("No participants to shuffle.");
                  return;
             }
             
-            // Fisher-Yates shuffle algorithm
             for (let i = state.prizes.length - 1; i > 0; i--) {
                 const j = Math.floor(Math.random() * (i + 1));
-                [state.prizes[i], state.prizes[j]] = [state.prizes[j], state.prizes[j]];
+                [state.prizes[i], state.prizes[j]] = [state.prizes[j], state.prizes[i]]; // FIX: correct shuffle syntax
             }
             
             await saveState();
             updatePrizeListUI();
-            showMessage(`Prizes shuffled!`);
+            showMessage(`Participant list shuffled!`);
         };
 
 
         window.clearNames = async () => {
-            if (confirm("Are you sure you want to clear ALL prize items?")) { 
+            if (confirm("Are you sure you want to clear ALL participant names?")) { 
                 state.prizes = [];
                 await saveState();
                 updatePrizeListUI();
-                showMessage("All prizes cleared.");
+                showMessage("All participants cleared.");
             }
         };
 
@@ -612,21 +616,35 @@
             showMessage(`Spin duration set to ${duration} seconds.`);
         };
         
-        // MODIFIED: updateSettingsUI now only populates the sidebar fields
+        // NEW FUNCTION
+        window.updateMajorPrizes = async () => {
+            const prizesInput = document.getElementById('major-prizes-input').value;
+            state.majorPrizes = prizesInput.split('\n').map(n => n.trim()).filter(n => n.length > 0);
+            
+            await saveState();
+            updateSettingsUI(); // To update the display text
+            showMessage(`Major Prize list updated successfully! ${state.majorPrizes.length} available.`);
+        };
+
         const updateSettingsUI = () => {
             document.getElementById('names-input').value = state.prizes.join('\n');
             document.getElementById('spin-duration-input').value = state.spinDuration;
+            
+            // NEW: Update major prizes textarea and next prize display
+            document.getElementById('major-prizes-input').value = state.majorPrizes.join('\n');
+            document.getElementById('next-major-prize-display').textContent = 
+                state.majorPrizes.length > 0 ? state.majorPrizes[0] : "No Prizes Left!";
         };
 
-        // --- Drawing and Spin Logic (No change to drawing) ---
+        // --- Drawing and Spin Logic ---
 
         const COLORS = ["#FF5733", "#33FF57", "#3357FF", "#FF33F5", "#33FFF5", "#FFC300"];
 
-        const drawWheel = (ctx, width, height) => {
-            const prizes = state.prizes;
-            const numSectors = prizes.length;
+                const drawWheel = (ctx, width, height) => {
+            const participants = state.prizes; // prizes is now participants
+            const numSectors = participants.length;
             const arc = 2 * Math.PI / numSectors;
-            const radius = Math.min(width, height) / 2 - (width === 800 ? 20 : 12); // Adjust radius based on canvas size
+            const radius = Math.min(width, height) / 2 - (width === 800 ? 20 : 12);
 
             ctx.clearRect(0, 0, width, height);
 
@@ -644,7 +662,7 @@
                 ctx.font = "bold 20px Inter";
                 ctx.textAlign = "center";
                 ctx.textBaseline = "middle";
-                ctx.fillText("Add Prizes in Setup Sidebar!", 0, 0);
+                ctx.fillText("Add Participants in Setup Sidebar!", 0, 0);
             } else {
                 for (let i = 0; i < numSectors; i++) {
                     const startAngle = i * arc;
@@ -658,31 +676,34 @@
                     ctx.lineTo(0, 0);
                     ctx.fill();
 
-                    // Draw Text (Prize Name)
+                    // Draw Text (Participant Name)
                     ctx.save();
                     ctx.rotate(startAngle + arc / 2);
                     ctx.textAlign = "right";
                     ctx.fillStyle = (colorIndex === 0 || colorIndex === 5) ? "#000" : "#fff"; 
-                    // Dynamic font size adjustment for many prizes
                     let fontSize = Math.min(16, Math.floor(400 / (numSectors * 1.5))); 
-                    if (width === 800) fontSize *= 2; // Scale font for fullscreen
+                    if (width === 800) fontSize *= 2; 
                     ctx.font = `bold ${fontSize}px Inter`;
                     
-                    // Limit text length to prevent overlap
-                    let prizeText = prizes[i].toUpperCase();
-                    if (prizeText.length > 15) {
-                        prizeText = prizeText.substring(0, 15) + '...';
+                    let participantText = participants[i].toUpperCase();
+                    // Split Name - Dept and only show the Name part on the wheel
+                    const parts = participantText.split('-');
+                    participantText = parts[0].trim(); 
+
+                    if (participantText.length > 15) {
+                        participantText = participantText.substring(0, 15) + '...';
                     }
 
-                    ctx.fillText(prizeText, radius * 0.9, 0); 
+                    ctx.fillText(participantText, radius * 0.9, 0); 
 
-                    // Draw separator line
-                    ctx.lineWidth = width === 800 ? 4 : 2; // Thicker lines for fullscreen
-                    ctx.strokeStyle = "#333";
-                    ctx.beginPath();
-                    ctx.moveTo(0, 0);
-                    ctx.lineTo(radius * Math.cos(startAngle), radius * Math.sin(startAngle));
-                    ctx.stroke();
+                    // --- START OF REMOVAL: Sector Separator Line ---
+                    // ctx.lineWidth = width === 800 ? 4 : 2; 
+                    // ctx.strokeStyle = "#333";
+                    // ctx.beginPath();
+                    // ctx.moveTo(0, 0);
+                    // ctx.lineTo(radius * Math.cos(startAngle), radius * Math.sin(startAngle));
+                    // ctx.stroke();
+                    // --- END OF REMOVAL: Sector Separator Line ---
 
                     ctx.restore();
                 }
@@ -697,61 +718,52 @@
             ctx.fill();
         };
         
-        const showParticipantModal = (isFullscreenSpin) => {
-            if (isSpinning || state.prizes.length === 0) {
-                 if (state.prizes.length === 0) {
-                    showMessage("Please add prizes using the Setup sidebar first!");
-                 }
+        // NEW FUNCTION: Start the 5-second countdown
+        window.startPreSpinCountdown = (isFullscreenSpin) => {
+            if (isSpinning) {
+                 return; // Prevent starting if a spin/countdown is already active
+            }
+            
+            if (state.prizes.length === 0) {
+                 showMessage("Please add participants using the Setup sidebar first!");
                  return;
             }
+
+            isSpinning = true; // Block further clicks immediately
+            let count = PRE_SPIN_DELAY_SECONDS;
+
+            const countdownElement = isFullscreenSpin ? fullscreenPreSpinCountdownDisplay : preSpinCountdownDisplay;
             
-            document.getElementById('participant-modal').dataset.isFullscreenSpin = isFullscreenSpin;
-            
-            document.getElementById('participant-modal').classList.remove('hidden');
-            document.getElementById('modal-fullname').focus();
-        };
-        
-        // START: NEW FUNCTION TO CLOSE PARTICIPANT MODAL
-        window.closeParticipantModal = () => {
-            document.getElementById('participant-modal').classList.add('hidden');
-            document.getElementById('modal-fullname').value = '';
-            document.getElementById('modal-department').value = '';
-            showMessage("Click the wheel to spin and pick a prize!");
-        };
-        // END: NEW FUNCTION TO CLOSE PARTICIPANT MODAL
+            // Hide the wheel text temporarily to show the countdown
+            document.getElementById('message-box').classList.add('hidden');
+            countdownElement.classList.remove('hidden');
 
+            const updateCountdown = () => {
+                countdownElement.textContent = count;
+                if (count <= 0) {
+                    clearInterval(preSpinInterval);
+                    countdownElement.classList.add('hidden');
+                    document.getElementById('message-box').classList.remove('hidden');
+                    spinWheel(isFullscreenSpin); 
+                }
+                count--;
+            };
 
-        window.startSpinFromModal = () => {
-            const fullname = document.getElementById('modal-fullname').value.trim();
-            const department = document.getElementById('modal-department').value.trim();
-            const isFullscreenSpin = document.getElementById('participant-modal').dataset.isFullscreenSpin === 'true';
-
-            if (!fullname || !department) {
-                // Using a message instead of alert()
-                showMessage("Please enter your Full Name and Department to spin.");
-                setTimeout(() => showMessage("Click the wheel to spin and pick a prize!"), 3000);
-                return;
-            }
-
-            // NEW: Check for duplicated name entry
-            const existingEntry = state.resultsHistory.find(r => r.name.toLowerCase() === fullname.toLowerCase());
-            if (existingEntry) {
-                alert("Duplicated Name Entry: This name has already spun the wheel. Please use a different name.");
-                return; // Prevent spinning
-            }
-
-            currentSpinner = { fullname, department };
-            document.getElementById('participant-modal').classList.add('hidden');
-            
-            spinWheel(isFullscreenSpin);
+            // Start immediately without delay
+            updateCountdown(); 
+            preSpinInterval = setInterval(updateCountdown, 1000);
+            showMessage(`Spin starting in ${PRE_SPIN_DELAY_SECONDS} seconds...`);
         };
 
 
         const spinWheel = (isFullscreenSpin) => {
-            if (isSpinning || state.prizes.length === 0) return;
-
-            isSpinning = true;
-            showMessage(`Spinning for ${currentSpinner.fullname}...`);
+            // FIX: Removed the 'if (isSpinning)' check here. It is now handled in startPreSpinCountdown.
+            if (state.prizes.length === 0) {
+                 isSpinning = false;
+                 return;
+            }
+            
+            showMessage(`Spinning for the winner...`);
 
             const actualDuration = state.spinDuration * 1000;
             const canvasToSpin = isFullscreenSpin ? fullscreenCanvas : mainCanvas;
@@ -761,18 +773,9 @@
             const targetIndex = Math.floor(Math.random() * numSectors);
 
             // Calculate the target rotation to land the *center* of the target sector at the *pointer* (12 o'clock).
-            // A sector at index 'i' starts at i * arc (relative to 3 o'clock).
-            // Its center is at (i * arc) + (arc / 2).
-            // To bring this center to the 12 o'clock position (which is 3 * pi/2 or -pi/2 on canvas), 
-            // we need to rotate by an amount that moves the center angle to the -pi/2 position.
-            // Target angle (where the center of the winning sector is)
             const targetAngle = (targetIndex * arc) + (arc / 2);
-            
-            // The canvas pointer is at the 12 o'clock position (which is 3 * PI/2 or -PI/2 in canvas coordinates).
-            // The required rotation is to move the targetAngle to 3 * PI / 2.
-            const requiredRotation = (3 * Math.PI / 2) - targetAngle; // This is the final fractional rotation needed.
+            const requiredRotation = (3 * Math.PI / 2) - targetAngle; 
 
-            // Ensure a good number of full rotations (5 to 10)
             const fullRotations = (Math.floor(Math.random() * 6) + 5) * 2 * Math.PI; 
             const finalRotation = requiredRotation + fullRotations;
             
@@ -780,51 +783,69 @@
             canvasToSpin.style.transition = `transform ${actualDuration / 1000}s cubic-bezier(0.25, 0.1, 0.0, 1.0)`;
             canvasToSpin.style.transform = `rotate(${finalRotation}rad)`;
             
-            // Store the final rotation value for accurate redraw after spin
             rotation = finalRotation % (2 * Math.PI); 
 
             setTimeout(() => {
-                isSpinning = false;
+                isSpinning = false; // Reset the spin flag after the animation completes
                 
-                // Immediately stop the animation transition property
                 canvasToSpin.style.transition = 'none';
                 
-                // --- FIX: Recalculate the winning index from the final rotation angle
+                // --- Winning Index Recalculation (Kept for robustness) ---
                 let normalizedRotation = finalRotation % (2 * Math.PI);
                 if (normalizedRotation < 0) normalizedRotation += 2 * Math.PI;
-                
-                // Effective Angle (angle from the 3 o'clock mark where the pointer landed)
-                // We add PI/2 to shift the reference from the canvas 0 (3 o'clock) to the pointer (12 o'clock)
-                // and subtract the actual rotation.
                 let effectiveAngle = (2 * Math.PI) + (3 * Math.PI / 2) - normalizedRotation;
                 effectiveAngle %= (2 * Math.PI);
-                
-                // Determine the sector index based on the effective angle
-                // The sectors are drawn starting from 3 o'clock (0 index) and increase clockwise.
                 const winningIndex = Math.floor(effectiveAngle / arc);
+                // --- END Recalculation ---
                 
-                // The targetIndex we calculated initially should match the winningIndex now.
-                // We use the winningIndex from the final angle calculation for robustness.
-                const prizeWon = state.prizes[winningIndex];
-                
-                // END FIX ---
+                const participantWon = state.prizes[winningIndex];
 
-                if (prizeWon) {
-                    showMessage(`Winner: ${currentSpinner.fullname} won ${prizeWon}!`);
-                    lastWinner = { prize: prizeWon, index: winningIndex };
-                    showWinnerAnnouncement(currentSpinner.fullname, currentSpinner.department, prizeWon, winningIndex);
+                if (participantWon) {
+                    // Split name and department
+                    let [fullname, department] = participantWon.split('-').map(s => s.trim());
+                    if (!department) department = 'N/A';
+                    
+                    // NEW: Prevent duplicate winners
+                    const existingEntry = state.resultsHistory.find(r => r.name.toLowerCase() === fullname.toLowerCase());
+                    if (existingEntry && existingEntry.removed) { // Only reroll if the winner has already been removed from the wheel (claimed prize)
+                        alert(`Winner already drawn and prize claimed! Rerunning the spin automatically. (The system will ensure the duplicate name is removed for the next spin.)`);
+                        // Temporarily remove the duplicate from the list for the next spin only
+                        state.prizes.splice(winningIndex, 1);
+                        drawWheel(mainCtx, mainCanvas.width, mainCanvas.height);
+                        drawWheel(fullscreenCtx, fullscreenCanvas.width, fullscreenCanvas.height);
+                        // Rerun the spin
+                        isSpinning = false; // Must set to false to allow new spin
+                        return startPreSpinCountdown(isFullscreenSpin);
+                    }
+
+
+                    // Get the current Major Prize from the state list
+                    const majorPrize = state.majorPrizes.length > 0 ? state.majorPrizes[0] : 'Undetermined Major Prize (No Prizes Left)';
+                    
+                    showMessage(`Winner: ${fullname} has been selected!`);
+                    // UPDATED: Store the full winner details
+                    lastWinner = { 
+                        prize: participantWon, // The entry from the wheel: Name - Dept
+                        index: winningIndex, 
+                        fullname: fullname,
+                        department: department 
+                    };
+                    
+                    // Use the current major prize name in the announcement
+                    showWinnerAnnouncement(fullname, department, majorPrize, winningIndex);
                     launchConfetti(); 
                 } else {
-                    showMessage("Spin finished, but could not determine prize.");
+                    showMessage("Spin finished, but could not determine winner.");
                 }
 
             }, actualDuration + 50); 
         };
 
 
-        // --- Winner Pop-up and Countdown Logic (No change) ---
+        // --- Winner Pop-up and Countdown Logic ---
 
         function launchConfetti() {
+            // ... (Confetti logic remains the same)
             const count = 200;
             const defaults = { origin: { y: 0.7 } };
             function fire(particleRatio, opts) {
@@ -842,9 +863,12 @@
         const startCountdown = () => {
             timer = REMOVAL_DELAY_SECONDS;
             const timerDisplay = document.getElementById('countdown-timer');
+            // UPDATED BUTTON TEXT
+            document.getElementById('remove-winner-btn').textContent = "Remove Participant Now"; 
             document.getElementById('remove-winner-btn').classList.remove('hidden'); 
             timerDisplay.classList.remove('hidden'); 
-            timerDisplay.textContent = `Prize auto-removes in ${timer} seconds...`;
+            // UPDATED MESSAGE
+            timerDisplay.textContent = `Participant auto-removes in ${timer} seconds...`;
             
             document.getElementById('modal-countdown-display').textContent = timerDisplay.textContent;
             document.getElementById('modal-countdown-display').classList.remove('hidden');
@@ -853,11 +877,11 @@
             countdownInterval = setInterval(() => {
                 timer--;
                 if (timer > 0) {
-                    timerDisplay.textContent = `Prize auto-removes in ${timer} seconds...`;
+                    timerDisplay.textContent = `Participant auto-removes in ${timer} seconds...`;
                     document.getElementById('modal-countdown-display').textContent = timerDisplay.textContent; 
                 } else {
                     clearInterval(countdownInterval);
-                    timerDisplay.textContent = `Prize removed to the Wheel!`;
+                    timerDisplay.textContent = `Participant removed from the Wheel!`;
                     document.getElementById('modal-countdown-display').textContent = timerDisplay.textContent; 
                     
                     // Automatically mark prize as TAKEN/REMOVED if still on the wheel
@@ -869,18 +893,17 @@
         };
 
 
-        // Function to manually or automatically remove the prize
-        window.removeWinnerFromWheel = async (prizeName, winningIndex, isAutoRemoval = false) => {
-            // Check if the prize is still at the specified index
-            if (winningIndex >= 0 && winningIndex < state.prizes.length && state.prizes[winningIndex] === prizeName) {
-                const removedPrize = state.prizes.splice(winningIndex, 1)[0];
+        // Function to manually or automatically remove the participant
+        window.removeWinnerFromWheel = async (participantName, winningIndex, isAutoRemoval = false) => {
+            // participantName is the full entry (e.g., "Juan Dela Cruz - IT")
+            if (winningIndex >= 0 && winningIndex < state.prizes.length && state.prizes[winningIndex] === participantName) {
+                const removedParticipant = state.prizes.splice(winningIndex, 1)[0];
                 
-                // Find the *latest* history entry for this prize that hasn't been removed yet
-                const latestHistoryEntry = state.resultsHistory.find(r => r.prize === removedPrize && !r.removed && r.name === currentSpinner.fullname);
+                // Find the *latest* history entry for this participant that hasn't been removed yet
+                const latestHistoryEntry = state.resultsHistory.find(r => r.name === lastWinner.fullname && !r.removed);
                 if (latestHistoryEntry) {
                     latestHistoryEntry.removed = true;
-                    // Auto-removal implies it was taken off the wheel, but claim status remains untouched (default: false)
-                    // Manual removal implies it was accepted/claimed.
+                    // Manual removal implies the prize was accepted/claimed and the participant should be removed
                     if (!isAutoRemoval) {
                          latestHistoryEntry.claimed = true; 
                     }
@@ -888,18 +911,18 @@
                 
                 await saveState(); 
                 updatePrizeListUI();
-                showMessage(`Prize "${prizeName}" has been removed (TAKEN).`);
+                // UPDATED MESSAGE
+                showMessage(`Participant "${lastWinner.fullname}" has been removed (TAKEN).`);
             } else if (!isAutoRemoval) {
-                 showMessage(`Prize "${prizeName}" was already removed or list was updated.`);
+                 showMessage(`Participant "${lastWinner.fullname}" was already removed or list was updated.`);
             }
 
-            // Only close indicators if manually clicked. Auto-removal leaves the modal open
             if (!isAutoRemoval) {
                 document.getElementById('remove-winner-btn').classList.add('hidden');
                 document.getElementById('countdown-timer').classList.add('hidden');
                 clearInterval(countdownInterval);
                 
-                lastWinner = { prize: null, index: -1 }; 
+                lastWinner = { prize: null, index: -1, fullname: null, department: null }; 
             }
         }
 
@@ -911,25 +934,22 @@
 
             // Display modal
             document.getElementById('modal-winner-name').textContent = winnerName;
-            document.getElementById('modal-prize-name').textContent = prizeWon;
+            document.getElementById('modal-prize-name').textContent = prizeWon; // Display the major prize name
             document.getElementById('modal-winner-dept').textContent = `Department: ${winnerDept}`;
             document.getElementById('winner-modal').classList.remove('hidden');
             
             // Set the manual removal button action
             const removeButton = document.getElementById('remove-winner-btn');
             removeButton.onclick = () => {
-                // Manually remove and force close the modal
-                removeWinnerFromWheel(prizeWon, winningIndex, false); 
+                // Manually remove and force close the modal. Use the full participant entry from the wheel
+                removeWinnerFromWheel(state.prizes[winningIndex] || lastWinner.prize, winningIndex, false); 
                 window.closeWinnerModalAndCleanUp(false); 
             };
 
             startCountdown();
         }
 
-        // forceClaimAndRemove - if true, it means the user closed the winner modal manually, 
-        // confirming they accept the prize, which marks it as claimed and removed/taken.
-        // UPDATED: Implemented instant refresh of roleta visuals
-        window.closeWinnerModalAndCleanUp = (forceClaimAndRemove) => {
+        window.closeWinnerModalAndCleanUp = async (forceClaimAndRemove) => {
             document.getElementById('winner-modal').classList.add('hidden');
             document.getElementById('remove-winner-btn').classList.add('hidden');
             document.getElementById('countdown-timer').classList.add('hidden'); 
@@ -939,51 +959,63 @@
             // --- INSTANT RESET WHEEL VISUALS ---
             rotation = 0;
             
-            // Remove any existing transition property instantly
             mainCanvas.style.transition = 'none'; 
             fullscreenCanvas.style.transition = 'none';
             
-            // Apply the reset rotation (instantaneous visual refresh)
             mainCanvas.style.transform = 'rotate(0deg)';
             fullscreenCanvas.style.transform = 'rotate(0deg)';
             
-            // Redraw to ensure perfect alignment after rotation reset
             drawWheel(mainCtx, mainCanvas.width, mainCanvas.height);
             drawWheel(fullscreenCtx, fullscreenCanvas.width, fullscreenCanvas.height);
 
-            // Re-apply the no-transition setting for next spin setup
             mainCanvas.style.transition = 'transform 0s ease-out'; 
             fullscreenCanvas.style.transition = 'transform 0s ease-out';
             // ----------------------------------------
             
             if (forceClaimAndRemove && lastWinner.prize) {
                 // Find the latest history entry and ensure it's marked as claimed
-                const latestHistoryEntry = state.resultsHistory.find(r => r.prize === lastWinner.prize && r.name === currentSpinner.fullname);
+                const latestHistoryEntry = state.resultsHistory.find(r => r.name === lastWinner.fullname);
                 
                 if (latestHistoryEntry && !latestHistoryEntry.claimed) {
                     // Mark as claimed in history
                     latestHistoryEntry.claimed = true;
                     
-                    // If the prize is STILL on the wheel, remove it and mark history as removed/taken
+                    // If the participant is STILL on the wheel, remove them and mark history as removed/taken
                     if (lastWinner.index >= 0 && lastWinner.index < state.prizes.length && state.prizes[lastWinner.index] === lastWinner.prize) {
                          latestHistoryEntry.removed = true;
                          state.prizes.splice(lastWinner.index, 1);
                          updatePrizeListUI();
-                         showMessage(`Prize "${lastWinner.prize}" claimed and removed.`);
+                         showMessage(`Prize for ${lastWinner.fullname} claimed and participant removed.`);
+                    } else if (!latestHistoryEntry.removed) {
+                        // If participant was already removed (e.g., by auto-removal) but we are now forceClaiming
+                        latestHistoryEntry.removed = true;
+                        saveState(); // Save the final claimed status
+                        renderResults();
+                        showMessage(`Prize for ${lastWinner.fullname} claimed.`);
                     }
                     
-                    saveState(); 
+                    // NEW LOGIC: Remove the awarded prize from the majorPrizes list
+                    // This uses the prize name recorded in the history entry (latestHistoryEntry.prize)
+                    if (latestHistoryEntry && latestHistoryEntry.prize !== 'Undetermined Major Prize (No Prizes Left)' && state.majorPrizes.length > 0) {
+                        // Check if the recorded prize matches the next prize in the sequence (the one just awarded)
+                        if(latestHistoryEntry.prize.trim() === state.majorPrizes[0].trim()) {
+                            state.majorPrizes.shift(); // Remove the first (awarded) prize
+                            await saveState(); 
+                            updateSettingsUI(); // Update the sidebar display
+                            showMessage(`Next major prize set to: ${state.majorPrizes.length > 0 ? state.majorPrizes[0] : 'None'}.`);
+                        }
+                    }
+
+                    await saveState(); 
                     renderResults();
                 }
             }
             
-            lastWinner = { prize: null, index: -1 }; 
-            currentSpinner = { fullname: null, department: null };
+            lastWinner = { prize: null, index: -1, fullname: null, department: null }; 
 
-            // ADDED: Delay and pop message after cleanup
             showMessage("Preparing for the next spin...");
             setTimeout(() => {
-                 showMessage("Click the wheel to spin and pick a prize!");
+                 showMessage("Click the wheel to select a winner!");
             }, 500); 
         };
 
@@ -992,13 +1024,13 @@
         }
 
 
-        // --- Results History CRUD Logic (No change) ---
+        // --- Results History CRUD Logic ---
 
         function generateUniqueId() {
             return Date.now().toString(36) + Math.random().toString(36).substring(2, 5);
         }
 
-        // Add result with claimed defaulted to FALSE
+        // Add result: name, department, prize (this is now the major prize), date, winningIndex
         async function addResult(name, department, prize, date, winningIndex) {
             const dateFormatted = date.toLocaleDateString('en-US', {
                 year: 'numeric', month: 'short', day: 'numeric',
@@ -1007,9 +1039,9 @@
 
             const newResult = {
                 id: generateUniqueId(),
-                name: name,
+                name: name, // Winner Name
                 department: department, 
-                prize: prize,
+                prize: prize, // The Major Prize Won
                 date: dateFormatted,
                 timestamp: date.getTime(),
                 removed: false, 
@@ -1028,11 +1060,9 @@
                  const currentResult = state.resultsHistory[index];
                  currentResult.claimed = !currentResult.claimed; 
                  
-                 // If marked as claimed, also mark as removed/taken from the wheel (in history only)
                  if (currentResult.claimed) {
                       currentResult.removed = true; 
                  } else {
-                     // If it's unclaimed, ensure it's not marked as removed/taken
                       currentResult.removed = false;
                  }
                  
@@ -1041,7 +1071,6 @@
              }
         };
 
-        // NEW FUNCTION: Filters results based on the search input
         window.filterResults = () => {
              const searchTerm = document.getElementById('history-search-input').value.toLowerCase().trim();
              renderResults(searchTerm);
@@ -1051,30 +1080,31 @@
             const resultsBody = document.getElementById('results-body');
             resultsBody.innerHTML = ''; 
             
-            // Sort by timestamp descending
             const sortedHistory = [...state.resultsHistory].sort((a, b) => b.timestamp - a.timestamp);
             
-            // Apply filter
             const filteredHistory = sortedHistory.filter(result => {
                 if (searchTerm === '') return true; 
                 
-                const searchString = `${result.name.toLowerCase()} ${result.prize.toLowerCase()} ${result.department.toLowerCase()}`;
+                // CHANGED: Search does not include prize now
+                const searchString = `${result.name.toLowerCase()} ${result.department.toLowerCase()}`;
                 return searchString.includes(searchTerm);
             });
 
 
             if (filteredHistory.length === 0) {
-                resultsBody.innerHTML = '<tr><td colspan="7" class="py-4 text-center text-gray-500">No matching prizes claimed yet.</td></tr>';
+                resultsBody.innerHTML = '<tr><td colspan="7" class="py-4 text-center text-gray-500">No matching winners picked yet.</td></tr>';
                 return;
             }
             
             filteredHistory.forEach((result, index) => {
                 const row = resultsBody.insertRow();
                 let bgColor = '';
-                if (result.removed && result.claimed) {
-                    bgColor = 'bg-green-50'; // Claimed and taken off the list (greenish tint)
+                             // The 'removed' status for history is whether the participant has been taken off the wheel, 
+                // which should always happen after they win, but the field exists for older data.
+                if (result.claimed) {
+                    bgColor = 'bg-green-50'; 
                 } else if (!result.claimed) {
-                    bgColor = 'bg-yellow-100'; // Unclaimed (yellow tint)
+                    bgColor = 'bg-yellow-100'; 
                 } else {
                     bgColor = (index % 2 === 0 ? 'bg-white' : 'bg-gray-50');
                 }
@@ -1083,19 +1113,18 @@
                 // # Column 
                 let cell = row.insertCell();
                 cell.className = 'px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-900';
-                // Use the index of the original *sorted* history array for the correct count
                 const originalIndex = state.resultsHistory.findIndex(r => r.id === result.id);
                 cell.textContent = state.resultsHistory.length - originalIndex; 
 
-                // Name Column
+                // Name Column (Winner Name)
                 cell = row.insertCell();
                 cell.className = 'px-4 py-3 whitespace-nowrap text-sm text-gray-500 font-bold';
                 cell.textContent = result.name;
 
-                // Prize Column (with removed indicator)
+                // Prize Won Column (Corrected label)
                 cell = row.insertCell();
                 cell.className = 'px-4 py-3 whitespace-nowrap text-sm text-gray-700';
-                cell.innerHTML = `${result.prize} ${result.removed ? '<span class="text-red-500 font-semibold">(TAKEN)</span>' : ''}`;
+                cell.innerHTML = `${result.prize}`; 
 
                 // Department Column
                 cell = row.insertCell();
@@ -1107,18 +1136,17 @@
                 cell.className = 'px-4 py-3 whitespace-nowrap text-sm text-gray-500';
                 cell.textContent = result.date;
 
-                // Claim Status Column
+                // Claimed? Column 
                 cell = row.insertCell();
                 cell.className = 'px-4 py-3 whitespace-nowrap text-sm font-bold';
                 cell.innerHTML = result.claimed 
                                 ? '<span class="text-green-600">YES</span>'
                                 : '<span class="text-red-600">NO</span>'; 
 
-                // Actions Column (UPDATED TO ICONS)
+                // Actions Column
                 cell = row.insertCell();
                 cell.className = 'px-4 py-3 whitespace-nowrap text-sm font-medium';
                 
-                // Toggle Icon: Checkmark (Claimed) or Plus/Circle (Unclaimed)
                 const toggleIcon = result.claimed 
                    ? `
                     <button onclick="toggleClaimed('${result.id}')" class="text-yellow-600 hover:text-yellow-900 transition p-1 rounded-md hover:bg-yellow-100 group" title="Mark as Unclaimed">
@@ -1160,7 +1188,6 @@
             document.getElementById('history-date-input').value = result.date;
             document.getElementById('history-claimed-status').value = result.claimed ? 'true' : 'false';
             
-            // Disable inputs and hide save button for viewing
             document.getElementById('history-name-input').disabled = true;
             document.getElementById('history-prize-input').disabled = true;
             document.getElementById('history-dept-input').disabled = true; 
@@ -1182,7 +1209,6 @@
             document.getElementById('history-date-input').value = result.date;
             document.getElementById('history-claimed-status').value = result.claimed ? 'true' : 'false'; 
             
-            // Enable inputs and show save button for editing
             document.getElementById('history-name-input').disabled = false;
             document.getElementById('history-prize-input').disabled = false;
             document.getElementById('history-dept-input').disabled = false; 
@@ -1211,7 +1237,6 @@
                 state.resultsHistory[index].department = newDept;
                 state.resultsHistory[index].claimed = newClaimed; 
                 
-                // If claimed, mark as removed/taken in history. If unclaimed, unmark removed/taken.
                 state.resultsHistory[index].removed = newClaimed;
                 
                 await saveState(); 
@@ -1241,9 +1266,11 @@
 
         window.exportData = () => {
              const data = {
-                 prizes: state.prizes,
+                 // prizes are now participants
+                 prizes: state.prizes, 
                  resultsHistory: state.resultsHistory,
-                 config: { spinDuration: state.spinDuration }
+                 config: { spinDuration: state.spinDuration },
+                 majorPrizes: state.majorPrizes, // NEW: Export major prizes
              };
              
              const dataStr = JSON.stringify(data, null, 2);
@@ -1258,7 +1285,7 @@
              showMessage("Data exported successfully!");
         };
 
-        // NEW FUNCTION: Export Prize Items
+        // NEW FUNCTION: Export Participant List
         window.exportPrizes = () => {
             const data = {
                 prizes: state.prizes
@@ -1267,21 +1294,21 @@
             const dataStr = JSON.stringify(data, null, 2);
             const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
             
-            const exportFileDefaultName = `prizes_${new Date().toISOString().slice(0, 10)}.json`;
+            const exportFileDefaultName = `participants_${new Date().toISOString().slice(0, 10)}.json`;
             
             const linkElement = document.createElement('a');
             linkElement.setAttribute('href', dataUri);
             linkElement.setAttribute('download', exportFileDefaultName);
             linkElement.click();
-            showMessage("Prize items exported successfully!");
+            showMessage("Participant list exported successfully!");
         };
 
-        // NEW FUNCTION: Import Prize Items (Sidebar)
+        // NEW FUNCTION: Import Participant List (Sidebar)
         window.importPrizesFromSidebar = (event) => {
             const file = event.target.files[0];
             if (!file) return;
 
-            if (!confirm("Are you sure you want to import prize items? This will overwrite the current list of prizes!")) {
+            if (!confirm("Are you sure you want to import participant names? This will overwrite the current list of participants!")) {
                  event.target.value = null; // Clear the input
                  return;
             }
@@ -1300,12 +1327,11 @@
                     await saveState();
                     updateSettingsUI();
                     updatePrizeListUI();
-                    showMessage(`Successfully imported ${state.prizes.length} prize items!`);
+                    showMessage(`Successfully imported ${state.prizes.length} participant names!`);
                     
                 } catch (error) {
-                    // Using a message instead of alert
-                    showMessage("Failed to import prize data: " + error.message);
-                    console.error("Prize Import Error:", error);
+                    showMessage("Failed to import participant data: " + error.message);
+                    console.error("Participant Import Error:", error);
                 } finally {
                     event.target.value = null; // Clear the input
                 }
@@ -1313,20 +1339,17 @@
             reader.readText(file);
         };
 
-        /**
-         * IMPROVED FUNCTION: Imports all state data (prizes, history, config) from a JSON file.
-         * NOW IMPLEMENTS MERGING/APPENDING OF PRIZES AND HISTORY.
-         */
         window.importData = (event) => {
-            const file = event.target.files[0];
+            // ... (Import logic remains similar, but data now treats prizes as participants)
+             const file = event.target.files[0];
             if (!file) {
                 event.target.value = null;
                 return;
             }
 
-            if (!confirm("WARNING: Are you sure you want to import ALL data? This will MERGE new Prizes and History with existing data, but will OVERWRITE the Spin Duration setting!")) {
+            if (!confirm("WARNING: Are you sure you want to import ALL data? This will MERGE new Participants and History with existing data, but will OVERWRITE the Spin Duration and MAJOR PRIZE list setting!")) {
                  event.target.value = null; // Clear the input
-                 return;
+                return;
             }
 
             const reader = new FileReader();
@@ -1335,7 +1358,6 @@
                 try {
                     importedData = JSON.parse(e.target.result);
                     
-                    // --- 1. Basic Structure Validation ---
                     if (!importedData || typeof importedData !== 'object' || 
                         !Array.isArray(importedData.prizes) || 
                         !Array.isArray(importedData.resultsHistory) || 
@@ -1344,33 +1366,28 @@
                         throw new Error("Invalid file structure. Missing required fields (prizes, resultsHistory, or config.spinDuration).");
                     }
                     
-                    // --- 2. Data Sanitization and Type Coercion ---
-                    
-                    // Prizes: Ensure array of non-empty strings
                     const newPrizes = (importedData.prizes || []).map(p => p?.toString()?.trim()).filter(p => p.length > 0);
                     
-                    // Spin Duration: Ensure valid integer between 1 and 10
                     const importedDuration = parseInt(importedData.config.spinDuration, 10);
                     const newSpinDuration = (isNaN(importedDuration) || importedDuration < 1 || importedDuration > 10) ? 3 : importedDuration;
                     
-                    // History: Ensure array, and apply default structure fixes for older data
+                    // NEW: Import Major Prizes
+                    const newMajorPrizes = (importedData.majorPrizes || []).map(p => p?.toString()?.trim()).filter(p => p.length > 0);
+                    state.majorPrizes = newMajorPrizes; // Overwrite major prizes to ensure sequence integrity
+
+
                     const newResultsHistory = importedData.resultsHistory || [];
                     newResultsHistory.forEach(r => {
-                        // Ensure required fields exist in history entries
                         if (typeof r.claimed === 'undefined') r.claimed = true; 
                         if (typeof r.removed === 'undefined') r.removed = r.claimed;
-                        // Ensure timestamp exists for sorting, use current time if missing
                         if (typeof r.timestamp === 'undefined' || isNaN(r.timestamp)) r.timestamp = Date.now();
-                        // Ensure all core fields are strings
                         if (r.name) r.name = r.name.toString().trim();
                         if (r.prize) r.prize = r.prize.toString().trim();
                         if (r.department) r.department = r.department.toString().trim();
                         if (r.date) r.date = r.date.toString().trim();
                     });
 
-                    // --- 3. Apply New State by MERGING ---
-                    
-                    // Merge Prizes: Add only unique new prizes to the existing list
+                    // Merge Prizes: Add only unique new participants to the existing list
                     const currentPrizesSet = new Set(state.prizes);
                     const uniqueNewPrizes = newPrizes.filter(p => !currentPrizesSet.has(p));
                     state.prizes = state.prizes.concat(uniqueNewPrizes);
@@ -1379,16 +1396,13 @@
                     const existingHistoryIds = new Set(state.resultsHistory.map(r => r.id));
                     const uniqueNewHistory = newResultsHistory.filter(r => !existingHistoryIds.has(r.id));
                     
-                    // Prepend the new unique history entries for a 'newest first' look in the table
                     state.resultsHistory = uniqueNewHistory.concat(state.resultsHistory);
                     
                     // Overwrite Configuration
                     state.spinDuration = newSpinDuration;
 
-                    // Persist new state to IndexedDB
                     await saveState();
                     
-                    // --- 4. Update UI components ---
                     updateSettingsUI();
                     updatePrizeListUI(); 
                     renderResults(); 
@@ -1396,19 +1410,19 @@
                     const newPrizesCount = uniqueNewPrizes.length;
                     const newHistoryCount = uniqueNewHistory.length;
 
-                    showMessage(`Full data imported and merged successfully! Added ${newPrizesCount} unique prizes and ${newHistoryCount} history entries.`);
+                    showMessage(`Full data imported and merged successfully! Added ${newPrizesCount} unique participants and ${newHistoryCount} history entries.`);
                     
                 } catch (error) {
                     showMessage("Failed to import full data: " + error.message);
                     console.error("Full Data Import Error:", error);
                 } finally {
-                    event.target.value = null; // Always clear the input for next selection
+                    event.target.value = null; 
                 }
             };
             reader.readText(file);
         };
 
-        // --- Full Screen Management (No change) ---
+        // --- Full Screen Management ---
 
         window.toggleFullscreen = (show) => {
             const fsRoleta = document.getElementById('fullscreen-roleta');
@@ -1436,14 +1450,53 @@
 
             renderResults();
             updateStatsDisplay(); 
-            // Start on the 'wheel' tab
             showTab('wheel'); 
 
-            // Click the Roleta will show the participant modal first
-            mainCanvas.addEventListener('click', () => showParticipantModal(false));
-            fullscreenCanvas.addEventListener('click', () => showParticipantModal(true));
+            // CHANGED: Click the Roleta will start the countdown immediately
+            mainCanvas.addEventListener('click', () => startPreSpinCountdown(false));
+            fullscreenCanvas.addEventListener('click', () => startPreSpinCountdown(true));
         });
 
     </script>
+
+<script>
+        function protectSourceCode() {
+            document.addEventListener('contextmenu', function(e) {
+                e.preventDefault();
+            });
+
+            document.addEventListener('keydown', function(e) {
+                if (e.keyCode === 123 || 
+                    (e.ctrlKey && e.shiftKey && e.keyCode === 73) || 
+                    (e.ctrlKey && e.keyCode === 85) || 
+                    (e.ctrlKey && e.shiftKey && e.keyCode === 67) || 
+                    (e.ctrlKey && e.keyCode === 83) ||
+                    (e.ctrlKey && e.shiftKey && e.keyCode === 73) ||
+                    (e.ctrlKey && e.shiftKey && e.keyCode === 74)) {
+                    e.preventDefault();
+                    return false;
+                }
+            });
+
+            document.addEventListener('selectstart', function(e) {
+                e.preventDefault();
+            });
+
+            document.addEventListener('dragstart', function(e) {
+                e.preventDefault();
+            });
+
+            document.onselectstart = function() {
+                return false;
+            };
+
+            document.oncontextmenu = function() {
+                return false;
+            };
+        }
+
+        window.addEventListener('load', protectSourceCode);
+    </script>
+
 </body>
 </html>
