@@ -46,7 +46,7 @@
         /* The ARROW POINTER */
         .pointer {
             position: absolute;
-            top: calc(0px - var(--wheel-border-size)); /* Position above the border */
+            top: calc(15px - var(--wheel-border-size)); /* Position above the border */
             left: 50%;
             transform: translateX(-50%);
             width: 0;
@@ -80,7 +80,7 @@
         
         /* Pointer in fullscreen mode */
         #fullscreen-roleta .pointer {
-            top: -25px; /* Adjust for larger fullscreen border */
+            top: 0px; /* Adjust for larger fullscreen border */
         }
 
         /* Custom scrollbar for lists */
@@ -1467,6 +1467,7 @@
         });
 
     </script>
+
 <script>
         function protectSourceCode() {
             document.addEventListener('contextmenu', function(e) {
