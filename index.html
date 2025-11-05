@@ -46,7 +46,7 @@
         /* The ARROW POINTER */
         .pointer {
             position: absolute;
-            top: calc(15px - var(--wheel-border-size)); /* Position above the border */
+            top: calc(0px - var(--wheel-border-size)); /* Position above the border */
             left: 50%;
             transform: translateX(-50%);
             width: 0;
@@ -80,7 +80,7 @@
         
         /* Pointer in fullscreen mode */
         #fullscreen-roleta .pointer {
-            top: 0px; /* Adjust for larger fullscreen border */
+            top: -25px; /* Adjust for larger fullscreen border */
         }
 
         /* Custom scrollbar for lists */
@@ -805,6 +805,19 @@
                 setParticipantMessage("Please enter a full name and select a department!", true);
                 return;
             }
+            
+            // --- START: Duplicate Name Check ---
+            const normalizedName = fullname.toLowerCase();
+            const isDuplicate = state.resultsHistory.some(result => 
+                result.name.toLowerCase() === normalizedName
+            );
+
+            if (isDuplicate) {
+                setParticipantMessage(`Error: "${fullname}" has already spun and won a prize.`, true);
+                return;
+            }
+            // --- END: Duplicate Name Check ---
+
 
             currentSpinner = { fullname, department };
             closeParticipantModal();
@@ -1467,7 +1480,6 @@
         });
 
     </script>
-
 <script>
         function protectSourceCode() {
             document.addEventListener('contextmenu', function(e) {
