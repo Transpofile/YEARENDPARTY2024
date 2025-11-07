@@ -46,14 +46,14 @@
         /* The ARROW POINTER */
         .pointer {
             position: absolute;
-            top: calc(225px - var(--wheel-border-size)); 
+            top: calc(410px - var(--wheel-border-size)); /* Corrected positioning */
             left: 50%;
             transform: translateX(-50%);
             width: 0;
             height: 0;
-            border-left: 15px solid transparent;
-            border-right: 15px solid transparent;
-            border-top: 30px solid #fc3244; /* Changed to Blue */
+            border-left: 20px solid transparent;  /* Increased size */
+            border-right: 20px solid transparent; /* Increased size */
+            border-bottom: 40px solid #000; /* Changed to Blue, Increased size */
             z-index: 10;
             filter: drop-shadow(0 0 5px rgba(0, 0, 0, 0.5));
         }
@@ -80,7 +80,11 @@
 
         /* Pointer in fullscreen mode */
         #fullscreen-roleta .pointer {
-            top: 10px; /* Adjust for larger fullscreen border */
+            top: 560px; /* Adjust for larger fullscreen border */
+            border-left: 30px solid transparent;
+            border-right: 30px solid transparent;
+            border-bottom: 60px solid #fff; /* Larger pointer for fullscreen */
+
         }
 
         /* Custom scrollbar for lists */
@@ -90,6 +94,27 @@
         .custom-scroll::-webkit-scrollbar-thumb {
             background: #9ca3af;
             border-radius: 3px;
+        }
+
+        /* --- Data Analysis Sidebar (Floating Bubble) --- */
+        #data-analysis-sidebar {
+            position: fixed;
+            top: 15%;
+            left: 10px;
+            width: 280px;
+            max-height: 70vh;
+            background: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            padding: 15px;
+            z-index: 20;
+            overflow-y: auto;
+            transition: all 0.3s ease;
+        }
+        @media (max-width: 1024px) {
+            #data-analysis-sidebar {
+                display: none; /* Hide on smaller screens to prioritize wheel */
+            }
         }
 
         /* CSS for PDF print optimization */
@@ -120,6 +145,25 @@
             <button onclick="toggleSettingsSidebar()" class="absolute top-0 right-0 p-3 bg-gray-200 hover:bg-gray-300 rounded-full text-gray-700 z-10 shadow-md transition duration-150">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37a1.724 1.724 0 002.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
             </button>
+            
+            <!-- Data Analysis Sidebar (Visible only on large screens) -->
+            <div id="data-analysis-sidebar">
+                <h3 class="text-lg font-bold text-gray-800 border-b pb-2 mb-3 flex justify-between items-center">
+                    Raffle Insights
+                    <button onclick="document.getElementById('analysis-date-input').value = getTodayDateString(); renderAnalysisSidebar();" class="text-xs text-blue-500 hover:text-blue-700 font-medium">Today</button>
+                </h3>
+                
+                <div class="mb-4">
+                    <label for="analysis-date-input" class="block text-xs font-medium text-gray-500 mb-1">Filter by Date</label>
+                    <input type="date" id="analysis-date-input" onchange="renderAnalysisSidebar()" 
+                           class="w-full border-gray-300 rounded-md p-2 text-sm">
+                </div>
+                
+                <div id="analysis-content">
+                    <!-- Content injected by JavaScript -->
+                    <div class="text-center py-4 text-gray-500">Loading data...</div>
+                </div>
+            </div>
 
             <div id="wheel-container" class="relative">
                 <div class="pointer"></div>
@@ -262,9 +306,9 @@
 
         <div class="pt-4 border-t">
             <label for="spin-duration-input" class="block text-sm font-medium text-gray-700 mb-2">Spin Duration (Seconds)</label>
-            <input type="number" id="spin-duration-input" min="1" max="10" value="3" onchange="updateSpinDuration(this.value)"
+            <input type="number" id="spin-duration-input" min="1" max="30" value="30" onchange="updateSpinDuration(this.value)"
                    class="w-full border-gray-300 rounded-lg shadow-sm focus:border-red-500 focus:ring focus:ring-red-200 focus:ring-opacity-50 p-3 text-lg font-bold">
-           <p class="text-xs text-gray-500 mt-2">The length of time the wheel will spin (1-10 seconds).</p>
+           <p class="text-xs text-gray-500 mt-2">The length of time the wheel will spin (1-30 seconds).</p>
         </div>
     </div>
 
@@ -348,7 +392,7 @@
                     <input type="text" id="history-name-input" class="mt-1 block w-full border-gray-300 rounded-lg p-2" disabled>
                 </div>
                 <div>
-			<label class="block text-sm font-medium text-gray-700">Prize Won</label>
+		<label class="block text-sm font-medium text-gray-700">Prize Won</label>
                     <input type="text" id="history-prize-input" class="mt-1 block w-full border-gray-300 rounded-lg p-2" disabled>
                 </div>
                 <div>
@@ -415,7 +459,7 @@
         const REMOVAL_DELAY_SECONDS = 5;
 
         let isSpinning = false;
-        let rotation = 0;
+        let rotation = 0; // Current resting rotation of the wheel
         let isFullscreen = false;
         let countdownInterval = null;
         let lastWinner = { prize: null, index: -1 };
@@ -425,8 +469,8 @@
         let state = {
             prizes: [],
             resultsHistory: [],
-            spinDuration: 3,
-            departments: ["Admin", "IT", "HR", "Accounting", "Production", "Sales"] // DEFAULT DEPARTMENT LIST
+            spinDuration: 30, // Default duration set to 30 seconds
+            departments: ["Admin", "IT", "HR", "Accounting", "Production", "Sales"] 
         };
 
         let currentResultId = null; // Used for editing/viewing history
@@ -473,6 +517,7 @@
                 await new Promise(resolve => { transaction.oncomplete = resolve; });
 
                 updateStatsDisplay();
+                renderAnalysisSidebar(); // Update analysis on save
             } catch (e) {
                 console.error("Failed to save state to IDB:", e);
             }
@@ -502,7 +547,7 @@
                         if (historyRequest.result) {
                             state.resultsHistory = historyRequest.result;
                             state.resultsHistory.forEach(r => {
-                                // UPDATED: Default claimed status to FALSE (Unclaimed)
+                                // IMPORTANT: Ensure default claimed status is FALSE (Unclaimed)
                                 if (typeof r.claimed === 'undefined') r.claimed = false;
                                 if (typeof r.removed === 'undefined') r.removed = r.claimed;
                                 if (typeof r.id === 'undefined') r.id = crypto.randomUUID();
@@ -510,7 +555,7 @@
                         }
                         // Config
                         if (configRequest.result) {
-                            state.spinDuration = parseInt(configRequest.result.spinDuration) || 3;
+                            state.spinDuration = parseInt(configRequest.result.spinDuration) || 30;
                         }
 
                         // Departments
@@ -527,6 +572,24 @@
         }
 
         // --- Helper Functions ---
+
+        // Helper to format date as YYYY-MM-DD for input[type=date]
+        const getTodayDateString = () => {
+            return new Date().toISOString().split('T')[0];
+        }
+
+        // Helper to check if two timestamps fall on the same date
+        const isSameDay = (timestamp1, dateString2) => {
+            if (!timestamp1 || !dateString2) return false;
+            
+            const date1 = new Date(timestamp1);
+            const date2 = new Date(dateString2);
+
+            return date1.getFullYear() === date2.getFullYear() &&
+                   date1.getMonth() === date2.getMonth() &&
+                   date1.getDate() === date2.getDate();
+        };
+
 
         const parseNameParts = (name) => {
             const parts = name.split(/\s+/).filter(p => p.length > 0);
@@ -558,24 +621,28 @@
             showMessage(`Roleta prizes updated! ${state.prizes.length} prizes loaded.`);
         };
 
+        // --- SHUFFLE FUNCTION ---
         window.shufflePrizes = async () => {
-            if (state.prizes.length === 0) {
-                showMessage("No prizes to shuffle!", true);
+            if (state.prizes.length < 2) {
+                showMessage("Need at least two prizes to shuffle!", true);
                 return;
             }
+            // Use Fisher-Yates shuffle algorithm
             for (let i = state.prizes.length - 1; i > 0; i--) {
                 const j = Math.floor(Math.random() * (i + 1));
                 [state.prizes[i], state.prizes[j]] = [state.prizes[j], state.prizes[i]];
             }
             await saveState();
+            // Reset wheel rotation and redraw both standard and fullscreen wheels
             updatePrizeListUI();
-            showMessage(`Prizes have been shuffled!`);
+            
+            showMessage(`🎉 Prizes successfully shuffled! The wheel order has been randomized.`, false);
         };
 
         window.shufflePrizesFromFullscreen = () => {
-            shufflePrizes();
-            toggleFullscreen(false); // Exit fullscreen after shuffling
+            shufflePrizes(); 
         };
+        // --- END SHUFFLE FUNCTION ---
 
         window.clearNames = async () => {
             if (!confirm("Are you sure you want to clear ALL prize items?")) return;
@@ -631,12 +698,13 @@
 
         window.updateSpinDuration = async (value) => {
             const duration = parseInt(value);
-            if (duration >= 1 && duration <= 10) {
+            // Increased max to 30
+            if (duration >= 1 && duration <= 30) { 
                 state.spinDuration = duration;
                 await saveState();
                 showMessage(`Spin duration set to ${duration} seconds.`);
             } else {
-                showMessage("Please enter a value between 1 and 10 seconds.", true);
+                showMessage("Please enter a value between 1 and 30 seconds.", true);
                 document.getElementById('spin-duration-input').value = state.spinDuration;
             }
         };
@@ -663,15 +731,20 @@
 
         // --- Drawing and Spin Logic ---
         const COLORS = ["#FF5733", "#33FF57", "#3357FF", "#FF33F5", "#33FFF5", "#FFC300"];
+        
         const drawWheel = (ctx, width, height) => {
             const prizes = state.prizes;
             const numSectors = prizes.length;
             const arc = 2 * Math.PI / numSectors;
-            const radius = Math.min(width, height) / 2 - (width === 800 ? 20 : 12);
+            // Radius depends on canvas size and border size
+            const borderSize = width === 800 ? 20 : 12;
+            const radius = Math.min(width, height) / 2 - borderSize;
 
             ctx.clearRect(0, 0, width, height);
             ctx.save();
+            // Center the canvas context
             ctx.translate(width / 2, height / 2);
+            // Apply current rotation state (updated after every spin/redraw)
             ctx.rotate(rotation);
 
             if (numSectors === 0) {
@@ -688,7 +761,7 @@
                 return;
             }
 
-            // Draw sectors
+            // Draw sectors (starting from 3 o'clock and moving clockwise)
             for (let i = 0; i < numSectors; i++) {
                 const angle = i * arc;
                 const color = COLORS[i % COLORS.length];
@@ -703,11 +776,13 @@
                 // Draw text (Prize Name)
                 ctx.save();
                 ctx.fillStyle = "#fff"; // White text
-                ctx.font = `bold ${Math.max(12, 16 - Math.floor(numSectors / 4))}px Inter`; // Dynamic font size
+                // Dynamic font size adjustment
+                ctx.font = `bold ${Math.max(12, 16 - Math.floor(numSectors / 4))}px Inter`; 
                 ctx.textAlign = "right";
                 ctx.textBaseline = "middle";
 
                 // Rotate text to follow the arc and move to the middle of the sector
+                // We rotate to the center of the sector (angle + arc/2)
                 ctx.rotate(angle + arc / 2);
                 ctx.fillText(prizes[i].toUpperCase(), radius * 0.9, 0, radius * 0.8); // Constraint width
 
@@ -739,15 +814,33 @@
         };
 
 
-        const calculateRotation = (numSectors, winningIndex) => {
+        // --- ACCURACY ENHANCEMENT: Calculate the exact rotation needed ---
+        const calculateAccurateRotation = (numSectors, winningIndex) => {
             const arc = 2 * Math.PI / numSectors;
-            const randomExtraTurns = 15; // Minimum number of full rotations
-            // Winning angle: center of the sector, adjusted for pointer at top
-            const winningAngle = (winningIndex * arc) + (arc / 2) - Math.PI / 2;
-            // Total rotation: extra turns + winning angle, normalized
-            const totalRotation = (randomExtraTurns * 2 * Math.PI) + winningAngle;
+            const minFullTurns = 5; 
+
+            // 1. Calculate the angle (relative to 3 o'clock) to the center of the winning sector 'i' (CW direction)
+            // Sector 0 starts at 0 rad (3 o'clock). Center is at arc/2.
+            const angleCenter = winningIndex * arc + (arc / 2); 
+
+            // 2. We want this point to align with the pointer (12 o'clock).
+            // The canvas context has to rotate CCW. 
+            // The angle from the center of sector 'i' back to the pointer (12 o'clock, which is -PI/2) 
+            // requires a rotation adjustment.
+            
+            // This calculation determines how much CCW rotation is needed from the resting position 
+            // (where 3 o'clock is 0 rotation) to bring the target center to 12 o'clock.
+            let requiredRotation = (2 * Math.PI - angleCenter) + Math.PI / 2;
+            
+            // Normalize the required rotation (0 to 2PI)
+            requiredRotation = requiredRotation % (2 * Math.PI);
+
+            // 3. Add minimum required full turns
+            const totalRotation = requiredRotation + (minFullTurns * 2 * Math.PI);
             return totalRotation;
         };
+        // -----------------------------------------------------------------
+
 
         const spinWheel = (isFullscreenSpin) => {
             if (isSpinning || state.prizes.length === 0) return;
@@ -766,52 +859,45 @@
             // Store the result of this spin temporarily
             lastWinner = { prize: prizeWon, index: winningIndex };
 
-            // Step 2: Calculate the rotation needed to stop on the winning index
-            const finalRotation = calculateRotation(numSectors, winningIndex);
+            // Step 2: Calculate the rotation needed to stop accurately
+            const finalRotationDelta = calculateAccurateRotation(numSectors, winningIndex);
 
             const actualDuration = state.spinDuration * 1000;
             const canvasToSpin = isFullscreenSpin ? fullscreenCanvas : mainCanvas;
 
-            // Step 3: Apply the transition and rotation
-            canvasToSpin.style.transition = `transform ${actualDuration / 1000}s cubic-bezier(0.25, 0.1, 0.5, 1)`;
-            canvasToSpin.style.transform = `rotate(${finalRotation}rad)`;
+            // Step 3: Apply the ENHANCED transition and rotation
+            // Cubic-bezier for aggressive slow down at the end (slow spinning effect)
+            canvasToSpin.style.transition = `transform ${actualDuration / 1000}s cubic-bezier(0.1, 0.4, 0.2, 1)`;
+            
+            // Apply cumulative rotation (current rotation + new final rotation)
+            const targetRotation = rotation + finalRotationDelta;
+            canvasToSpin.style.transform = `rotate(${targetRotation}rad)`;
 
-            showMessage(`Spinning for ${currentSpinner.fullname}...`);
+
+            showMessage(`Spinning for ${currentSpinner.fullname}... Duration: ${state.spinDuration}s`);
 
             // Step 4: After the spin, verify and determine winner, show modal, and start countdown/cleanup
             setTimeout(() => {
                 isSpinning = false;
+                
                 // Reset transition (important for instant reset on next spin)
                 canvasToSpin.style.transition = 'none';
 
-                // UPDATED: Re-calculate effective angle for accuracy verification
-                let normalizedRotation = finalRotation % (2 * Math.PI);
-                if (normalizedRotation < 0) normalizedRotation += 2 * Math.PI;
-
-                const arc = 2 * Math.PI / numSectors;
-                const effectiveIndex = Math.round((normalizedRotation + Math.PI / 2) / arc) % numSectors;
-
-                // Use the pre-calculated prize for safety, but log if mismatch (rare)
-                if (effectiveIndex !== winningIndex) {
-                    console.warn(`Spin accuracy check: Expected ${winningIndex} but landed on ${effectiveIndex}. Using planned prize.`);
-                }
-
-                // Log the winner to history
+                // Log the winner to history (Starts Unclaimed: false)
                 addNewResultToHistory(prizeWon, winningIndex, currentSpinner.fullname, currentSpinner.department);
 
                 // Show the modal
                 showWinnerModal(prizeWon, currentSpinner.fullname, currentSpinner.department, winningIndex);
 
-                // Update the actual rotation value for redraws (if any)
-                rotation = finalRotation % (2 * Math.PI);
-                redrawWheels();
+                // Update the actual rotation variable for the next spin's starting position
+                rotation = targetRotation % (2 * Math.PI);
+                
+                // Apply the normalized rotation back to the element style 
+                canvasToSpin.style.transform = `rotate(${rotation}rad)`;
 
-                // If in fullscreen, update the fullscreen rotation property for next spin
-                if (isFullscreenSpin) {
-                    fullscreenCanvas.style.transform = `rotate(${rotation}rad)`;
-                } else {
-                    mainCanvas.style.transform = `rotate(${rotation}rad)`;
-                }
+                // Redraw canvas with the new normalized resting rotation
+                redrawWheels(); 
+                renderAnalysisSidebar(); // Update the analysis panel
 
             }, actualDuration + 50); // Small buffer after animation ends
         };
@@ -839,7 +925,6 @@
 
         // --- History Logic ---
 
-        // Added this missing function
         const addNewResultToHistory = (prize, winningIndex, name, department) => {
             const result = {
                 id: crypto.randomUUID(),
@@ -848,9 +933,8 @@
                 department: department,
                 timestamp: Date.now(),
                 date: new Date().toLocaleDateString(undefined, { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' }),
-                // UPDATED: Default claimed status to FALSE (Unclaimed)
-                claimed: false,
-                removed: false,
+                claimed: false, // Starts UNCLAIMED
+                removed: false, 
                 winningIndex: winningIndex
             };
             state.resultsHistory.push(result);
@@ -895,10 +979,10 @@
             state.resultsHistory[index].department = department;
             state.resultsHistory[index].date = date;
             state.resultsHistory[index].claimed = claimed;
-            // If manually claimed, mark as removed to prevent wheel issues later
+            
             if (claimed && !state.resultsHistory[index].removed) {
                  state.resultsHistory[index].removed = true;
-                 showMessage(`Prize "${prize}" manually claimed and removed from the wheel.`);
+                 showMessage(`Prize "${prize}" manually claimed and marked as removed from the wheel logic.`);
             }
 
             await saveState();
@@ -929,6 +1013,7 @@
                 const deletedPrize = state.resultsHistory[index].prize;
 
                 // If the prize was *removed* but not *claimed*, we re-add it to the prize pool
+                // This handles cases where a spin result is deleted before being claimed/removed manually.
                 if (state.resultsHistory[index].removed && !state.resultsHistory[index].claimed) {
                      state.prizes.push(deletedPrize);
                      updatePrizeListUI();
@@ -945,12 +1030,20 @@
             const index = state.resultsHistory.findIndex(r => r.id === id);
             if (index === -1) return;
 
-            state.resultsHistory[index].claimed = !state.resultsHistory[index].claimed;
+            const currentStatus = state.resultsHistory[index].claimed;
+            
+            // Toggle the claimed status
+            state.resultsHistory[index].claimed = !currentStatus;
 
-            // Logic: If manually claimed, mark as removed to prevent wheel issues later
-            if (state.resultsHistory[index].claimed && !state.resultsHistory[index].removed) {
-                state.resultsHistory[index].removed = true;
+            if (!currentStatus) {
+                // If switching from UNCLAIMED (false) to CLAIMED (true)
+                // We must also mark it as removed if it wasn't already (assuming physical claim = removed from pool)
+                if (!state.resultsHistory[index].removed) {
+                    // This flag simply ensures our logic knows it's consumed.
+                    state.resultsHistory[index].removed = true;
+                }
             }
+            // If switching from CLAIMED (true) to UNCLAIMED (false), we don't automatically re-add to wheel.
 
             await saveState();
             renderResults();
@@ -1001,20 +1094,25 @@
 
                 cell = row.insertCell();
                 cell.className = 'px-4 py-3 whitespace-nowrap text-sm font-bold';
-                // UPDATED: 'YES' (Claimed) or 'NO' (Unclaimed)
+                // Display Claimed Status (NO by default)
                 cell.innerHTML = result.claimed ? '<span class="text-green-600">YES</span>' : '<span class="text-red-600">NO</span>';
 
                 cell = row.insertCell();
                 cell.className = 'px-4 py-3 whitespace-nowrap text-sm text-gray-500';
 
-                // Toggle Claim Status Button (Icon depends on current status)
-                const toggleIcon = result.claimed ?
-                    `<button onclick="toggleClaimStatus('${result.id}')" class="text-yellow-600 hover:text-yellow-900 transition p-1 rounded-md hover:bg-yellow-100 group" title="Mark as UNCLAIMED">
+                // --- Claim Status Toggle Button Logic ---
+                let toggleIcon;
+                if (result.claimed) {
+                    // Currently CLAIMED -> Show icon to mark UNCLAIMED
+                    toggleIcon = `<button onclick="toggleClaimStatus('${result.id}')" class="text-yellow-600 hover:text-yellow-900 transition p-1 rounded-md hover:bg-yellow-100 group" title="Mark as UNCLAIMED">
                         <svg class="w-5 h-5 group-hover:scale-110" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L12 12m-9.146 5.254l14.142-14.142"></path></svg>
-                    </button>` :
-                    `<button onclick="toggleClaimStatus('${result.id}')" class="text-green-600 hover:text-green-900 transition p-1 rounded-md hover:bg-green-100 group" title="Mark as CLAIMED">
+                    </button>`;
+                } else {
+                    // Currently UNCLAIMED -> Show icon to mark CLAIMED
+                    toggleIcon = `<button onclick="toggleClaimStatus('${result.id}')" class="text-green-600 hover:text-green-900 transition p-1 rounded-md hover:bg-green-100 group" title="Mark as CLAIMED">
                         <svg class="w-5 h-5 group-hover:scale-110" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                     </button>`;
+                }
 
 
                 cell.innerHTML = `<div class="flex space-x-2 items-center">
@@ -1030,488 +1128,568 @@
             updateStatsDisplay();
         };
 
-        window.clearResults = async () => {
-            if (!confirm("Are you sure you want to delete ALL winner records? This action cannot be undone.")) return;
-            state.resultsHistory = [];
-            await saveState();
-            renderResults();
-            showMessage("All winner records cleared!");
-        };
-
-
-        // --- UI Display & Tab Logic ---
-
-        const updateStatsDisplay = () => {
-            const claimedCount = state.resultsHistory.filter(r => r.claimed).length;
-            const unclaimedCount = state.resultsHistory.filter(r => !r.claimed).length;
-
-            document.getElementById('active-participants-count').textContent = state.prizes.length;
-            document.getElementById('total-spins-count').textContent = state.resultsHistory.length;
-            document.getElementById('claimed-prizes-count').textContent = claimedCount;
-            document.getElementById('unclaimed-prizes-count').textContent = unclaimedCount;
-        };
-
-        window.showTab = (tabName) => {
-            const tabs = ['wheel', 'results'];
-            tabs.forEach(tab => {
-                document.getElementById(`tab-content-${tab}`).classList.add('hidden');
-                document.getElementById(`tab-${tab}`).classList.remove('bg-red-600', 'text-white', 'hover:bg-red-700');
-                document.getElementById(`tab-${tab}`).classList.add('bg-gray-200', 'text-gray-700', 'hover:bg-gray-300');
-            });
-
-            document.getElementById(`tab-content-${tabName}`).classList.remove('hidden');
-            document.getElementById(`tab-${tabName}`).classList.add('bg-red-600', 'text-white', 'hover:bg-red-700');
-            document.getElementById(`tab-${tabName}`).classList.remove('bg-gray-200', 'text-gray-700', 'hover:bg-gray-300');
-
-            if (tabName === 'results') {
-                renderResults();
-                updateStatsDisplay();
-            }
-        };
-
-        const showMessage = (message, isError = false) => {
-            const msgBox = document.getElementById('message-box');
-            msgBox.textContent = message;
-            if (isError) {
-                msgBox.classList.remove('text-gray-700', 'text-blue-600', 'text-green-600');
-                msgBox.classList.add('text-red-600');
-            } else {
-                msgBox.classList.remove('text-red-600');
-                msgBox.classList.add('text-gray-700');
-            }
-        };
-
-        const updateSettingsUI = () => {
-            document.getElementById('names-input').value = state.prizes.join('\n');
-            document.getElementById('spin-duration-input').value = state.spinDuration;
-            document.getElementById('department-list-input').value = state.departments.join('\n');
-            updatePrizeListUI();
-        };
-
-        const updatePrizeListUI = () => {
-            rotation = 0;
-            mainCanvas.style.transition = 'none';
-            fullscreenCanvas.style.transition = 'none';
-            mainCanvas.style.transform = 'rotate(0deg)';
-            fullscreenCanvas.style.transform = 'rotate(0deg)';
-            mainCanvas.style.opacity = 1;
-            fullscreenCanvas.style.opacity = 1;
-            redrawWheels();
-        };
-
-        // --- Modals and Fullscreen Logic ---
-
-        window.showParticipantModal = (isFullscreenSpin) => {
-            if (isSpinning || state.prizes.length === 0) {
-                if (state.prizes.length === 0) {
-                    showMessage("Please add prizes using the Setup sidebar first!");
-                }
-                return;
-            }
-
-            populateDepartmentDropdown(); // Ensure department list is current
-            document.getElementById('participant-modal').dataset.isFullscreenSpin = isFullscreenSpin;
-            document.getElementById('modal-fullname').value = '';
-            document.getElementById('modal-department').value = ''; // Reset dropdown
-            clearParticipantMessage(); // Reset modal message
-            document.getElementById('participant-modal').classList.remove('hidden');
-            document.getElementById('modal-fullname').focus();
-        };
-
-        window.closeParticipantModal = () => {
-            document.getElementById('participant-modal').classList.add('hidden');
-            document.getElementById('modal-fullname').value = '';
-            document.getElementById('modal-department').value = '';
-            showMessage("Click the wheel to spin and pick a prize!");
-        };
-
-        const setParticipantMessage = (message, isError) => {
-            const msg = document.getElementById('participant-message');
-            msg.textContent = message;
-            if (isError) {
-                 msg.classList.remove('text-gray-600', 'text-blue-600');
-                 msg.classList.add('text-red-600', 'font-bold');
-            } else {
-                 msg.classList.remove('text-red-600', 'font-bold');
-                 msg.classList.add('text-gray-600');
-            }
-        };
-
-        const clearParticipantMessage = () => {
-            setParticipantMessage("This will be recorded in the Database.", false);
-        };
-
-        window.startSpinFromModal = () => {
-            const fullname = document.getElementById('modal-fullname').value.trim();
-            const department = document.getElementById('modal-department').value;
-            const isFullscreenSpin = document.getElementById('participant-modal').dataset.isFullscreenSpin === 'true';
-
-            if (!fullname) {
-                setParticipantMessage("Please enter your full name.", true);
-                return;
-            }
-            if (!department) {
-                setParticipantMessage("Please select a department.", true);
-                return;
-            }
-
-            // --- START: Enhanced Duplicate Name Check ---
-            const normalizedName = fullname.toLowerCase();
-            const { first: newFirst, last: newLast } = parseNameParts(fullname);
-
-            const isDuplicate = state.resultsHistory.some(result => {
-                // Only check if prize was removed (i.e., consumed)
-                const resultNormalized = result.name.toLowerCase();
-                const { first: resultFirst, last: resultLast } = parseNameParts(result.name);
-
-                return resultNormalized === normalizedName || (resultFirst === newFirst && resultLast === newLast);
-            });
-
-            if (isDuplicate) {
-                setParticipantMessage(`Error: "${fullname}" (or similar name) has already spun and won a prize.`, true);
-                return;
-            }
-            // --- END: Enhanced Duplicate Name Check ---
-
-            currentSpinner = { fullname, department };
-            closeParticipantModal();
-            spinWheel(isFullscreenSpin);
-        };
-
-        window.toggleFullscreen = (enable) => {
-            if (enable) {
-                document.getElementById('fullscreen-roleta').classList.remove('hidden');
-                document.getElementById('fullscreen-button').classList.add('hidden'); // Hide floaty button when fullscreen
-                redrawWheels(); // Redraw for higher resolution
-                // Reapply the current rotation state to the fullscreen canvas
-                fullscreenCanvas.style.transform = mainCanvas.style.transform;
-            } else {
-                document.getElementById('fullscreen-roleta').classList.add('hidden');
-                document.getElementById('fullscreen-button').classList.remove('hidden');
-                clearInterval(countdownInterval); // Stop any running countdown
-                countdownInterval = null;
-            }
-            isFullscreen = enable;
-        };
-
-        // --- Winner Modal Logic ---
-
-        window.showWinnerModal = (prizeWon, winnerName, winnerDept, winningIndex) => {
-            document.getElementById('modal-winner-name').textContent = winnerName;
-            document.getElementById('modal-prize-name').textContent = prizeWon;
-            document.getElementById('modal-winner-dept').textContent = `Department: ${winnerDept}`;
-            document.getElementById('winner-modal').classList.remove('hidden');
-
-            const removeButton = document.getElementById('remove-winner-btn');
-            const countdownDisplay = document.getElementById('countdown-timer');
-
-            // Show Remove Prize button and start countdown
-            removeButton.classList.remove('hidden');
-            removeButton.onclick = () => {
-                clearInterval(countdownInterval);
-                countdownInterval = null;
-                removeWinnerFromWheel(lastWinner.prize, lastWinner.index, false);
-
-                removeButton.classList.add('hidden');
-                countdownDisplay.classList.add('hidden');
-
-                // Update modal message
-                document.getElementById('modal-countdown-display').classList.remove('hidden');
-                document.getElementById('modal-countdown-display').textContent = `Prize "${lastWinner.prize}" manually removed from the wheel.`;
-                document.getElementById('modal-countdown-display').classList.remove('text-gray-600');
-                document.getElementById('modal-countdown-display').classList.add('text-red-600', 'font-extrabold');
-            };
-
-            startPrizeRemovalCountdown(REMOVAL_DELAY_SECONDS);
-            runConfetti();
-        };
-
-        window.closeWinnerModalAndCleanUp = (forceClaimAndRemove) => {
-            document.getElementById('winner-modal').classList.add('hidden');
-            document.getElementById('remove-winner-btn').classList.add('hidden');
-            document.getElementById('countdown-timer').classList.add('hidden');
-            document.getElementById('modal-countdown-display').classList.add('hidden');
-            document.getElementById('modal-countdown-display').classList.remove('text-red-600', 'font-extrabold');
-
-            clearInterval(countdownInterval);
-            countdownInterval = null;
-
-            // Check if the prize needs to be claimed/removed
-            const latestHistoryEntry = state.resultsHistory.find(r => r.name === currentSpinner.fullname && r.prize === lastWinner.prize);
-
-            if (lastWinner.prize) {
-                // If forceClaimAndRemove is true (from Awesome! button), mark as claimed and removed immediately
-                if (forceClaimAndRemove && latestHistoryEntry && !latestHistoryEntry.claimed) {
-                    latestHistoryEntry.claimed = true;
-                    latestHistoryEntry.removed = true;
-                    removeWinnerFromWheel(lastWinner.prize, lastWinner.index, true); // True to bypass the removal check
-                    showMessage(`Prize "${lastWinner.prize}" manually CLAIMED and removed!`);
-                } else if (latestHistoryEntry && !latestHistoryEntry.removed) {
-                    // Prize was won but neither auto-removed nor manually claimed/removed. Do not remove it from the wheel yet.
-                    showMessage(`Prize "${lastWinner.prize}" remains on the wheel (may have been removed already).`);
-                } else if (latestHistoryEntry) {
-                    showMessage(`Prize "${lastWinner.prize}" was already claimed or removed.`);
-                }
-            }
-
-            lastWinner = { prize: null, index: -1 };
-            currentSpinner = { fullname: null, department: null };
-            showMessage("Click the wheel to spin and pick a prize!");
-        };
-
-        const startPrizeRemovalCountdown = (duration) => {
-            timer = duration;
-            const display = document.getElementById('countdown-timer');
-            const removeButton = document.getElementById('remove-winner-btn');
-            const modalDisplay = document.getElementById('modal-countdown-display');
-
-            display.textContent = `Prize auto-removes in ${timer}s`;
-            display.classList.remove('hidden');
-            modalDisplay.textContent = `Prize will be removed from the wheel in ${timer} seconds...`;
-            modalDisplay.classList.remove('hidden', 'text-red-600', 'font-extrabold');
-            modalDisplay.classList.add('text-gray-600');
-
-            if (countdownInterval) clearInterval(countdownInterval);
-
-            countdownInterval = setInterval(() => {
-                timer--;
-                display.textContent = `Prize auto-removes in ${timer}s`;
-                modalDisplay.textContent = `Prize will be removed from the wheel in ${timer} seconds...`;
-
-                if (timer <= 0) {
-                    clearInterval(countdownInterval);
-                    countdownInterval = null;
-
-                    // Keep the modal open, but perform removal and update status if (lastWinner.prize)
-                    if (lastWinner.prize) {
-                        // 1. Remove the prize from the wheel
-                        removeWinnerFromWheel(lastWinner.prize, lastWinner.index, true);
-
-                        // 2. Update UI elements to show removal status
-                        removeButton.classList.add('hidden'); // Hide the "Remove Now" button since it's done
-
-                        // Update main screen message
-                        display.textContent = `Prize removed: ${lastWinner.prize}. Click 'Awesome! (Close)' on modal.`;
-
-                        // Update modal message (THIS IS THE VISIBLE COUNTDOWN REMAINING ON THE MODAL)
-                        modalDisplay.textContent = `Prize "${lastWinner.prize}" has been automatically removed from the wheel.`;
-                        modalDisplay.classList.remove('text-gray-600');
-                        modalDisplay.classList.add('text-red-600', 'font-extrabold');
-                    }
-                }
-            }, 1000);
-        };
-
-        window.removeWinnerFromWheel = (prizeName, index, isAutoRemove) => {
-            const latestHistoryEntry = state.resultsHistory.find(r => r.name === currentSpinner.fullname && r.prize === prizeName );
-
-            if (latestHistoryEntry && !latestHistoryEntry.removed) {
-                 // If the entry hasn't been removed yet, check if the prize is still in the active list
-                const prizeIndex = state.prizes.indexOf(prizeName);
-
-                if (prizeIndex > -1) {
-                    // Remove the prize from the active list
-                    state.prizes.splice(prizeIndex, 1);
-
-                    // Mark the result as removed in history
-                    latestHistoryEntry.removed = true;
-
-                    // Save state, update wheel, and show message
-                    saveState();
-                    updatePrizeListUI();
-
-                    if (!isAutoRemove) {
-                        // Only show message if manual removal
-                         showMessage(`Prize "${prizeName}" manually removed from the wheel!`);
-                    } else {
-                        // Update UI to reflect auto-removal if needed
-                        updateStatsDisplay();
-                    }
-                }
-            }
-        };
-
-        // --- Export & Import Logic ---
-
-        window.toggleExportDropdown = (button) => {
-            const menu = document.getElementById('export-menu');
-            const isExpanded = button.getAttribute('aria-expanded') === 'true';
-
-            if (isExpanded) {
-                menu.classList.add('hidden');
-                button.setAttribute('aria-expanded', 'false');
-            } else {
-                menu.classList.remove('hidden');
-                button.setAttribute('aria-expanded', 'true');
-            }
-        };
-
-        window.exportAsJson = () => {
-            const data = {
-                prizes: state.prizes,
-                resultsHistory: state.resultsHistory,
-                config: { spinDuration: state.spinDuration },
-                departments: state.departments
-            };
-
-            const jsonString = JSON.stringify(data, null, 2);
-            const blob = new Blob([jsonString], { type: "application/json" });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = `raffle_data_export_${new Date().toISOString().slice(0, 10)}.json`;
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            URL.revokeObjectURL(url);
-            document.getElementById('export-menu').classList.add('hidden');
-            document.getElementById('export-menu-button').setAttribute('aria-expanded', 'false');
-            showMessage("Data exported successfully as JSON.");
-        };
-
-        window.exportAsExcel = () => {
-            let csv = "ID,Winner (Spun By),Prize Won,Department,Date,Claimed,Removed\n";
-            state.resultsHistory.forEach(r => {
-                const claimedStatus = r.claimed ? 'YES' : 'NO';
-                const removedStatus = r.removed ? 'YES' : 'NO';
-                csv += `"${r.id}","${r.name}","${r.prize}","${r.department}","${r.date}",${claimedStatus},${removedStatus}\n`;
-            });
-
-            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = `raffle_data_export_${new Date().toISOString().slice(0, 10)}.csv`;
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            URL.revokeObjectURL(url);
-            document.getElementById('export-menu').classList.add('hidden');
-            document.getElementById('export-menu-button').setAttribute('aria-expanded', 'false');
-            showMessage("Data exported successfully as CSV.");
-        };
-
-        window.exportAsPdf = () => {
-            // Temporarily switch to results tab and trigger print
-            showTab('results');
-            document.getElementById('export-menu').classList.add('hidden');
-            document.getElementById('export-menu-button').setAttribute('aria-expanded', 'false');
-            window.print();
-        };
-
-        window.importData = (event) => {
-            const file = event.target.files[0];
-            if (!file) {
-                event.target.value = null;
-                return;
-            }
-
-            const reader = new FileReader();
-            reader.onload = async (e) => {
-                let importedData;
-                try {
-                    importedData = JSON.parse(e.target.result);
-
-                    if (!importedData.resultsHistory || !Array.isArray(importedData.resultsHistory)) {
-                        throw new Error("Invalid file structure. Missing or incorrect 'resultsHistory' array.");
-                    }
-
-                    // Map and clean up imported history entries
-                    const newResultsHistory = importedData.resultsHistory.map(r => {
-                        return {
-                            id: r.id || crypto.randomUUID(),
-                            name: r.name ? r.name.toString() : 'Unknown',
-                            prize: r.prize ? r.prize.toString() : 'Unknown Prize',
-                            department: r.department ? r.department.toString() : 'N/A',
-                            timestamp: r.timestamp || Date.now(),
-                            date: r.date || new Date().toLocaleDateString(undefined, { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' }),
-                            claimed: typeof r.claimed === 'boolean' ? r.claimed : false,
-                            removed: typeof r.removed === 'boolean' ? r.removed : (typeof r.claimed === 'boolean' ? r.claimed : false), // Fallback: if claimed, assume removed
-                            winningIndex: r.winningIndex || 0
-                        };
-                    });
-
-                    // Update state variables (Prizes and Config are optional in the import, but we'll import if present)
-                    if (importedData.prizes && Array.isArray(importedData.prizes)) {
-                        state.prizes = importedData.prizes.map(p => p.toString().trim()).filter(p => p.length > 0);
-                    }
-                    if (importedData.config && importedData.config.spinDuration) {
-                        state.spinDuration = parseInt(importedData.config.spinDuration) || 3;
-                    }
-                    if (importedData.departments && Array.isArray(importedData.departments)) {
-                        state.departments = importedData.departments.map(d => d.toString().trim()).filter(d => d.length > 0);
-                    }
-
-                    // Append new history to existing history
-                    state.resultsHistory.push(...newResultsHistory);
-
-                    await saveState();
-                    renderResults();
-                    updatePrizeListUI();
-                    showMessage(`Successfully imported ${newResultsHistory.length} records!`);
-                } catch (error) {
-                    showMessage(`Error importing data: ${error.message}`, true);
-                } finally {
-                    event.target.value = null;
-                }
-            };
-            reader.readAsText(file);
-        };
-
-        // --- Initialization ---
-
-        window.addEventListener('load', async () => {
-            await loadState();
-            updateSettingsUI(); // Loads initial prize list to the wheel
-            populateDepartmentDropdown();
-            showTab('wheel');
-
-            // Add click listeners to canvas elements for spinning
-            mainCanvas.addEventListener('click', () => showParticipantModal(false));
-            fullscreenCanvas.addEventListener('click', () => showParticipantModal(true));
+        window.clearResults = async () =>{
+if (!confirm("Are you sure you want to delete ALL winner records? This action cannot be undone.")) return;
+state.resultsHistory = [];
+await saveState();
+renderResults();
+showMessage("All winner records cleared!");
+};
+// --- UI Display & Tab Logic ---
+
+    const updateStatsDisplay = () => {
+        const claimedCount = state.resultsHistory.filter(r => r.claimed).length;
+        const unclaimedCount = state.resultsHistory.filter(r => !r.claimed).length;
+
+        document.getElementById('active-participants-count').textContent = state.prizes.length;
+        document.getElementById('total-spins-count').textContent = state.resultsHistory.length;
+        document.getElementById('claimed-prizes-count').textContent = claimedCount;
+        document.getElementById('unclaimed-prizes-count').textContent = unclaimedCount;
+    };
+
+    window.showTab = (tabName) => {
+        const tabs = ['wheel', 'results'];
+        tabs.forEach(tab => {
+            document.getElementById(`tab-content-${tab}`).classList.add('hidden');
+            document.getElementById(`tab-${tab}`).classList.remove('bg-red-600', 'text-white', 'hover:bg-red-700');
+            document.getElementById(`tab-${tab}`).classList.add('bg-gray-200', 'text-gray-700', 'hover:bg-gray-300');
         });
 
-    </script>
-<script>
-        function protectSourceCode() {
-            document.addEventListener('contextmenu', function(e) {
-                e.preventDefault();
-            });
+        document.getElementById(`tab-content-${tabName}`).classList.remove('hidden');
+        document.getElementById(`tab-${tabName}`).classList.add('bg-red-600', 'text-white', 'hover:bg-red-700');
+        document.getElementById(`tab-${tabName}`).classList.remove('bg-gray-200', 'text-gray-700', 'hover:bg-gray-300');
 
-            document.addEventListener('keydown', function(e) {
-                if (e.keyCode === 123 ||
-                    (e.ctrlKey && e.shiftKey && e.keyCode === 73) ||
-                    (e.ctrlKey && e.keyCode === 85) ||
-                    (e.ctrlKey && e.shiftKey && e.keyCode === 67) ||
-                    (e.ctrlKey && e.keyCode === 83) ||
-                    (e.ctrlKey && e.shiftKey && e.keyCode === 73) ||
-                    (e.ctrlKey && e.shiftKey && e.keyCode === 74)) {
-                    e.preventDefault();
-                    return false;
-                }
-            });
+        if (tabName === 'results') {
+            renderResults();
+            updateStatsDisplay();
+        } else if (tabName === 'wheel') {
+            // Ensure analysis sidebar updates when returning to the wheel
+            renderAnalysisSidebar();
+        }
+    };
 
-            document.addEventListener('selectstart', function(e) {
-                e.preventDefault();
-            });
+    const showMessage = (message, isError = false) => {
+        const msgBox = document.getElementById('message-box');
+        msgBox.textContent = message;
+        if (isError) {
+            msgBox.classList.remove('text-gray-700', 'text-blue-600', 'text-green-600');
+            msgBox.classList.add('text-red-600');
+        } else {
+            msgBox.classList.remove('text-red-600');
+            msgBox.classList.add('text-blue-600'); 
+            
+            if (message.includes("Click the wheel to spin")) {
+                 msgBox.classList.remove('text-blue-600');
+                 msgBox.classList.add('text-gray-700');
+            }
+        }
+    };
 
-            document.addEventListener('dragstart', function(e) {
-                e.preventDefault();
-            });
+    const updateSettingsUI = () => {
+        document.getElementById('names-input').value = state.prizes.join('\n');
+        document.getElementById('spin-duration-input').value = state.spinDuration;
+        document.getElementById('department-list-input').value = state.departments.join('\n');
+        updatePrizeListUI();
+    };
 
-            document.onselectstart = function() {
-                return false;
-            };
-
-            document.oncontextmenu = function() {
-                return false;
-            };
+    const updatePrizeListUI = () => {
+        rotation = 0;
+        mainCanvas.style.transition = 'none';
+        fullscreenCanvas.style.transition = 'none';
+        mainCanvas.style.transform = 'rotate(0deg)';
+        fullscreenCanvas.style.transform = 'rotate(0deg)';
+        mainCanvas.style.opacity = 1;
+        fullscreenCanvas.style.opacity = 1;
+        redrawWheels();
+    };
+    
+    // --- Data Analysis Logic ---
+    window.renderAnalysisSidebar = (dateString = null) => {
+        const sidebar = document.getElementById('analysis-content');
+        const dateInput = document.getElementById('analysis-date-input');
+        
+        // Use today's date if no date is provided or input is cleared
+        if (!dateString) {
+             dateString = dateInput.value || getTodayDateString();
+             dateInput.value = dateString; // Ensure input matches filter
         }
 
-        window.addEventListener('load', protectSourceCode);
-        window.addEventListener('blur', () => {
-             // Re-apply protection when window regains focus, just in case
+        const filteredHistory = state.resultsHistory.filter(result => 
+            isSameDay(result.timestamp, dateString)
+        );
+
+        // 1. Total Spins for Date
+        const totalSpins = filteredHistory.length;
+        
+        // 2. Spins Per Department
+        const departmentCounts = {};
+        filteredHistory.forEach(result => {
+            const dept = result.department || 'Unknown';
+            departmentCounts[dept] = (departmentCounts[dept] || 0) + 1;
         });
 
-    </script>
+        // 3. Top Prizes (All Time)
+        const prizeCounts = {};
+        state.resultsHistory.forEach(result => {
+             const prize = result.prize || 'Unknown Prize';
+             prizeCounts[prize] = (prizeCounts[prize] || 0) + 1;
+        });
+
+        const sortedPrizes = Object.entries(prizeCounts)
+            .sort(([, countA], [, countB]) => countB - countA)
+            .slice(0, 5); // Top 5
+
+        let html = `
+            <div class="space-y-4">
+                <div class="bg-gray-100 p-3 rounded-lg border border-gray-200">
+                    <p class="text-sm font-medium text-gray-500">Spins on ${dateString}</p>
+                    <p class="text-3xl font-extrabold text-red-600">${totalSpins}</p>
+                </div>
+                
+                <h4 class="text-md font-semibold text-gray-700 mt-4 border-b border-gray-200 pb-1">Spins per Department (Today)</h4>
+                <ul class="space-y-1">
+        `;
+
+        const sortedDepartments = Object.entries(departmentCounts)
+            .sort(([, countA], [, countB]) => countB - countA);
+
+        if (sortedDepartments.length === 0) {
+            html += `<li class="text-sm text-gray-500">No spins recorded on this date.</li>`;
+        } else {
+            sortedDepartments.forEach(([dept, count]) => {
+                html += `<li class="flex justify-between text-sm">
+                    <span>${dept}</span>
+                    <span class="font-bold text-purple-600">${count}</span>
+                </li>`;
+            });
+        }
+        
+        html += `
+                </ul>
+                
+                <h4 class="text-md font-semibold text-gray-700 mt-4 border-b border-gray-200 pb-1 pt-2">Top 5 Prizes Won (All Time)</h4>
+                <ul class="space-y-1">
+        `;
+        
+        if (sortedPrizes.length === 0) {
+            html += `<li class="text-sm text-gray-500">No prizes won yet.</li>`;
+        } else {
+            sortedPrizes.forEach(([prize, count], index) => {
+                html += `<li class="flex justify-between text-sm">
+                    <span>${index + 1}. ${prize}</span>
+                    <span class="font-bold text-blue-600">${count}</span>
+                </li>`;
+            });
+        }
+        
+        html += `</ul></div>`;
+        
+        sidebar.innerHTML = html;
+    };
+    
+    // Alias for onchange handler
+    window.filterAnalysisByDate = window.renderAnalysisSidebar;
+
+
+    // --- Modals and Fullscreen Logic ---
+
+    window.showParticipantModal = (isFullscreenSpin) => {
+        if (isSpinning || state.prizes.length === 0) {
+            if (state.prizes.length === 0) {
+                showMessage("Please add prizes using the Setup sidebar first!");
+            }
+            return;
+        }
+
+        populateDepartmentDropdown(); // Ensure department list is current
+        document.getElementById('participant-modal').dataset.isFullscreenSpin = isFullscreenSpin;
+        document.getElementById('modal-fullname').value = '';
+        document.getElementById('modal-department').value = ''; // Reset dropdown
+        clearParticipantMessage(); // Reset modal message
+        document.getElementById('participant-modal').classList.remove('hidden');
+        document.getElementById('modal-fullname').focus();
+    };
+
+    window.closeParticipantModal = () => {
+        document.getElementById('participant-modal').classList.add('hidden');
+        document.getElementById('modal-fullname').value = '';
+        document.getElementById('modal-department').value = '';
+        showMessage("Click the wheel to spin and pick a prize!");
+    };
+
+    const setParticipantMessage = (message, isError) => {
+        const msg = document.getElementById('participant-message');
+        msg.textContent = message;
+        if (isError) {
+             msg.classList.remove('text-gray-600', 'text-blue-600');
+             msg.classList.add('text-red-600', 'font-bold');
+        } else {
+             msg.classList.remove('text-red-600', 'font-bold');
+             msg.classList.add('text-gray-600');
+        }
+    };
+
+    const clearParticipantMessage = () => {
+        setParticipantMessage("This will be recorded in the Database.", false);
+    };
+
+    window.startSpinFromModal = () => {
+        const fullname = document.getElementById('modal-fullname').value.trim();
+        const department = document.getElementById('modal-department').value;
+        const isFullscreenSpin = document.getElementById('participant-modal').dataset.isFullscreenSpin === 'true';
+
+        if (!fullname) {
+            setParticipantMessage("Please enter your full name.", true);
+            return;
+        }
+        if (!department) {
+            setParticipantMessage("Please select a department.", true);
+            return;
+        }
+
+        // --- START: Enhanced Duplicate Name Check ---
+        const normalizedName = fullname.toLowerCase();
+        const { first: newFirst, last: newLast } = parseNameParts(fullname);
+
+        const isDuplicate = state.resultsHistory.some(result => {
+            // Check only against those whose prizes were removed (i.e., consumed)
+            const resultNormalized = result.name.toLowerCase();
+            const { first: resultFirst, last: resultLast } = parseNameParts(result.name);
+
+            return result.removed && (resultNormalized === normalizedName || (resultFirst === newFirst && resultLast === newLast));
+        });
+
+        if (isDuplicate) {
+            setParticipantMessage(`Error: "${fullname}" (or similar name) has already spun and won a prize.`, true);
+            return;
+        }
+        // --- END: Enhanced Duplicate Name Check ---
+
+        currentSpinner = { fullname, department };
+        closeParticipantModal();
+        spinWheel(isFullscreenSpin);
+    };
+
+    window.toggleFullscreen = (enable) => {
+        if (enable) {
+            document.getElementById('fullscreen-roleta').classList.remove('hidden');
+            document.getElementById('fullscreen-button').classList.add('hidden'); // Hide floaty button when fullscreen
+            redrawWheels(); // Redraw for higher resolution
+            // Reapply the current rotation state to the fullscreen canvas
+            fullscreenCanvas.style.transform = mainCanvas.style.transform;
+        } else {
+            document.getElementById('fullscreen-roleta').classList.add('hidden');
+            document.getElementById('fullscreen-button').classList.remove('hidden');
+            clearInterval(countdownInterval); // Stop any running countdown
+            countdownInterval = null;
+        }
+        isFullscreen = enable;
+    };
+
+    // --- Winner Modal Logic ---
+
+    window.showWinnerModal = (prizeWon, winnerName, winnerDept, winningIndex) => {
+        document.getElementById('modal-winner-name').textContent = winnerName;
+        document.getElementById('modal-prize-name').textContent = prizeWon;
+        document.getElementById('modal-winner-dept').textContent = `Department: ${winnerDept}`;
+        document.getElementById('winner-modal').classList.remove('hidden');
+
+        const removeButton = document.getElementById('remove-winner-btn');
+        const countdownDisplay = document.getElementById('countdown-timer');
+
+        // Show Remove Prize button and start countdown
+        removeButton.classList.remove('hidden');
+        removeButton.onclick = () => {
+            clearInterval(countdownInterval);
+            countdownInterval = null;
+            removeWinnerFromWheel(lastWinner.prize, lastWinner.index, false);
+
+            removeButton.classList.add('hidden');
+            countdownDisplay.classList.add('hidden');
+
+            // Update modal message
+            document.getElementById('modal-countdown-display').classList.remove('hidden');
+            document.getElementById('modal-countdown-display').textContent = `Prize "${lastWinner.prize}" manually removed from the wheel.`;
+            document.getElementById('modal-countdown-display').classList.remove('text-gray-600');
+            document.getElementById('modal-countdown-display').classList.add('text-red-600', 'font-extrabold');
+        };
+
+        startPrizeRemovalCountdown(REMOVAL_DELAY_SECONDS);
+        runConfetti();
+    };
+
+    window.closeWinnerModalAndCleanUp = (forceClaimAndRemove) => {
+        document.getElementById('winner-modal').classList.add('hidden');
+        document.getElementById('remove-winner-btn').classList.add('hidden');
+        document.getElementById('countdown-timer').classList.add('hidden');
+        document.getElementById('modal-countdown-display').classList.add('hidden');
+        document.getElementById('modal-countdown-display').classList.remove('text-red-600', 'font-extrabold');
+
+        clearInterval(countdownInterval);
+        countdownInterval = null;
+
+        const latestHistoryEntry = state.resultsHistory.find(r => r.name === currentSpinner.fullname && r.prize === lastWinner.prize);
+
+        if (lastWinner.prize) {
+            if (forceClaimAndRemove && latestHistoryEntry && !latestHistoryEntry.claimed) {
+                // If user hits 'Awesome! (Close)', mark as claimed and ensure it's removed flag is true
+                latestHistoryEntry.claimed = true;
+                latestHistoryEntry.removed = true;
+                saveState(); 
+                showMessage(`Prize "${lastWinner.prize}" manually CLAIMED!`); 
+            } else if (latestHistoryEntry) {
+                showMessage(`Prize "${lastWinner.prize}" was won.`);
+            }
+        }
+
+        lastWinner = { prize: null, index: -1 };
+        currentSpinner = { fullname: null, department: null };
+        showMessage("Click the wheel to spin and pick a prize!");
+    };
+
+    const startPrizeRemovalCountdown = (duration) => {
+        timer = duration;
+        const display = document.getElementById('countdown-timer');
+        const removeButton = document.getElementById('remove-winner-btn');
+        const modalDisplay = document.getElementById('modal-countdown-display');
+
+        display.textContent = `Prize auto-removes in ${timer}s`;
+        display.classList.remove('hidden');
+        modalDisplay.textContent = `Prize will be removed from the wheel in ${timer} seconds...`;
+        modalDisplay.classList.remove('hidden', 'text-red-600', 'font-extrabold');
+        modalDisplay.classList.add('text-gray-600');
+
+        if (countdownInterval) clearInterval(countdownInterval);
+
+        countdownInterval = setInterval(() => {
+            timer--;
+            display.textContent = `Prize auto-removes in ${timer}s`;
+            modalDisplay.textContent = `Prize will be removed from the wheel in ${timer} seconds...`;
+
+            if (timer <= 0) {
+                clearInterval(countdownInterval);
+                countdownInterval = null;
+
+                if (lastWinner.prize) {
+                    removeWinnerFromWheel(lastWinner.prize, lastWinner.index, true);
+
+                    removeButton.classList.add('hidden'); 
+
+                    display.textContent = `Prize removed: ${lastWinner.prize}. Click 'Awesome! (Close)' on modal.`;
+
+                    modalDisplay.textContent = `Prize "${lastWinner.prize}" has been automatically removed from the wheel.`;
+                    modalDisplay.classList.remove('text-gray-600');
+                    modalDisplay.classList.add('text-red-600', 'font-extrabold');
+                }
+            }
+        }, 1000);
+    };
+
+    window.removeWinnerFromWheel = (prizeName, index, isAutoRemove) => {
+        const historyEntryIndex = state.resultsHistory.findIndex(r => r.name === currentSpinner.fullname && r.prize === prizeName );
+        const latestHistoryEntry = historyEntryIndex !== -1 ? state.resultsHistory[historyEntryIndex] : null;
+
+        if (latestHistoryEntry && !latestHistoryEntry.removed) {
+            const prizeIndex = state.prizes.indexOf(prizeName);
+
+            if (prizeIndex > -1) {
+                state.prizes.splice(prizeIndex, 1);
+                latestHistoryEntry.removed = true;
+                saveState();
+                updatePrizeListUI();
+
+                if (!isAutoRemove) {
+                     showMessage(`Prize "${prizeName}" manually removed from the wheel!`);
+                } else {
+                    updateStatsDisplay();
+                }
+            }
+        }
+    };
+
+    // --- Export & Import Logic (No functional changes needed here) ---
+
+    window.toggleExportDropdown = (button) => {
+        const menu = document.getElementById('export-menu');
+        const isExpanded = button.getAttribute('aria-expanded') === 'true';
+
+        if (isExpanded) {
+            menu.classList.add('hidden');
+            button.setAttribute('aria-expanded', 'false');
+        } else {
+            menu.classList.remove('hidden');
+            button.setAttribute('aria-expanded', 'true');
+        }
+    };
+
+    window.exportAsJson = () => {
+        const data = {
+            prizes: state.prizes,
+            resultsHistory: state.resultsHistory,
+            config: { spinDuration: state.spinDuration },
+            departments: state.departments
+        };
+
+        const jsonString = JSON.stringify(data, null, 2);
+        const blob = new Blob([jsonString], { type: "application/json" });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `raffle_data_export_${new Date().toISOString().slice(0, 10)}.json`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+        document.getElementById('export-menu').classList.add('hidden');
+        document.getElementById('export-menu-button').setAttribute('aria-expanded', 'false');
+        showMessage("Data exported successfully as JSON.");
+    };
+
+    window.exportAsExcel = () => {
+        let csv = "ID,Winner (Spun By),Prize Won,Department,Date,Claimed,Removed\n";
+        state.resultsHistory.forEach(r => {
+            const claimedStatus = r.claimed ? 'YES' : 'NO';
+            const removedStatus = r.removed ? 'YES' : 'NO';
+            csv += `"${r.id}","${r.name}","${r.prize}","${r.department}","${r.date}",${claimedStatus},${removedStatus}\n`;
+        });
+
+        const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `raffle_data_export_${new Date().toISOString().slice(0, 10)}.csv`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+        document.getElementById('export-menu').classList.add('hidden');
+        document.getElementById('export-menu-button').setAttribute('aria-expanded', 'false');
+        showMessage("Data exported successfully as CSV.");
+    };
+
+    window.exportAsPdf = () => {
+        showTab('results');
+        document.getElementById('export-menu').classList.add('hidden');
+        document.getElementById('export-menu-button').setAttribute('aria-expanded', 'false');
+        window.print();
+    };
+
+    window.importData = (event) => {
+        const file = event.target.files[0];
+        if (!file) {
+            event.target.value = null;
+            return;
+        }
+
+        const reader = new FileReader();
+        reader.onload = async (e) => {
+            let importedData;
+            try {
+                importedData = JSON.parse(e.target.result);
+
+                if (!importedData.resultsHistory || !Array.isArray(importedData.resultsHistory)) {
+                    throw new Error("Invalid file structure. Missing or incorrect 'resultsHistory' array.");
+                }
+
+                const newResultsHistory = importedData.resultsHistory.map(r => {
+                    return {
+                        id: r.id || crypto.randomUUID(),
+                        name: r.name ? r.name.toString() : 'Unknown',
+                        prize: r.prize ? r.prize.toString() : 'Unknown Prize',
+                        department: r.department ? r.department.toString() : 'N/A',
+                        timestamp: r.timestamp || Date.now(),
+                        date: r.date || new Date().toLocaleDateString(undefined, { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' }),
+                        claimed: typeof r.claimed === 'boolean' ? r.claimed : false,
+                        removed: typeof r.removed === 'boolean' ? r.removed : (typeof r.claimed === 'boolean' ? r.claimed : false),
+                        winningIndex: r.winningIndex || 0
+                    };
+                });
+
+                if (importedData.prizes && Array.isArray(importedData.prizes)) {
+                    state.prizes = importedData.prizes.map(p => p.toString().trim()).filter(p => p.length > 0);
+                }
+                if (importedData.config && importedData.config.spinDuration) {
+                    state.spinDuration = parseInt(importedData.config.spinDuration) || 30;
+                }
+                if (importedData.departments && Array.isArray(importedData.departments)) {
+                    state.departments = importedData.departments.map(d => d.toString().trim()).filter(d => d.length > 0);
+                }
+
+                state.resultsHistory.push(...newResultsHistory);
+
+                await saveState();
+                renderResults();
+                updatePrizeListUI();
+                showMessage(`Successfully imported ${newResultsHistory.length} records!`);
+            } catch (error) {
+                showMessage(`Error importing data: ${error.message}`, true);
+            } finally {
+                event.target.value = null;
+            }
+        };
+        reader.readAsText(file);
+    };
+
+    // --- Initialization ---
+
+    window.addEventListener('load', async () => {
+        await loadState();
+        
+        // Set default date filter to today
+        const dateInput = document.getElementById('analysis-date-input');
+        dateInput.value = getTodayDateString();
+
+        updateSettingsUI(); // Loads initial prize list to the wheel
+        populateDepartmentDropdown();
+        showTab('wheel');
+        renderAnalysisSidebar(); // Initial render of the analysis panel
+
+        // Add click listeners to canvas elements for spinning
+        mainCanvas.addEventListener('click', () => showParticipantModal(false));
+        fullscreenCanvas.addEventListener('click', () => showParticipantModal(true));
+    });
+
+</script>
+<script>
+function protectSourceCode() {
+document.addEventListener('contextmenu', function(e) {
+e.preventDefault();
+});
+
+document.addEventListener('keydown', function(e) {
+if (e.keyCode === 123 ||
+(e.ctrlKey && e.shiftKey && e.keyCode === 73) ||
+(e.ctrlKey && e.keyCode === 85) ||
+(e.ctrlKey && e.shiftKey && e.keyCode === 67) ||
+(e.ctrlKey && e.keyCode === 83) ||
+(e.ctrlKey && e.shiftKey && e.keyCode === 73) ||
+(e.ctrlKey && e.shiftKey && e.keyCode === 74)) {
+e.preventDefault();
+return false;
+}
+});
+
+document.addEventListener('selectstart', function(e) {
+e.preventDefault();
+});
+
+document.addEventListener('dragstart', function(e) {
+e.preventDefault();
+});
+a
+document.onselectstart = function() {
+return false;
+};
+
+document.oncontextmenu = function() {
+return false;
+};
+}
+
+window.addEventListener('load', protectSourceCode);
+window.addEventListener('blur', () => {
+// Re-apply protection when window regains focus, just in case
+});
+
+</script>
 </html>
