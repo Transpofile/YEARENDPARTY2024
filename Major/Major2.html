@@ -1,0 +1,1530 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>THPAL YEAR END CHRISTMAS RAFFLE 2025 - MAJOR PRIZE RAFFLE</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f4f7f9;
+        }
+
+        /* Define custom colors as CSS variables for easier maintenance */
+        :root {
+            --color-primary-red: #ef4444;
+            --color-dark-gray: #333;
+            --wheel-border-size: 12px;
+        }
+
+        /* --- Custom Styles for the Wheel Containers and Pointers --- */
+        #wheel-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            /* Ensures a square shape for perfect circle canvas */
+            width: min(90vw, 450px);
+            height: min(90vw, 450px); 
+            margin: 0 auto;
+        }
+
+        /* The canvas itself (the rotating element) */
+        .roleta-canvas {
+            display: block;
+            border-radius: 50%;
+            border: var(--wheel-border-size) solid var(--color-dark-gray); 
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            /* Keep transition for SPIN only (set to 0s for instant reset in JS) */
+            transition: transform 0s ease-out; 
+            touch-action: none;
+        }
+
+        /* The ARROW POINTER */
+        .pointer {
+            position: absolute;
+            top: calc(23px - var(--wheel-border-size)); /* Position above the border */
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 0;
+            border-left: 15px solid transparent;
+            border-right: 15px solid transparent;
+            border-top: 30px solid var(--color-primary-red); /* Red color */
+            z-index: 10;
+            filter: drop-shadow(0 0 5px rgba(0, 0, 0, 0.5));
+        }
+        
+        /* Fullscreen modal styling */
+        #fullscreen-roleta {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 50;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        #fullscreen-canvas {
+            width: min(95vh, 95vw);
+            height: min(95vh, 95vw);
+            border-width: 20px;
+	    border-color:gray;
+        }
+        
+        /* Pointer in fullscreen mode */
+        #fullscreen-roleta .pointer {
+            top: 15px; /* Adjust for larger fullscreen border */
+        }
+        
+        /* Custom scrollbar for lists */
+        .custom-scroll::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scroll::-webkit-scrollbar-thumb {
+            background: #9ca3af;
+            border-radius: 3px;
+        }
+        
+        /* Styles for the new countdown display */
+        #pre-spin-countdown-display {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 15;
+            color: var(--color-primary-red);
+            font-size: 72px; /* Large font size */
+            font-weight: 800;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+        }
+
+    </style>
+</head>
+<body class="p-4 md:p-8 min-h-screen">
+    <div class="max-w-6xl mx-auto">
+        <h1 class="text-3xl font-extrabold text-center text-red-600 mb-6 tracking-tight"><a href="../Roleta - EXPERIMENT.html" style="color:Blue;"title="Minor Prize">⯇</a>THPAL MAJOR PRIZE RAFFLE</h1>
+        
+        <div class="flex justify-center mb-6">
+            <button id="tab-wheel" onclick="showTab('wheel')" class="px-6 py-2 rounded-l-lg font-semibold text-white bg-red-600 hover:bg-red-700 transition duration-150">Roleta</button>
+            <button id="tab-results" onclick="showTab('results')" class="px-6 py-2 rounded-r-lg font-semibold text-gray-700 bg-gray-200 hover:bg-gray-300 transition duration-150">History</button>
+        </div>
+
+        <div id="tab-content-wheel" class="tab-content space-y-6 relative">
+            
+            <button onclick="toggleSettingsSidebar()" class="absolute top-0 right-0 p-3 bg-gray-200 hover:bg-gray-300 rounded-full text-gray-700 z-10 shadow-md transition duration-150">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37a1.724 1.724 0 002.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+            </button>
+            
+            <div id="wheel-container" class="relative">
+                <div class="pointer"></div>
+                <canvas id="roleta-canvas" class="roleta-canvas" width="400" height="400"></canvas>
+                <p id="pre-spin-countdown-display" class="hidden"></p>
+            </div>
+            
+            <div class="text-center space-y-4">
+                <p id="message-box" class="text-lg font-bold text-gray-700 h-6">Click the wheel to select a winner!</p>
+                <div class="flex flex-wrap justify-center items-center space-x-4">
+                    <!-- Full Screen Button as Floating Icon -->
+                    <button onclick="toggleFullscreen(true)" class="p-3 bg-red-600 hover:bg-red-700 text-white rounded-full shadow-lg transition duration-150" title="Go Full Screen">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5v-4m0 0h-4m4 0l-5-5"></path></svg>
+                    </button>
+                    <p id="countdown-timer" class="text-lg font-bold text-blue-600 hidden"></p> 
+                    <button id="remove-winner-btn" class="bg-yellow-500 hover:bg-yellow-600 text-white font-semibold py-2 px-6 rounded-lg shadow-lg transition duration-150 hidden">
+                        Remove Participant Now
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div id="tab-content-results" class="tab-content hidden space-y-4 bg-white p-6 rounded-xl shadow-lg">
+            <h2 class="text-2xl font-bold text-gray-800 border-b pb-2 mb-4">THPAL EMPLOYEES <span style="color:#eee;padding:.5%;Background:#D00;cursor:pointer;">MAJOR</span> WINNER RECORD</h2>
+
+            <div class="flex justify-around bg-gray-100 p-3 rounded-lg border border-gray-200 mb-4">
+                <div class="text-center">
+                    <p class="text-xs font-medium text-gray-500">Available Participants</p>
+                    <p id="active-participants-count" class="text-2xl font-extrabold text-blue-600">0</p>
+                </div>
+                <div class="text-center">
+                    <p class="text-xs font-medium text-gray-500">Total Winners Picked</p>
+                    <p id="total-spins-count" class="text-2xl font-extrabold text-purple-600">0</p>
+                </div>
+                <div class="text-center">
+                    <p class="text-xs font-medium text-gray-500">Prize Claimed</p>
+                    <p id="claimed-prizes-count" class="text-2xl font-extrabold text-green-600">0</p>
+                </div>
+                <div class="text-center">
+                     <p class="text-xs font-medium text-gray-500">Prize Unclaimed</p>
+                    <p id="unclaimed-prizes-count" class="text-2xl font-extrabold text-red-600">0</p>
+                </div>
+            </div>
+            
+            <div class="mb-4 relative">
+                <input type="text" id="history-search-input" onkeyup="filterResults()" 
+                       placeholder="Search by Winner or Department..."
+                       class="w-full border-gray-300 rounded-lg shadow-sm focus:border-red-500 focus:ring focus:ring-red-200 focus:ring-opacity-50 p-3 pl-10 text-lg">
+                <svg class="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+            </div>
+            
+            <div class="flex justify-end space-x-3">
+                <button onclick="exportData()" class="bg-gray-500 hover:bg-gray-600 text-white font-semibold py-2 px-4 rounded-lg transition duration-150 flex items-center">
+                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                    Export Data
+                </button>
+                <button onclick="document.getElementById('import-file').click()" class="bg-gray-500 hover:bg-gray-600 text-white font-semibold py-2 px-4 rounded-lg transition duration-150 flex items-center">
+                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path></svg>
+                    Import Data
+                </button>
+                <input type="file" id="import-file" accept=".json" class="hidden" onchange="importData(event)">
+            </div>
+            
+            <div class="max-h-96 overflow-y-auto custom-scroll">
+                <table id="results-table" class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-gray-50 sticky top-0">
+                        <tr>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">#</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Winner Name</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Prize Won</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Department</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Claimed?</th> 
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="results-body" class="bg-white divide-y divide-gray-200">
+                        </tbody>
+                </table>
+            </div>
+            <button onclick="clearResults()" class="mt-4 bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded-lg transition duration-150">
+                Clear History
+            </button>
+        </div>
+
+    </div>
+    
+    <div id="backdrop" onclick="closeSettingsSidebar()" class="hidden fixed inset-0 bg-gray-900 bg-opacity-50 z-30 transition-opacity duration-300"></div>
+
+    <div id="settings-sidebar" class="fixed inset-y-0 right-0 w-80 md:w-96 max-w-full z-40 bg-white shadow-2xl transition-transform duration-300 transform translate-x-full overflow-y-auto p-6 space-y-6">
+        <div class="flex justify-between items-center border-b pb-2 mb-4">
+             <h2 class="text-2xl font-bold text-gray-800">Raffle Setup</h2>
+             <button onclick="closeSettingsSidebar()" class="text-gray-400 hover:text-gray-600 transition">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
+        </div>
+
+        <div>
+            <label for="names-input" class="block text-sm font-medium text-gray-700 mb-2">Participant Names (One per line)</label>
+            <textarea id="names-input" rows="12" class="w-full border-gray-300 rounded-lg shadow-sm focus:border-red-500 focus:ring focus:ring-red-200 focus:ring-opacity-50 p-3" placeholder="Juan Dela Cruz - IT&#10;Maria Santos - Admin&#10;Pedro Reyes - Production"></textarea>
+            <div class="flex flex-wrap justify-start gap-2 mt-3">
+                <button onclick="updatePrizes()" class="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg transition duration-150 text-sm">
+                    Update Participants
+                </button>
+                 <button onclick="shufflePrizes()" class="bg-purple-500 hover:bg-purple-600 text-white font-semibold py-2 px-4 rounded-lg transition duration-150 text-sm">
+                    Shuffle Participants
+                </button>
+                 <button onclick="clearNames()" class="bg-red-500 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded-lg transition duration-150 text-sm">
+                    Clear All Participants
+                </button>
+                 <button onclick="exportPrizes()" class="bg-green-500 hover:bg-green-600 text-white font-semibold py-2 px-4 rounded-lg transition duration-150 text-sm">
+                    Export Participant List
+                </button>
+                 <button onclick="document.getElementById('import-prizes-file').click()" class="bg-orange-500 hover:bg-orange-600 text-white font-semibold py-2 px-4 rounded-lg transition duration-150 text-sm">
+                    Import Participant List
+                </button>
+                <input type="file" id="import-prizes-file" accept=".json" class="hidden" onchange="importPrizesFromSidebar(event)">
+            </div>
+            <div class="mt-6 border-t pt-4">
+                <label for="major-prizes-input" class="block text-sm font-medium text-gray-700 mb-2">Current Major Prize (One per line)</label>
+                <textarea id="major-prizes-input" rows="6" class="w-full border-gray-300 rounded-lg shadow-sm focus:border-red-500 focus:ring focus:ring-red-200 focus:ring-opacity-50 p-3" placeholder="Prize Name | Image Link (Optional)&#10;Major Cash Prize 25k | https://example.com/image.jpg&#10;Second Prize - 10k |"></textarea>
+                <div class="flex flex-wrap justify-start gap-2 mt-3">
+                    <button onclick="updateMajorPrizes()" class="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg transition duration-150 text-sm">
+                        Update Major Prizes
+                    </button>
+                </div>
+                <p class="text-xs text-gray-500 mt-2">Enter the prize name, optionally followed by "|" and an image link. The **first** prize in the list will be used for the next spin.</p>
+                <p class="text-xs font-bold text-gray-700 mt-2">Next Prize to be Awarded: <span id="next-major-prize-display" class="text-red-600 font-extrabold">N/A</span></p>
+            </div>
+            </div>
+
+        <div class="pt-4 border-t">
+            <label for="spin-duration-input" class="block text-sm font-medium text-gray-700 mb-2">Spin Duration (Seconds)</label>
+            <input type="number" id="spin-duration-input" min="1" max="10" value="3" onchange="updateSpinDuration(this.value)" 
+                   class="w-full border-gray-300 rounded-lg shadow-sm focus:border-red-500 focus:ring focus:ring-red-200 focus:ring-opacity-50 p-3 text-lg font-bold">
+           <p class="text-xs text-gray-500 mt-2">The length of time the wheel will spin (1-10 seconds).</p>
+        </div>
+    </div>
+
+    <div id="fullscreen-roleta" class="hidden fixed top-0 left-0 w-full h-full bg-black bg-opacity-95 z-50 flex flex-col justify-center items-center">
+        
+        <!-- Floating Controls (Exit and Shuffle) -->
+        <div class="absolute top-4 right-4 flex flex-col space-y-4">
+            <!-- Exit Full Screen Icon -->
+            <button onclick="toggleFullscreen(false)" class="p-4 bg-white text-gray-800 rounded-full shadow-xl hover:bg-gray-200 transition duration-150" title="Exit Full Screen">
+                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+            </button>
+            <!-- Shuffle Button Icon -->
+            <button onclick="shufflePrizes()" class="p-4 bg-purple-500 text-white rounded-full shadow-xl hover:bg-purple-600 transition duration-150" title="Shuffle Participants">
+                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"></path></svg>
+            </button>
+        </div>
+        
+        <div class="relative">
+             <div class="pointer"></div>
+            <canvas id="fullscreen-canvas" class="roleta-canvas" width="800" height="800"></canvas>
+            <p id="fullscreen-pre-spin-countdown-display" class="hidden" style="font-size: 144px; font-weight: 800; color: #ef4444; text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5); position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 15;"></p>
+        </div>
+    </div>
+
+    <div id="winner-modal" class="hidden fixed inset-0 bg-gray-900 bg-opacity-75 z-[60] flex items-center justify-center transition-opacity duration-300" aria-modal="true" role="dialog">
+        <!-- UPDATED MODAL STRUCTURE FOR IMAGE -->
+        <div class="bg-white rounded-2xl shadow-2xl p-8 max-w-2xl w-full text-center flex">
+            
+            <!-- Prize Image Container (Left Side) -->
+            <div id="modal-image-container" class="w-1/3 flex flex-col items-center justify-center p-4 border-r border-gray-200">
+                 <svg class="h-20 w-20 text-gray-400 mb-2" id="modal-image-placeholder" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-12 5h4m-4 0v-4m-7-5a9 9 0 1118 0 9 9 0 01-18 0z"></path></svg>
+                <img id="modal-prize-image" class="max-h-full max-w-full object-contain rounded-lg shadow-md hidden" style="width: 150%; height: auto;" src="" alt="Prize Image">
+            </div>
+            
+            <!-- Winner Details Container (Right Side) -->
+            <div class="w-2/3 text-center pl-4">
+               
+		<center><img src="Thpal Official Logo.png" width="30%" height="auto"></center>
+
+                <h3 class="mt-2 text-2xl font-extrabold text-gray-900">CONGRATULATIONS!</h3>
+                <p class="mt-2 text-3xl font-black text-red-600" id="modal-winner-name">WINNER NAME</p>
+                <p class="mt-2 text-xl font-semibold text-gray-700">Has won the amazing prize:</p>
+                <p class="text-4xl font-extrabold text-blue-600 mt-2" id="modal-prize-name">CURRENT PRIZE NAME</p>
+                <p class="text-xl font-bold text-gray-500 mt-2" id="modal-winner-dept">DEPARTMENT</p>
+                
+                <p id="modal-countdown-display" class="mt-6 text-lg font-bold text-gray-600 hidden">
+                    </p>
+                <button onclick="closeWinnerModalAndCleanUp(true)" class="mt-6 w-full inline-flex justify-center rounded-lg border border-transparent shadow-sm px-6 py-3 bg-red-600 text-lg font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition duration-150">
+                    Awesome! (Close)
+                </button>
+            </div>
+        </div>
+        <!-- END UPDATED MODAL STRUCTURE -->
+    </div>
+    
+    <div id="history-modal" class="hidden fixed inset-0 bg-gray-900 bg-opacity-75 z-[70] flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl shadow-2xl p-6 max-w-md w-full">
+            <h3 class="text-2xl font-extrabold text-gray-900 border-b pb-2 mb-4" id="history-modal-title">View Winner Details</h3>
+            
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">Winner Name</label>
+                    <input type="text" id="history-name-input" class="mt-1 block w-full border-gray-300 rounded-lg p-2" disabled>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">Prize Won</label>
+                    <input type="text" id="history-prize-input" class="mt-1 block w-full border-gray-300 rounded-lg p-2" disabled>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">Department</label>
+                    <input type="text" id="history-dept-input" class="mt-1 block w-full border-gray-300 rounded-lg p-2" disabled>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">Date Won</label>
+                    <input type="text" id="history-date-input" class="mt-1 block w-full border-gray-300 rounded-lg p-2" disabled>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">Prize Claim Status</label>
+                    <select id="history-claimed-status" class="mt-1 block w-full border-gray-300 rounded-lg p-2" disabled>
+                         <option value="true">Claimed</option>
+                         <option value="false">Unclaimed</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="mt-6 flex justify-end space-x-3">
+                <button onclick="closeHistoryModal()" class="px-4 py-2 bg-gray-200 text-gray-700 font-semibold rounded-lg hover:bg-gray-300 transition">
+                    Close
+                </button>
+                <button id="history-edit-save-btn" onclick="saveHistoryEdit()" class="px-4 py-2 bg-green-600 text-white font-semibold rounded-lg hover:bg-green-700 transition hidden">
+                    Save Changes
+                </button>
+            </div>
+        </div>
+    </div>
+
+
+    <script type="text/javascript">
+        // --- Global Variables ---
+        const mainCanvas = document.getElementById('roleta-canvas');
+        const mainCtx = mainCanvas.getContext('2d');
+        const fullscreenCanvas = document.getElementById('fullscreen-canvas');
+        const fullscreenCtx = fullscreenCanvas.getContext('2d');
+        const preSpinCountdownDisplay = document.getElementById('pre-spin-countdown-display'); 
+        const fullscreenPreSpinCountdownDisplay = document.getElementById('fullscreen-pre-spin-countdown-display'); 
+        
+        const settingsSidebar = document.getElementById('settings-sidebar');
+        const backdrop = document.getElementById('backdrop');
+
+
+        // CONSTANT: Delay for automatic prize removal
+        const REMOVAL_DELAY_SECONDS = 5;
+        const PRE_SPIN_DELAY_SECONDS = 3; // CHANGED FROM 5 TO 3
+
+        let isSpinning = false;
+        let rotation = 0; 
+        let isFullscreen = false;
+        let countdownInterval = null;
+        let preSpinInterval = null; 
+        let lastWinner = { prize: null, index: -1, fullname: null, department: null }; 
+        let timer = 0; 
+        
+        // --- State Management ---
+        let state = {
+            prizes: [], 
+            resultsHistory: [], 
+            spinDuration: 3, 
+            // UPDATED: majorPrizes now stores objects { name, image }
+            majorPrizes: [
+                { name: "Major Cash Prize 25k", image: "" }, 
+                { name: "Second Prize - 10k", image: "" }, 
+                { name: "Third Prize - 5k", image: "" }
+            ], 
+        };
+
+        let currentResultId = null; 
+
+        // --- IndexedDB Setup (Modified DB Name) ---
+        const DB_NAME = 'MajorRaffleDB'; 
+        const DB_VERSION = 1;
+        const STORE_NAME = 'RaffleStore';
+
+        function openDB() {
+            return new Promise((resolve, reject) => {
+                const request = indexedDB.open(DB_NAME, DB_VERSION);
+
+                request.onupgradeneeded = (event) => {
+                    const db = event.target.result;
+                    if (!db.objectStoreNames.contains(STORE_NAME)) {
+                        db.createObjectStore(STORE_NAME);
+                    }
+                };
+
+                request.onsuccess = (event) => {
+                    resolve(event.target.result);
+                };
+
+                request.onerror = (event) => {
+                    console.error("IndexedDB error:", event.target.error);
+                    reject(event.target.error);
+                };
+            });
+        }
+
+        async function saveState() {
+            try {
+                const db = await openDB();
+                const transaction = db.transaction(STORE_NAME, 'readwrite');
+                const store = transaction.objectStore(STORE_NAME);
+                
+                store.put(state.prizes, 'prizes');
+                store.put(state.resultsHistory, 'history');
+                store.put({ spinDuration: state.spinDuration }, 'config');
+                store.put(state.majorPrizes, 'majorPrizes'); 
+
+                await new Promise(resolve => { transaction.oncomplete = resolve; });
+                
+                updateStatsDisplay();
+            } catch (e) {
+                console.error("Failed to save state to IDB:", e);
+            }
+        }
+
+        async function loadState() {
+            try {
+                const db = await openDB();
+                const transaction = db.transaction(STORE_NAME, 'readonly');
+                const store = transaction.objectStore(STORE_NAME);
+
+                const prizesRequest = store.get('prizes');
+                const historyRequest = store.get('history');
+                const configRequest = store.get('config');
+                const majorPrizesRequest = store.get('majorPrizes'); 
+
+                return new Promise((resolve) => {
+                    transaction.oncomplete = () => {
+                        // Load Participants
+                        if (prizesRequest.result && Array.isArray(prizesRequest.result)) {
+                            state.prizes = prizesRequest.result.map(p => p.toString().trim()).filter(p => p.length > 0);
+                        } else {
+                            state.prizes = [];
+                        }
+
+                        // Load History
+                        if (historyRequest.result) {
+                            state.resultsHistory = historyRequest.result;
+                            state.resultsHistory.forEach(r => {
+                                if (typeof r.claimed === 'undefined') r.claimed = true; 
+                                if (typeof r.removed === 'undefined') r.removed = r.claimed; 
+                            });
+                        }
+                        
+                        // Load Config
+                        if (configRequest.result) {
+                            state.spinDuration = parseInt(configRequest.result.spinDuration) || 3; 
+                        }
+                        
+                        // Load Major Prizes (ensure consistency: must be array of objects { name, image })
+                        if (majorPrizesRequest.result && Array.isArray(majorPrizesRequest.result)) {
+                            state.majorPrizes = majorPrizesRequest.result.map(p => {
+                                if (typeof p === 'string') {
+                                    // Handle legacy data stored as strings
+                                    return { name: p.trim(), image: '' };
+                                }
+                                return { 
+                                    name: p.name ? p.name.toString().trim() : 'Unknown Prize', 
+                                    image: p.image ? p.image.toString().trim() : '' 
+                                };
+                            }).filter(p => p.name.length > 0);
+                        } 
+                        
+                        // If state.majorPrizes is still empty/undefined, re-initialize default list if needed, 
+                        // but the initial declaration handles this if IDB is empty.
+
+                        resolve();
+                    };
+                    transaction.onerror = (e) => {
+                         console.error("Failed to load state from IDB:", e);
+                         resolve(); 
+                    }
+                });
+
+            } catch (e) {
+                console.error("Error setting up IDB for load:", e);
+            }
+        }
+
+
+        // --- UI and Settings Functions ---
+
+        window.toggleSettingsSidebar = () => {
+            if (settingsSidebar.classList.contains('translate-x-full')) {
+                openSettingsSidebar();
+            } else {
+                closeSettingsSidebar();
+            }
+        };
+
+        window.openSettingsSidebar = () => {
+            updateSettingsUI(); 
+            settingsSidebar.classList.remove('translate-x-full');
+            backdrop.classList.remove('hidden');
+            showMessage("Raffle Setup is ready.");
+        };
+
+        window.closeSettingsSidebar = () => {
+            settingsSidebar.classList.add('translate-x-full');
+            backdrop.classList.add('hidden');
+            showMessage("Click the wheel to select a winner!"); 
+        };
+
+
+        const updateStatsDisplay = () => {
+            const claimedCount = state.resultsHistory.filter(r => r.claimed).length;
+            const unclaimedCount = state.resultsHistory.filter(r => !r.claimed).length;
+
+            document.getElementById('active-participants-count').textContent = state.prizes.length;
+            document.getElementById('total-spins-count').textContent = state.resultsHistory.length;
+            document.getElementById('claimed-prizes-count').textContent = claimedCount;
+            document.getElementById('unclaimed-prizes-count').textContent = unclaimedCount;
+        };
+
+        window.showTab = (tabName) => {
+            const tabs = ['wheel', 'results'];
+            const buttonMap = {
+                'wheel': 'Roleta',
+                'results': 'History'
+            };
+            
+            tabs.forEach(tab => {
+                document.getElementById(`tab-content-${tab}`).classList.add('hidden');
+                const tabButton = document.getElementById(`tab-${tab}`);
+                tabButton.classList.remove('bg-red-600', 'text-white');
+                tabButton.classList.add('bg-gray-200', 'text-gray-700');
+            });
+
+            closeSettingsSidebar();
+
+            document.getElementById(`tab-content-${tabName}`).classList.remove('hidden');
+            const selectedButton = document.getElementById(`tab-${tabName}`);
+            selectedButton.classList.add('bg-red-600', 'text-white');
+            selectedButton.classList.remove('bg-gray-200', 'text-gray-700');
+
+            showMessage(`Switching to ${buttonMap[tabName]}...`); 
+            
+            setTimeout(() => { 
+                if (tabName === 'results') {
+                    updateStatsDisplay(); 
+                    renderResults(); 
+                    showMessage("Viewing Winner History.");
+                } else { 
+                    showMessage("Click the wheel to select a winner!"); 
+                }
+            }, 300); 
+        };
+
+        const updatePrizeListUI = () => {
+             document.getElementById('names-input').value = state.prizes.join('\n');
+             
+             // --- RESET ROTATION VISUALS ON PRIZE UPDATE ---
+             rotation = 0;
+             mainCanvas.style.transition = 'none'; 
+             fullscreenCanvas.style.transition = 'none';
+             mainCanvas.style.transform = 'rotate(0deg)';
+             fullscreenCanvas.style.transform = 'rotate(0deg)';
+             mainCanvas.style.transition = 'transform 0s ease-out'; 
+             fullscreenCanvas.style.transition = 'transform 0s ease-out';
+             // ---------------------------------------------
+
+             drawWheel(mainCtx, mainCanvas.width, mainCanvas.height);
+             drawWheel(fullscreenCtx, fullscreenCanvas.width, fullscreenCanvas.height);
+             updateStatsDisplay();
+        }
+
+        window.updatePrizes = async () => {
+            const namesInput = document.getElementById('names-input').value;
+            state.prizes = namesInput.split('\n').map(n => n.trim()).filter(n => n.length > 0);
+            
+            lastWinner = { prize: null, index: -1, fullname: null, department: null }; 
+
+            await saveState();
+            updatePrizeListUI(); 
+            showMessage(`Participant list updated successfully! ${state.prizes.length} available.`);
+        };
+        
+        window.shufflePrizes = async () => {
+            if (state.prizes.length === 0) {
+                 showMessage("No participants to shuffle.");
+                 return;
+            }
+            
+            for (let i = state.prizes.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [state.prizes[i], state.prizes[j]] = [state.prizes[j], state.prizes[i]];
+            }
+            
+            await saveState();
+            updatePrizeListUI();
+            showMessage(`Participant list shuffled!`);
+        };
+
+
+        window.clearNames = async () => {
+            if (confirm("Are you sure you want to clear ALL participant names?")) { 
+                state.prizes = [];
+                await saveState();
+                updatePrizeListUI();
+                showMessage("All participants cleared.");
+            }
+        };
+
+        window.clearResults = async () => {
+            if (confirm("Are you sure you want to clear the entire Winner History? This cannot be undone.")) {
+                state.resultsHistory = [];
+                await saveState();
+                renderResults();
+                showMessage("Winner History cleared.");
+            }
+        };
+        
+        window.updateSpinDuration = async (value) => {
+            const duration = parseInt(value, 10);
+            if (isNaN(duration) || duration < 1 || duration > 10) {
+                alert("Please enter a valid spin duration between 1 and 10 seconds.");
+                document.getElementById('spin-duration-input').value = state.spinDuration;
+                return;
+            }
+            state.spinDuration = duration;
+            await saveState();
+            showMessage(`Spin duration set to ${duration} seconds.`);
+        };
+        
+        // UPDATED FUNCTION: Parse Prize Name | Image Link
+        window.updateMajorPrizes = async () => {
+            const prizesInput = document.getElementById('major-prizes-input').value;
+            
+            state.majorPrizes = prizesInput.split('\n')
+                .map(line => line.trim())
+                .filter(line => line.length > 0)
+                .map(line => {
+                    const parts = line.split('|').map(p => p.trim());
+                    return {
+                        name: parts[0] || 'Unknown Prize',
+                        image: parts[1] || '' // The second part is the image URL
+                    };
+                });
+            
+            await saveState();
+            updateSettingsUI(); 
+            showMessage(`Major Prize list updated successfully! ${state.majorPrizes.length} available.`);
+        };
+
+        const updateSettingsUI = () => {
+            document.getElementById('names-input').value = state.prizes.join('\n');
+            document.getElementById('spin-duration-input').value = state.spinDuration;
+            
+            // UPDATED: Display major prizes in the sidebar textarea
+            document.getElementById('major-prizes-input').value = state.majorPrizes.map(p => `${p.name} | ${p.image}`).join('\n');
+            
+            document.getElementById('next-major-prize-display').textContent = 
+                state.majorPrizes.length > 0 ? state.majorPrizes[0].name : "No Prizes Left!";
+        };
+
+        // --- Drawing and Spin Logic ---
+
+        const COLORS = ["#FF5733", "#33FF57", "#3357FF", "#FF33F5", "#33FFF5", "#FFC300"];
+
+        const drawWheel = (ctx, width, height) => {
+            const participants = state.prizes; 
+            const numSectors = participants.length;
+            const arc = 2 * Math.PI / numSectors;
+            const radius = Math.min(width, height) / 2 - (width === 800 ? 20 : 12);
+
+            ctx.clearRect(0, 0, width, height);
+
+            ctx.save();
+            ctx.translate(width / 2, height / 2);
+            ctx.rotate(rotation);
+
+            if (numSectors === 0) {
+                ctx.fillStyle = "#ccc";
+                ctx.beginPath();
+                ctx.arc(0, 0, radius, 0, 2 * Math.PI);
+                ctx.fill();
+
+                ctx.fillStyle = "#333";
+                ctx.font = "bold 20px Inter";
+                ctx.textAlign = "center";
+                ctx.textBaseline = "middle";
+                ctx.fillText("Add Participants in Setup Sidebar!", 0, 0);
+            } else {
+                for (let i = 0; i < numSectors; i++) {
+                    const startAngle = i * arc;
+                    const endAngle = (i + 1) * arc;
+                    const colorIndex = i % COLORS.length;
+                    
+                    // Draw Sector
+                    ctx.fillStyle = COLORS[colorIndex];
+                    ctx.beginPath();
+                    ctx.arc(0, 0, radius, startAngle, endAngle);
+                    ctx.lineTo(0, 0);
+                    ctx.fill();
+
+                    // Draw Text (Participant Name)
+                    ctx.save();
+                    ctx.rotate(startAngle + arc / 2);
+                    ctx.textAlign = "right";
+                    ctx.fillStyle = (colorIndex === 0 || colorIndex === 5) ? "#000" : "#fff"; 
+                    let fontSize = Math.min(16, Math.floor(400 / (numSectors * 1.5))); 
+                    if (width === 800) fontSize *= 2; 
+                    ctx.font = `bold ${fontSize}px Inter`;
+                    
+                    let participantText = participants[i].toUpperCase();
+                    // Split Name - Dept and only show the Name part on the wheel
+                    const parts = participantText.split('-');
+                    participantText = parts[0].trim(); 
+
+                    if (participantText.length > 15) {
+                        participantText = participantText.substring(0, 15) + '...';
+                    }
+
+                    ctx.fillText(participantText, radius * 0.9, 0); 
+
+                    ctx.restore();
+                }
+            }
+
+            ctx.restore();
+
+            // Draw center circle (pin)
+            ctx.fillStyle = "#333";
+            ctx.beginPath();
+            ctx.arc(width / 2, height / 2, width === 800 ? 20 : 10, 0, 2 * Math.PI);
+            ctx.fill();
+        };
+        
+        // Start the 5-second countdown
+        window.startPreSpinCountdown = (isFullscreenSpin) => {
+            if (isSpinning) {
+                 return; 
+            }
+            
+            if (state.prizes.length === 0) {
+                 showMessage("Please add participants using the Setup sidebar first!");
+                 return;
+            }
+
+            isSpinning = true; 
+            let count = PRE_SPIN_DELAY_SECONDS;
+
+            const countdownElement = isFullscreenSpin ? fullscreenPreSpinCountdownDisplay : preSpinCountdownDisplay;
+            
+            document.getElementById('message-box').classList.add('hidden');
+            countdownElement.classList.remove('hidden');
+
+            const updateCountdown = () => {
+                countdownElement.textContent = count;
+                if (count <= 0) {
+                    clearInterval(preSpinInterval);
+                    countdownElement.classList.add('hidden');
+                    document.getElementById('message-box').classList.remove('hidden');
+                    spinWheel(isFullscreenSpin); 
+                }
+                count--;
+            };
+
+            updateCountdown(); 
+            preSpinInterval = setInterval(updateCountdown, 1000);
+            showMessage(`Spin starting in ${PRE_SPIN_DELAY_SECONDS} seconds...`);
+        };
+
+
+        const spinWheel = (isFullscreenSpin) => {
+            if (state.prizes.length === 0) {
+                 isSpinning = false;
+                 return;
+            }
+            
+            showMessage(`Spinning for the winner...`);
+
+            const actualDuration = state.spinDuration * 1000;
+            const canvasToSpin = isFullscreenSpin ? fullscreenCanvas : mainCanvas;
+
+            const numSectors = state.prizes.length;
+            const arc = 2 * Math.PI / numSectors;
+            const targetIndex = Math.floor(Math.random() * numSectors);
+
+            const targetAngle = (targetIndex * arc) + (arc / 2);
+            const requiredRotation = (3 * Math.PI / 2) - targetAngle; 
+
+            const fullRotations = (Math.floor(Math.random() * 6) + 5) * 2 * Math.PI; 
+            const finalRotation = requiredRotation + fullRotations;
+            
+            canvasToSpin.style.transition = `transform ${actualDuration / 1000}s cubic-bezier(0.25, 0.1, 0.0, 1.0)`;
+            canvasToSpin.style.transform = `rotate(${finalRotation}rad)`;
+            
+            rotation = finalRotation % (2 * Math.PI); 
+
+            setTimeout(() => {
+                isSpinning = false; 
+                canvasToSpin.style.transition = 'none';
+                
+                // --- Winning Index Recalculation ---
+                let normalizedRotation = finalRotation % (2 * Math.PI);
+                if (normalizedRotation < 0) normalizedRotation += 2 * Math.PI;
+                let effectiveAngle = (2 * Math.PI) + (3 * Math.PI / 2) - normalizedRotation;
+                effectiveAngle %= (2 * Math.PI);
+                const winningIndex = Math.floor(effectiveAngle / arc);
+                // --- END Recalculation ---
+                
+                const participantWon = state.prizes[winningIndex];
+
+                if (participantWon) {
+                    let [fullname, department] = participantWon.split('-').map(s => s.trim());
+                    if (!department) department = 'N/A';
+                    
+                    const existingEntry = state.resultsHistory.find(r => r.name.toLowerCase() === fullname.toLowerCase());
+                    if (existingEntry && existingEntry.removed) { 
+                        alert(`Winner already drawn and prize claimed! Rerunning the spin automatically. (The system will ensure the duplicate name is removed for the next spin.)`);
+                        state.prizes.splice(winningIndex, 1);
+                        drawWheel(mainCtx, mainCanvas.width, mainCanvas.height);
+                        drawWheel(fullscreenCtx, fullscreenCanvas.width, fullscreenCanvas.height);
+                        isSpinning = false; 
+                        return startPreSpinCountdown(isFullscreenSpin);
+                    }
+
+
+                    // UPDATED: Get the current Major Prize object {name, image}
+                    const majorPrize = state.majorPrizes.length > 0 
+                                     ? state.majorPrizes[0] 
+                                     : { name: 'Undetermined Major Prize (No Prizes Left)', image: '' };
+                    
+                    showMessage(`Winner: ${fullname} has been selected!`);
+                    
+                    lastWinner = { 
+                        prize: participantWon,
+                        index: winningIndex, 
+                        fullname: fullname,
+                        department: department 
+                    };
+                    
+                    // Pass the prize OBJECT to the announcement
+                    showWinnerAnnouncement(fullname, department, majorPrize, winningIndex);
+                    launchConfetti(); 
+                } else {
+                    showMessage("Spin finished, but could not determine winner.");
+                }
+
+            }, actualDuration + 50); 
+        };
+
+
+        // --- Winner Pop-up and Countdown Logic ---
+
+        function launchConfetti() {
+            const count = 200;
+            const defaults = { origin: { y: 0.7 } };
+            function fire(particleRatio, opts) {
+                confetti(Object.assign({}, defaults, opts, {
+                    particleCount: Math.floor(count * particleRatio)
+                }));
+            }
+            fire(0.25, { spread: 26, startVelocity: 55, });
+            fire(0.2, { spread: 60, });
+            fire(0.35, { spread: 100, decay: 0.91, scalar: 0.8 });
+            fire(0.1, { spread: 120, startVelocity: 25, decay: 0.92, scalar: 1.2 });
+            fire(0.1, { spread: 120, startVelocity: 45, });
+        }
+
+        const startCountdown = () => {
+            timer = REMOVAL_DELAY_SECONDS;
+            const timerDisplay = document.getElementById('countdown-timer');
+            document.getElementById('remove-winner-btn').textContent = "Remove Participant Now"; 
+            document.getElementById('remove-winner-btn').classList.remove('hidden'); 
+            timerDisplay.classList.remove('hidden'); 
+            timerDisplay.textContent = `Participant auto-removes in ${timer} seconds...`;
+            
+            document.getElementById('modal-countdown-display').textContent = timerDisplay.textContent;
+            document.getElementById('modal-countdown-display').classList.remove('hidden');
+
+            clearInterval(countdownInterval); 
+            countdownInterval = setInterval(() => {
+                timer--;
+                if (timer > 0) {
+                    timerDisplay.textContent = `Participant auto-removes in ${timer} seconds...`;
+                    document.getElementById('modal-countdown-display').textContent = timerDisplay.textContent; 
+                } else {
+                    clearInterval(countdownInterval);
+                    timerDisplay.textContent = `Participant removed from the Wheel!`;
+                    document.getElementById('modal-countdown-display').textContent = timerDisplay.textContent; 
+                    
+                    if (lastWinner.prize && lastWinner.index !== -1) {
+                         removeWinnerFromWheel(lastWinner.prize, lastWinner.index, true); 
+                    }
+                }
+            }, 1000);
+        };
+
+
+        // Function to manually or automatically remove the participant
+        window.removeWinnerFromWheel = async (participantName, winningIndex, isAutoRemoval = false) => {
+            if (winningIndex >= 0 && winningIndex < state.prizes.length && state.prizes[winningIndex] === participantName) {
+                const removedParticipant = state.prizes.splice(winningIndex, 1)[0];
+                
+                const latestHistoryEntry = state.resultsHistory.find(r => r.name === lastWinner.fullname && !r.removed);
+                if (latestHistoryEntry) {
+                    latestHistoryEntry.removed = true;
+                    if (!isAutoRemoval) {
+                         latestHistoryEntry.claimed = true; 
+                    }
+                }
+                
+                await saveState(); 
+                updatePrizeListUI();
+                showMessage(`Participant "${lastWinner.fullname}" has been removed (TAKEN).`);
+            } else if (!isAutoRemoval) {
+                 showMessage(`Participant "${lastWinner.fullname}" was already removed or list was updated.`);
+            }
+
+            if (!isAutoRemoval) {
+                document.getElementById('remove-winner-btn').classList.add('hidden');
+                document.getElementById('countdown-timer').classList.add('hidden');
+                clearInterval(countdownInterval);
+                
+                lastWinner = { prize: null, index: -1, fullname: null, department: null }; 
+            }
+        }
+
+
+        // UPDATED: Accepts prize object {name, image}
+        async function showWinnerAnnouncement(winnerName, winnerDept, prizeObj, winningIndex) {
+            const now = new Date();
+            // Record result history, storing only the prize NAME as a string
+            await addResult(winnerName, winnerDept, prizeObj.name, now, winningIndex); 
+
+            // Display modal
+            document.getElementById('modal-winner-name').textContent = winnerName;
+            document.getElementById('modal-prize-name').textContent = prizeObj.name; 
+            document.getElementById('modal-winner-dept').textContent = `Department: ${winnerDept}`;
+            
+            const imgElement = document.getElementById('modal-prize-image');
+            const placeholderElement = document.getElementById('modal-image-placeholder');
+            
+            if (prizeObj.image) {
+                imgElement.src = prizeObj.image;
+                imgElement.classList.remove('hidden');
+                placeholderElement.classList.add('hidden');
+            } else {
+                imgElement.src = '';
+                imgElement.classList.add('hidden');
+                placeholderElement.classList.remove('hidden');
+            }
+
+            document.getElementById('winner-modal').classList.remove('hidden');
+            
+            const removeButton = document.getElementById('remove-winner-btn');
+            removeButton.onclick = () => {
+                removeWinnerFromWheel(state.prizes[winningIndex] || lastWinner.prize, winningIndex, false); 
+                window.closeWinnerModalAndCleanUp(false); 
+            };
+
+            startCountdown();
+        }
+
+        window.closeWinnerModalAndCleanUp = async (forceClaimAndRemove) => {
+            document.getElementById('winner-modal').classList.add('hidden');
+            document.getElementById('remove-winner-btn').classList.add('hidden');
+            document.getElementById('countdown-timer').classList.add('hidden'); 
+            document.getElementById('modal-countdown-display').classList.add('hidden'); 
+            clearInterval(countdownInterval);
+            
+            // --- INSTANT RESET WHEEL VISUALS ---
+            rotation = 0;
+            
+            mainCanvas.style.transition = 'none'; 
+            fullscreenCanvas.style.transition = 'none';
+            
+            mainCanvas.style.transform = 'rotate(0deg)';
+            fullscreenCanvas.style.transform = 'rotate(0deg)';
+            
+            drawWheel(mainCtx, mainCanvas.width, mainCanvas.height);
+            drawWheel(fullscreenCtx, fullscreenCanvas.width, fullscreenCanvas.height);
+
+            mainCanvas.style.transition = 'transform 0s ease-out'; 
+            fullscreenCanvas.style.transition = 'transform 0s ease-out';
+            // ----------------------------------------
+            
+            if (forceClaimAndRemove && lastWinner.prize) {
+                const latestHistoryEntry = state.resultsHistory.find(r => r.name === lastWinner.fullname);
+                
+                if (latestHistoryEntry && !latestHistoryEntry.claimed) {
+                    latestHistoryEntry.claimed = true;
+                    
+                    if (lastWinner.index >= 0 && lastWinner.index < state.prizes.length && state.prizes[lastWinner.index] === lastWinner.prize) {
+                         latestHistoryEntry.removed = true;
+                         state.prizes.splice(lastWinner.index, 1);
+                         updatePrizeListUI();
+                         showMessage(`Prize for ${lastWinner.fullname} claimed and participant removed.`);
+                    } else if (!latestHistoryEntry.removed) {
+                        latestHistoryEntry.removed = true;
+                        saveState(); 
+                        renderResults();
+                        showMessage(`Prize for ${lastWinner.fullname} claimed.`);
+                    }
+                    
+                    // LOGIC: Remove the awarded prize from the majorPrizes list
+                    if (state.majorPrizes.length > 0) {
+                        // Check if the recorded prize name matches the name of the next prize in the sequence
+                        if(latestHistoryEntry.prize.trim() === state.majorPrizes[0].name.trim()) {
+                            state.majorPrizes.shift(); // Remove the first (awarded) prize object
+                            await saveState(); 
+                            updateSettingsUI(); 
+                            showMessage(`Next major prize set to: ${state.majorPrizes.length > 0 ? state.majorPrizes[0].name : 'None'}.`);
+                        }
+                    }
+
+                    await saveState(); 
+                    renderResults();
+                }
+            }
+            
+            lastWinner = { prize: null, index: -1, fullname: null, department: null }; 
+
+            showMessage("Preparing for the next spin...");
+            setTimeout(() => {
+                 showMessage("Click the wheel to select a winner!");
+            }, 500); 
+        };
+
+        function showMessage(msg) {
+            document.getElementById('message-box').textContent = msg;
+        }
+
+
+        // --- Results History CRUD Logic ---
+
+        function generateUniqueId() {
+            return Date.now().toString(36) + Math.random().toString(36).substring(2, 5);
+        }
+
+        // Add result: name, department, prize (this is now the major prize NAME), date, winningIndex
+        async function addResult(name, department, prize, date, winningIndex) {
+            const dateFormatted = date.toLocaleDateString('en-US', {
+                year: 'numeric', month: 'short', day: 'numeric',
+                hour: '2-digit', minute: '2-digit', second: '2-digit'
+            });
+
+            const newResult = {
+                id: generateUniqueId(),
+                name: name, 
+                department: department, 
+                prize: prize, // Stored as STRING NAME
+                date: dateFormatted,
+                timestamp: date.getTime(),
+                removed: false, 
+                claimed: false, 
+                winningIndex: winningIndex 
+            };
+
+            state.resultsHistory.unshift(newResult); 
+            await saveState(); 
+            renderResults();
+        }
+
+        window.toggleClaimed = async (id) => {
+             const index = state.resultsHistory.findIndex(r => r.id === id);
+             if (index !== -1) {
+                 const currentResult = state.resultsHistory[index];
+                 currentResult.claimed = !currentResult.claimed; 
+                 
+                 if (currentResult.claimed) {
+                      currentResult.removed = true; 
+                 } else {
+                      currentResult.removed = false;
+                 }
+                 
+                 await saveState(); 
+                 renderResults();
+             }
+        };
+
+        window.filterResults = () => {
+             const searchTerm = document.getElementById('history-search-input').value.toLowerCase().trim();
+             renderResults(searchTerm);
+        };
+
+        const renderResults = (searchTerm = '') => {
+            const resultsBody = document.getElementById('results-body');
+            resultsBody.innerHTML = ''; 
+            
+            const sortedHistory = [...state.resultsHistory].sort((a, b) => b.timestamp - a.timestamp);
+            
+            const filteredHistory = sortedHistory.filter(result => {
+                if (searchTerm === '') return true; 
+                
+                const searchString = `${result.name.toLowerCase()} ${result.department.toLowerCase()}`;
+                return searchString.includes(searchTerm);
+            });
+
+
+            if (filteredHistory.length === 0) {
+                resultsBody.innerHTML = '<tr><td colspan="7" class="py-4 text-center text-gray-500">No matching winners picked yet.</td></tr>';
+                return;
+            }
+            
+            filteredHistory.forEach((result, index) => {
+                const row = resultsBody.insertRow();
+                let bgColor = '';
+                if (result.claimed) {
+                    bgColor = 'bg-green-50'; 
+                } else if (!result.claimed) {
+                    bgColor = 'bg-yellow-100'; 
+                } else {
+                    bgColor = (index % 2 === 0 ? 'bg-white' : 'bg-gray-50');
+                }
+                row.className = bgColor;
+
+                // # Column 
+                let cell = row.insertCell();
+                cell.className = 'px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-900';
+                const originalIndex = state.resultsHistory.findIndex(r => r.id === result.id);
+                cell.textContent = state.resultsHistory.length - originalIndex; 
+
+                // Name Column 
+                cell = row.insertCell();
+                cell.className = 'px-4 py-3 whitespace-nowrap text-sm text-gray-500 font-bold';
+                cell.textContent = result.name;
+
+                // Prize Won Column
+                cell = row.insertCell();
+                cell.className = 'px-4 py-3 whitespace-nowrap text-sm text-gray-700';
+                cell.innerHTML = `${result.prize}`; 
+
+                // Department Column
+                cell = row.insertCell();
+                cell.className = 'px-4 py-3 whitespace-nowrap text-sm text-gray-500';
+                cell.textContent = result.department;
+
+                // Date Column
+                cell = row.insertCell();
+                cell.className = 'px-4 py-3 whitespace-nowrap text-sm text-gray-500';
+                cell.textContent = result.date;
+
+                // Claimed? Column 
+                cell = row.insertCell();
+                cell.className = 'px-4 py-3 whitespace-nowrap text-sm font-bold';
+                cell.innerHTML = result.claimed 
+                                ? '<span class="text-green-600">YES</span>'
+                                : '<span class="text-red-600">NO</span>'; 
+
+                // Actions Column
+                cell = row.insertCell();
+                cell.className = 'px-4 py-3 whitespace-nowrap text-sm font-medium';
+                
+                const toggleIcon = result.claimed 
+                   ? `
+                    <button onclick="toggleClaimed('${result.id}')" class="text-yellow-600 hover:text-yellow-900 transition p-1 rounded-md hover:bg-yellow-100 group" title="Mark as Unclaimed">
+                         <svg class="w-5 h-5 group-hover:scale-110" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    </button>
+                    `
+                   : `
+                    <button onclick="toggleClaimed('${result.id}')" class="text-green-600 hover:text-green-900 transition p-1 rounded-md hover:bg-green-100 group" title="Mark as Claimed">
+                        <svg class="w-5 h-5 group-hover:scale-110" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    </button>
+                   `;
+
+                cell.innerHTML = `
+                    <div class="space-x-1 flex items-center">
+                        <button onclick="viewResultDetails('${result.id}')" class="text-blue-600 hover:text-blue-900 transition p-1 rounded-md hover:bg-blue-100 group" title="View Details">
+                            <svg class="w-5 h-5 group-hover:scale-110" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
+                        </button>
+                        <button onclick="editResult('${result.id}')" class="text-green-600 hover:text-green-900 transition p-1 rounded-md hover:bg-green-100 group" title="Edit Record">
+                            <svg class="w-5 h-5 group-hover:scale-110" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>
+                        </button>
+                        ${toggleIcon}
+                        <button onclick="deleteResult('${result.id}')" class="text-red-600 hover:text-red-900 transition p-1 rounded-md hover:bg-red-100 group" title="Delete Record">
+                            <svg class="w-5 h-5 group-hover:scale-110" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                        </button>
+                    </div>
+                `;
+            });
+        };
+
+        window.viewResultDetails = (id) => {
+            currentResultId = id;
+            const result = state.resultsHistory.find(r => r.id === id);
+            if (!result) return;
+            
+            document.getElementById('history-modal-title').textContent = "Winner Details";
+            document.getElementById('history-name-input').value = result.name;
+            document.getElementById('history-prize-input').value = result.prize;
+            document.getElementById('history-dept-input').value = result.department; 
+            document.getElementById('history-date-input').value = result.date;
+            document.getElementById('history-claimed-status').value = result.claimed ? 'true' : 'false';
+            
+            document.getElementById('history-name-input').disabled = true;
+            document.getElementById('history-prize-input').disabled = true;
+            document.getElementById('history-dept-input').disabled = true; 
+            document.getElementById('history-claimed-status').disabled = true; 
+            document.getElementById('history-edit-save-btn').classList.add('hidden');
+
+            document.getElementById('history-modal').classList.remove('hidden');
+        };
+
+        window.editResult = (id) => {
+            currentResultId = id;
+            const result = state.resultsHistory.find(r => r.id === id);
+            if (!result) return;
+
+            document.getElementById('history-modal-title').textContent = "Edit Winner Record";
+            document.getElementById('history-name-input').value = result.name;
+            document.getElementById('history-prize-input').value = result.prize;
+            document.getElementById('history-dept-input').value = result.department; 
+            document.getElementById('history-date-input').value = result.date;
+            document.getElementById('history-claimed-status').value = result.claimed ? 'true' : 'false'; 
+            
+            document.getElementById('history-name-input').disabled = false;
+            document.getElementById('history-prize-input').disabled = false;
+            document.getElementById('history-dept-input').disabled = false; 
+            document.getElementById('history-claimed-status').disabled = false; 
+            document.getElementById('history-edit-save-btn').classList.remove('hidden');
+            
+            document.getElementById('history-modal').classList.remove('hidden');
+        };
+
+        window.saveHistoryEdit = async () => {
+            const id = currentResultId;
+            const newName = document.getElementById('history-name-input').value.trim();
+            const newPrize = document.getElementById('history-prize-input').value.trim();
+            const newDept = document.getElementById('history-dept-input').value.trim();
+            const newClaimed = document.getElementById('history-claimed-status').value === 'true'; 
+
+            if (!newName || !newPrize || !newDept) {
+                 alert("Name, Prize, and Department cannot be empty.");
+                 return;
+            }
+
+            const index = state.resultsHistory.findIndex(r => r.id === id);
+            if (index !== -1) {
+                state.resultsHistory[index].name = newName;
+                state.resultsHistory[index].prize = newPrize;
+                state.resultsHistory[index].department = newDept;
+                state.resultsHistory[index].claimed = newClaimed; 
+                
+                state.resultsHistory[index].removed = newClaimed;
+                
+                await saveState(); 
+                renderResults();
+                closeHistoryModal();
+            }
+        };
+
+        window.deleteResult = async (id) => {
+            if (confirm("Are you sure you want to delete this winner record?")) {
+                const index = state.resultsHistory.findIndex(r => r.id === id);
+                if (index !== -1) {
+                    state.resultsHistory.splice(index, 1);
+                    await saveState(); 
+                    renderResults();
+                    showMessage("Record deleted.");
+                }
+            }
+        };
+
+        window.closeHistoryModal = () => {
+            document.getElementById('history-modal').classList.add('hidden');
+            currentResultId = null;
+        };
+        
+        // --- Export/Import Data ---
+
+        window.exportData = () => {
+             const data = {
+                 prizes: state.prizes, 
+                 resultsHistory: state.resultsHistory,
+                 config: { spinDuration: state.spinDuration },
+                 majorPrizes: state.majorPrizes, 
+             };
+             
+             const dataStr = JSON.stringify(data, null, 2);
+             const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
+             
+             const exportFileDefaultName = `roleta_data_${new Date().toISOString().slice(0, 10)}.json`;
+             
+             const linkElement = document.createElement('a');
+             linkElement.setAttribute('href', dataUri);
+             linkElement.setAttribute('download', exportFileDefaultName);
+             linkElement.click();
+             showMessage("Data exported successfully!");
+        };
+
+        window.exportPrizes = () => {
+            const data = {
+                prizes: state.prizes
+            };
+            
+            const dataStr = JSON.stringify(data, null, 2);
+            const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
+            
+            const exportFileDefaultName = `participants_${new Date().toISOString().slice(0, 10)}.json`;
+            
+            const linkElement = document.createElement('a');
+            linkElement.setAttribute('href', dataUri);
+            linkElement.setAttribute('download', exportFileDefaultName);
+            linkElement.click();
+            showMessage("Participant list exported successfully!");
+        };
+
+        window.importPrizesFromSidebar = (event) => {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            if (!confirm("Are you sure you want to import participant names? This will overwrite the current list of participants!")) {
+                 event.target.value = null; 
+                 return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = async (e) => {
+                try {
+                    const importedData = JSON.parse(e.target.result);
+                    
+                    if (!importedData.prizes || !Array.isArray(importedData.prizes)) {
+                        throw new Error("Invalid file structure. Missing or incorrect 'prizes' array.");
+                    }
+                    
+                    state.prizes = importedData.prizes.map(p => p.toString().trim()).filter(p => p.length > 0);
+                    
+                    await saveState();
+                    updateSettingsUI();
+                    updatePrizeListUI();
+                    showMessage(`Successfully imported ${state.prizes.length} participant names!`);
+                    
+                } catch (error) {
+                    showMessage("Failed to import participant data: " + error.message);
+                    console.error("Participant Import Error:", error);
+                } finally {
+                    event.target.value = null; 
+                }
+            };
+            reader.readText(file);
+        };
+
+        window.importData = (event) => {
+             const file = event.target.files[0];
+            if (!file) {
+                event.target.value = null;
+                return;
+            }
+
+            if (!confirm("WARNING: Are you sure you want to import ALL data? This will MERGE new Participants and History with existing data, but will OVERWRITE the Spin Duration and MAJOR PRIZE list setting!")) {
+                 event.target.value = null; 
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = async (e) => {
+                let importedData;
+                try {
+                    importedData = JSON.parse(e.target.result);
+                    
+                    if (!importedData || typeof importedData !== 'object' || 
+                        !Array.isArray(importedData.prizes) || 
+                        !Array.isArray(importedData.resultsHistory) || 
+                        !importedData.config || 
+                        typeof importedData.config.spinDuration === 'undefined') {
+                        throw new Error("Invalid file structure. Missing required fields.");
+                    }
+                    
+                    const newPrizes = (importedData.prizes || []).map(p => p?.toString()?.trim()).filter(p => p.length > 0);
+                    
+                    const importedDuration = parseInt(importedData.config.spinDuration, 10);
+                    const newSpinDuration = (isNaN(importedDuration) || importedDuration < 1 || importedDuration > 10) ? 3 : importedDuration;
+                    
+                    // Import Major Prizes (handle old string format if necessary)
+                    const importedMajorPrizes = (importedData.majorPrizes || []).map(p => {
+                         if (typeof p === 'string') {
+                             return { name: p.trim(), image: '' };
+                         }
+                         return { 
+                             name: p.name ? p.name.toString().trim() : 'Unknown Prize', 
+                             image: p.image ? p.image.toString().trim() : '' 
+                         };
+                    }).filter(p => p.name.length > 0);
+
+                    state.majorPrizes = importedMajorPrizes; 
+
+                    const newResultsHistory = importedData.resultsHistory || [];
+                    newResultsHistory.forEach(r => {
+                        if (typeof r.claimed === 'undefined') r.claimed = true; 
+                        if (typeof r.removed === 'undefined') r.removed = r.claimed;
+                        if (typeof r.timestamp === 'undefined' || isNaN(r.timestamp)) r.timestamp = Date.now();
+                        if (r.name) r.name = r.name.toString().trim();
+                        if (r.prize) r.prize = r.prize.toString().trim(); // Ensure prize is string name
+                        if (r.department) r.department = r.department.toString().trim();
+                        if (r.date) r.date = r.date.toString().trim();
+                    });
+
+                    // Merge Prizes
+                    const currentPrizesSet = new Set(state.prizes);
+                    const uniqueNewPrizes = newPrizes.filter(p => !currentPrizesSet.has(p));
+                    state.prizes = state.prizes.concat(uniqueNewPrizes);
+
+                    // Merge History
+                    const existingHistoryIds = new Set(state.resultsHistory.map(r => r.id));
+                    const uniqueNewHistory = newResultsHistory.filter(r => !existingHistoryIds.has(r.id));
+                    
+                    state.resultsHistory = uniqueNewHistory.concat(state.resultsHistory);
+                    
+                    // Overwrite Configuration
+                    state.spinDuration = newSpinDuration;
+
+                    await saveState();
+                    
+                    updateSettingsUI();
+                    updatePrizeListUI(); 
+                    renderResults(); 
+                    
+                    const newPrizesCount = uniqueNewPrizes.length;
+                    const newHistoryCount = uniqueNewHistory.length;
+
+                    showMessage(`Full data imported and merged successfully! Added ${newPrizesCount} unique participants and ${newHistoryCount} history entries.`);
+                    
+                } catch (error) {
+                    showMessage("Failed to import full data: " + error.message);
+                    console.error("Full Data Import Error:", error);
+                } finally {
+                    event.target.value = null; 
+                }
+            };
+            reader.readText(file);
+        };
+
+        // --- Full Screen Management ---
+
+        window.toggleFullscreen = (show) => {
+            const fsRoleta = document.getElementById('fullscreen-roleta');
+            isFullscreen = show;
+            
+            if (show) {
+                fsRoleta.classList.remove('hidden');
+                fsRoleta.style.display = 'flex';
+                drawWheel(fullscreenCtx, fullscreenCanvas.width, fullscreenCanvas.height);
+                document.body.style.overflow = 'hidden';
+            } else {
+                fsRoleta.classList.add('hidden');
+                fsRoleta.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }
+        };
+
+        // --- Initialization ---
+        document.addEventListener('DOMContentLoaded', async () => {
+            await loadState();
+            updateSettingsUI();
+            
+            drawWheel(mainCtx, mainCanvas.width, mainCanvas.height);
+            drawWheel(fullscreenCtx, fullscreenCanvas.width, fullscreenCanvas.height);
+
+            renderResults();
+            updateStatsDisplay(); 
+            showTab('wheel'); 
+
+            mainCanvas.addEventListener('click', () => startPreSpinCountdown(false));
+            fullscreenCanvas.addEventListener('click', () => startPreSpinCountdown(true));
+        });
+
+    </script>
+
+<script>
+        function protectSourceCode() {
+            document.addEventListener('contextmenu', function(e) {
+                e.preventDefault();
+            });
+
+            document.addEventListener('keydown', function(e) {
+                if (e.keyCode === 123 || 
+                    (e.ctrlKey && e.shiftKey && e.keyCode === 73) || 
+                    (e.ctrlKey && e.keyCode === 85) || 
+                    (e.ctrlKey && e.shiftKey && e.keyCode === 67) || 
+                    (e.ctrlKey && e.keyCode === 83) ||
+                    (e.ctrlKey && e.shiftKey && e.keyCode === 73) ||
+                    (e.ctrlKey && e.shiftKey && e.keyCode === 74)) {
+                    e.preventDefault();
+                    return false;
+                }
+            });
+
+            document.addEventListener('selectstart', function(e) {
+                e.preventDefault();
+            });
+
+            document.addEventListener('dragstart', function(e) {
+                e.preventDefault();
+            });
+
+            document.onselectstart = function() {
+                return false;
+            };
+
+            document.oncontextmenu = function() {
+                return false;
+            };
+        }
+
+        window.addEventListener('load', protectSourceCode);
+    </script>
+
+</body>
+</html>
